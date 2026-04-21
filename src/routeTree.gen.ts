@@ -14,6 +14,7 @@ import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 
 const ProduitsRoute = ProduitsRouteImport.update({
   id: '/produits',
@@ -40,6 +41,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
+  id: '/checkout/$productId',
+  path: '/checkout/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/commandes': typeof CommandesRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/commandes': typeof CommandesRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,33 @@ export interface FileRoutesById {
   '/commandes': typeof CommandesRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/aide' | '/commandes' | '/paiements' | '/produits'
+  fullPaths:
+    | '/'
+    | '/aide'
+    | '/commandes'
+    | '/paiements'
+    | '/produits'
+    | '/checkout/$productId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/aide' | '/commandes' | '/paiements' | '/produits'
-  id: '__root__' | '/' | '/aide' | '/commandes' | '/paiements' | '/produits'
+  to:
+    | '/'
+    | '/aide'
+    | '/commandes'
+    | '/paiements'
+    | '/produits'
+    | '/checkout/$productId'
+  id:
+    | '__root__'
+    | '/'
+    | '/aide'
+    | '/commandes'
+    | '/paiements'
+    | '/produits'
+    | '/checkout/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +105,7 @@ export interface RootRouteChildren {
   CommandesRoute: typeof CommandesRoute
   PaiementsRoute: typeof PaiementsRoute
   ProduitsRoute: typeof ProduitsRoute
+  CheckoutProductIdRoute: typeof CheckoutProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/$productId': {
+      id: '/checkout/$productId'
+      path: '/checkout/$productId'
+      fullPath: '/checkout/$productId'
+      preLoaderRoute: typeof CheckoutProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,7 +161,17 @@ const rootRouteChildren: RootRouteChildren = {
   CommandesRoute: CommandesRoute,
   PaiementsRoute: PaiementsRoute,
   ProduitsRoute: ProduitsRoute,
+  CheckoutProductIdRoute: CheckoutProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

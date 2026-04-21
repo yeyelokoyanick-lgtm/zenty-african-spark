@@ -1,4 +1,5 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, ShoppingCart, Trash2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import type { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { formatFCFA } from "@/data/dashboard";
@@ -57,8 +58,10 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
                 <td className="px-4 py-3"><StatusBadge stock={p.stock} /></td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-1">
-                    <Button variant="ghost" size="icon" aria-label="Voir">
-                      <Eye className="h-4 w-4" />
+                    <Button asChild variant="ghost" size="icon" aria-label="Commander" disabled={p.stock === 0}>
+                      <Link to="/checkout/$productId" params={{ productId: p.id }}>
+                        <ShoppingCart className="h-4 w-4" />
+                      </Link>
                     </Button>
                     <Button variant="ghost" size="icon" aria-label="Modifier" onClick={() => onEdit(p)}>
                       <Pencil className="h-4 w-4" />

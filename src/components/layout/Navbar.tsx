@@ -17,6 +17,7 @@ const navItems = [
   { to: "/produits" as const, label: "Produits" },
   { to: "/commandes" as const, label: "Commandes" },
   { to: "/paiements" as const, label: "Paiements" },
+  { to: "/abonnement" as const, label: "Abonnement" },
   { to: "/aide" as const, label: "Aide" },
 ];
 

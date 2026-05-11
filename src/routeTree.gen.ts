@@ -17,6 +17,7 @@ import { Route as AideRouteImport } from './routes/aide'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
+import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 
 const ProduitsRoute = ProduitsRouteImport.update({
   id: '/produits',
@@ -58,6 +59,11 @@ const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
   path: '/checkout/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
+  id: '/boutique/$slug',
+  path: '/boutique/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/boutique/$slug'
     | '/checkout/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/boutique/$slug'
     | '/checkout/$productId'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/boutique/$slug'
     | '/checkout/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   PaiementsRoute: typeof PaiementsRoute
   ProduitsRoute: typeof ProduitsRoute
+  BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
 }
 
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/boutique/$slug': {
+      id: '/boutique/$slug'
+      path: '/boutique/$slug'
+      fullPath: '/boutique/$slug'
+      preLoaderRoute: typeof BoutiqueSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -203,17 +223,9 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   PaiementsRoute: PaiementsRoute,
   ProduitsRoute: ProduitsRoute,
+  BoutiqueSlugRoute: BoutiqueSlugRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

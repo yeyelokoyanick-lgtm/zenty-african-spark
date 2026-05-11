@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { to: "/" as const, label: "Tableau de Bord" },
+  { to: "/dashboard" as const, label: "Tableau de Bord" },
   { to: "/produits" as const, label: "Produits" },
   { to: "/commandes" as const, label: "Commandes" },
   { to: "/paiements" as const, label: "Paiements" },
@@ -27,7 +27,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="ZENTY accueil">
+        <Link to="/dashboard" aria-label="ZENTY accueil">
           <Logo />
         </Link>
 
@@ -36,7 +36,7 @@ export function Navbar() {
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: item.to === "/dashboard" }}
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[status=active]:bg-accent data-[status=active]:text-accent-foreground"
             >
               {item.label}
@@ -87,7 +87,7 @@ export function Navbar() {
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: item.to === "/dashboard" }}
               onClick={() => setOpen(false)}
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground data-[status=active]:bg-accent data-[status=active]:text-accent-foreground"
             >

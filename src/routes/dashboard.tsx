@@ -10,7 +10,7 @@ import { HelpCard } from "@/components/dashboard/HelpCard";
 import { MarketingCard } from "@/components/dashboard/MarketingCard";
 import { stats } from "@/data/dashboard";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
       { title: "Tableau de Bord — ZENTY" },

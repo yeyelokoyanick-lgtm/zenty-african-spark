@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as PaiementsRouteImport } from './routes/paiements'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
@@ -25,6 +26,11 @@ const ProduitsRoute = ProduitsRouteImport.update({
 const PaiementsRoute = PaiementsRouteImport.update({
   id: '/paiements',
   path: '/paiements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandesRoute = CommandesRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/commandes': typeof CommandesRoute
+  '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/commandes': typeof CommandesRoute
+  '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/commandes': typeof CommandesRoute
+  '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/commandes'
+    | '/dashboard'
     | '/paiements'
     | '/produits'
     | '/checkout/$productId'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/commandes'
+    | '/dashboard'
     | '/paiements'
     | '/produits'
     | '/checkout/$productId'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/commandes'
+    | '/dashboard'
     | '/paiements'
     | '/produits'
     | '/checkout/$productId'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AbonnementRoute: typeof AbonnementRoute
   AideRoute: typeof AideRoute
   CommandesRoute: typeof CommandesRoute
+  DashboardRoute: typeof DashboardRoute
   PaiementsRoute: typeof PaiementsRoute
   ProduitsRoute: typeof ProduitsRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/paiements'
       fullPath: '/paiements'
       preLoaderRoute: typeof PaiementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commandes': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AbonnementRoute: AbonnementRoute,
   AideRoute: AideRoute,
   CommandesRoute: CommandesRoute,
+  DashboardRoute: DashboardRoute,
   PaiementsRoute: PaiementsRoute,
   ProduitsRoute: ProduitsRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,

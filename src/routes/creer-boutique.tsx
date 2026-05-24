@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ImagePlus, Sparkles, Store } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ImagePlus, Loader2, Sparkles, Store } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 const PURPLE = "#6B4BCC";
 
@@ -62,6 +64,7 @@ interface ShopForm {
 
 function CreateShopPage() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState<ShopForm>({
@@ -76,6 +79,47 @@ function CreateShopPage() {
     city: "",
     country: COUNTRIES[0],
   });
+
+  // Require auth (with verified email)
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate({ to: "/auth", search: { mode: "signup", redirect: "/creer-boutique" } });
+    }
+  }, [user, authLoading, navigate]);
+
+  // Prefill from profile when signed-in
+  useEffect(() => {
+    if (!user) return;
+    setForm((f) => ({
+      ...f,
+      email: f.email || user.email || "",
+      ownerName: f.ownerName || ((user.user_metadata?.full_name as string) ?? ""),
+      phone: f.phone || ((user.user_metadata?.phone as string) ?? ""),
+    }));
+    supabase
+      .from("profiles")
+      .select("full_name, phone, city, country")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return;
+        setForm((f) => ({
+          ...f,
+          ownerName: f.ownerName || (data.full_name ?? ""),
+          phone: f.phone || (data.phone ?? ""),
+          city: f.city || (data.city ?? ""),
+          country: data.country || f.country,
+        }));
+      });
+  }, [user]);
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin" style={{ color: "#6B4BCC" }} />
+      </div>
+    );
+  }
 
   const update = <K extends keyof ShopForm>(k: K, v: ShopForm[K]) => {
     setForm((f) => {

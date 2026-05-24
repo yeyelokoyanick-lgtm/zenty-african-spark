@@ -14,6 +14,7 @@ import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
 import { Route as CommandesRouteImport } from './routes/commandes'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
@@ -43,6 +44,11 @@ const CreerBoutiqueRoute = CreerBoutiqueRouteImport.update({
 const CommandesRoute = CommandesRouteImport.update({
   id: '/commandes',
   path: '/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AideRoute = AideRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AbonnementRoute: typeof AbonnementRoute
   AideRoute: typeof AideRoute
+  AuthRoute: typeof AuthRoute
   CommandesRoute: typeof CommandesRoute
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommandesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aide': {
       id: '/aide'
       path: '/aide'
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AbonnementRoute: AbonnementRoute,
   AideRoute: AideRoute,
+  AuthRoute: AuthRoute,
   CommandesRoute: CommandesRoute,
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,
@@ -250,3 +271,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

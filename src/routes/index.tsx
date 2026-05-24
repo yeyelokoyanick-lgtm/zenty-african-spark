@@ -39,7 +39,7 @@ const PURPLE = "#6B4BCC";
 function CtaButton({
   children,
   size = "md",
-  to = "/dashboard",
+  to = "/creer-boutique",
 }: {
   children: React.ReactNode;
   size?: "md" | "lg";

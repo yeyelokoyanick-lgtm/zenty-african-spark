@@ -14,11 +14,13 @@ import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
 import { Route as CommandesRouteImport } from './routes/commandes'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 
 const ProduitsRoute = ProduitsRouteImport.update({
   id: '/produits',
@@ -43,6 +45,11 @@ const CreerBoutiqueRoute = CreerBoutiqueRouteImport.update({
 const CommandesRoute = CommandesRouteImport.update({
   id: '/commandes',
   path: '/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AideRoute = AideRouteImport.update({
@@ -70,16 +77,23 @@ const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
   path: '/boutique/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRouteWithChildren
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
@@ -87,11 +101,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRouteWithChildren
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
@@ -100,11 +116,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
+  '/auth': typeof AuthRouteWithChildren
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
 }
@@ -114,11 +132,13 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
   fileRoutesByTo: FileRoutesByTo
@@ -126,11 +146,13 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
   id:
@@ -138,11 +160,13 @@ export interface FileRouteTypes {
     | '/'
     | '/abonnement'
     | '/aide'
+    | '/auth'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
     | '/paiements'
     | '/produits'
+    | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
   fileRoutesById: FileRoutesById
@@ -151,6 +175,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AbonnementRoute: typeof AbonnementRoute
   AideRoute: typeof AideRoute
+  AuthRoute: typeof AuthRouteWithChildren
   CommandesRoute: typeof CommandesRoute
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
@@ -197,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommandesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aide': {
       id: '/aide'
       path: '/aide'
@@ -232,13 +264,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
+
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AbonnementRoute: AbonnementRoute,
   AideRoute: AideRoute,
+  AuthRoute: AuthRouteWithChildren,
   CommandesRoute: CommandesRoute,
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,

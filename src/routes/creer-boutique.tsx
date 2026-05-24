@@ -156,6 +156,22 @@ function CreateShopPage() {
     try {
       const slug = slugify(form.slug || form.name);
       const payload = { ...form, slug, createdAt: new Date().toISOString() };
+      // Persist user profile in DB (RLS limits to own row)
+      if (user) {
+        const { error } = await supabase
+          .from("profiles")
+          .upsert({
+            id: user.id,
+            full_name: form.ownerName,
+            phone: form.phone,
+            city: form.city,
+            country: form.country,
+          });
+        if (error) {
+          toast.error("Sauvegarde du profil impossible");
+          return;
+        }
+      }
       if (typeof window !== "undefined") {
         const all = JSON.parse(localStorage.getItem("zenty.shops") || "[]");
         all.push(payload);

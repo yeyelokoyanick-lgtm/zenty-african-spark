@@ -113,6 +113,11 @@ const steps = [
 ];
 
 function LandingPage() {
+  const { user, loading } = useAuth();
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("À bientôt !");
+  };
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -127,7 +132,26 @@ function LandingPage() {
             <a href="#how" className="text-sm font-medium text-muted-foreground hover:text-foreground">Comment ça marche</a>
             <Link to="/abonnement" className="text-sm font-medium text-muted-foreground hover:text-foreground">Tarifs</Link>
           </nav>
-          <CtaButton>Créer ma boutique gratuite</CtaButton>
+          {loading ? null : user ? (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/dashboard"
+                className="hidden rounded-full px-4 py-2 text-sm font-semibold text-white shadow-md sm:inline-flex"
+                style={{ backgroundColor: PURPLE }}
+              >
+                Mon tableau de bord
+              </Link>
+              <button
+                onClick={handleSignOut}
+                aria-label="Se déconnecter"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <CtaButton>Créer ma boutique gratuite</CtaButton>
+          )}
         </div>
       </header>
 

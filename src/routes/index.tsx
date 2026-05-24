@@ -11,8 +11,12 @@ import {
   Instagram,
   Twitter,
   ArrowRight,
+  LogOut,
 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,7 +43,7 @@ const PURPLE = "#6B4BCC";
 function CtaButton({
   children,
   size = "md",
-  to = "/creer-boutique",
+  to = "/auth",
 }: {
   children: React.ReactNode;
   size?: "md" | "lg";
@@ -48,6 +52,7 @@ function CtaButton({
   return (
     <Link
       to={to}
+      search={to === "/auth" ? ({ mode: "signup" as const, redirect: "/creer-boutique" }) : undefined}
       className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 ${
         size === "lg" ? "px-7 py-4 text-base" : "px-5 py-3 text-sm"
       }`}

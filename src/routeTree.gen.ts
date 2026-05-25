@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as PaiementsRouteImport } from './routes/paiements'
+import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
 import { Route as CommandesRouteImport } from './routes/commandes'
+import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
@@ -32,6 +34,11 @@ const PaiementsRoute = PaiementsRouteImport.update({
   path: '/paiements',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -45,6 +52,11 @@ const CreerBoutiqueRoute = CreerBoutiqueRouteImport.update({
 const CommandesRoute = CommandesRouteImport.update({
   id: '/commandes',
   path: '/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientsRoute = ClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -88,9 +100,11 @@ export interface FileRoutesByFullPath {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/marketing': typeof MarketingRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -102,9 +116,11 @@ export interface FileRoutesByTo {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/marketing': typeof MarketingRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -117,9 +133,11 @@ export interface FileRoutesById {
   '/abonnement': typeof AbonnementRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/marketing': typeof MarketingRoute
   '/paiements': typeof PaiementsRoute
   '/produits': typeof ProduitsRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -133,9 +151,11 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/auth'
+    | '/clients'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/marketing'
     | '/paiements'
     | '/produits'
     | '/auth/callback'
@@ -147,9 +167,11 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/auth'
+    | '/clients'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/marketing'
     | '/paiements'
     | '/produits'
     | '/auth/callback'
@@ -161,9 +183,11 @@ export interface FileRouteTypes {
     | '/abonnement'
     | '/aide'
     | '/auth'
+    | '/clients'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/marketing'
     | '/paiements'
     | '/produits'
     | '/auth/callback'
@@ -176,9 +200,11 @@ export interface RootRouteChildren {
   AbonnementRoute: typeof AbonnementRoute
   AideRoute: typeof AideRoute
   AuthRoute: typeof AuthRouteWithChildren
+  ClientsRoute: typeof ClientsRoute
   CommandesRoute: typeof CommandesRoute
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
+  MarketingRoute: typeof MarketingRoute
   PaiementsRoute: typeof PaiementsRoute
   ProduitsRoute: typeof ProduitsRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
@@ -201,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaiementsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/marketing': {
+      id: '/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof MarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -220,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/commandes'
       fullPath: '/commandes'
       preLoaderRoute: typeof CommandesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clients': {
+      id: '/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -289,9 +329,11 @@ const rootRouteChildren: RootRouteChildren = {
   AbonnementRoute: AbonnementRoute,
   AideRoute: AideRoute,
   AuthRoute: AuthRouteWithChildren,
+  ClientsRoute: ClientsRoute,
   CommandesRoute: CommandesRoute,
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,
+  MarketingRoute: MarketingRoute,
   PaiementsRoute: PaiementsRoute,
   ProduitsRoute: ProduitsRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
@@ -300,3 +342,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

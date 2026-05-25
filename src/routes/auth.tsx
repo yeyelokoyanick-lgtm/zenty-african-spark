@@ -52,7 +52,7 @@ function AuthPage() {
   // Already signed in → leave
   useEffect(() => {
     if (!loading && user) {
-      navigate({ to: search.redirect ?? "/creer-boutique" });
+      navigate({ to: search.redirect ?? "/dashboard" });
     }
   }, [user, loading, navigate, search.redirect]);
 
@@ -69,7 +69,7 @@ function AuthPage() {
           return;
         }
         const redirectTo = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(
-          search.redirect ?? "/creer-boutique",
+          search.redirect ?? "/onboarding",
         )}`;
         const { error } = await supabase.auth.signUp({
           email: parsed.data.email,

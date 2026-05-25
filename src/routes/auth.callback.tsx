@@ -49,7 +49,7 @@ function CallbackPage() {
         }
 
         setStatus("success");
-        const redirect = url.searchParams.get("redirect") || "/creer-boutique";
+        const redirect = url.searchParams.get("redirect") || "/onboarding";
         setTimeout(() => navigate({ to: redirect }), 1200);
       } catch (e) {
         setStatus("error");

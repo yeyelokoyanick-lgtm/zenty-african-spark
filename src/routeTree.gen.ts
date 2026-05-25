@@ -9,12 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as MaBoutiqueRouteImport } from './routes/ma-boutique'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
 import { Route as CommandesRouteImport } from './routes/commandes'
@@ -28,6 +31,11 @@ import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$produc
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProduitsRoute = ProduitsRouteImport.update({
   id: '/produits',
   path: '/produits',
@@ -56,6 +64,16 @@ const MarketingRoute = MarketingRouteImport.update({
 const MaBoutiqueRoute = MaBoutiqueRouteImport.update({
   id: '/ma-boutique',
   path: '/ma-boutique',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -129,12 +147,15 @@ export interface FileRoutesByFullPath {
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -149,12 +170,15 @@ export interface FileRoutesByTo {
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -170,12 +194,15 @@ export interface FileRoutesById {
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
@@ -192,12 +219,15 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/ma-boutique'
     | '/marketing'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
@@ -212,12 +242,15 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/ma-boutique'
     | '/marketing'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
@@ -232,12 +265,15 @@ export interface FileRouteTypes {
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/ma-boutique'
     | '/marketing'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
@@ -253,18 +289,28 @@ export interface RootRouteChildren {
   CommandesRoute: typeof CommandesRoute
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
   MaBoutiqueRoute: typeof MaBoutiqueRoute
   MarketingRoute: typeof MarketingRoute
   OnboardingRoute: typeof OnboardingRoute
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
   ProduitsRoute: typeof ProduitsRoute
+  RegisterRoute: typeof RegisterRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/produits': {
       id: '/produits'
       path: '/produits'
@@ -305,6 +351,20 @@ declare module '@tanstack/react-router' {
       path: '/ma-boutique'
       fullPath: '/ma-boutique'
       preLoaderRoute: typeof MaBoutiqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -414,12 +474,15 @@ const rootRouteChildren: RootRouteChildren = {
   CommandesRoute: CommandesRoute,
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
   MaBoutiqueRoute: MaBoutiqueRoute,
   MarketingRoute: MarketingRoute,
   OnboardingRoute: OnboardingRoute,
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
   ProduitsRoute: ProduitsRoute,
+  RegisterRoute: RegisterRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
 }

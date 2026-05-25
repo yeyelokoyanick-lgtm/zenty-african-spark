@@ -220,6 +220,14 @@ function AuthPage() {
             </Button>
           </form>
 
+          {mode === "signin" && (
+            <p className="mt-3 text-center text-xs">
+              <Link to="/forgot-password" className="font-semibold" style={{ color: PURPLE }}>
+                Mot de passe oublié ?
+              </Link>
+            </p>
+          )}
+
           <p className="mt-5 text-center text-xs text-muted-foreground">
             {mode === "signup" ? (
               <>Tu as déjà un compte ?{" "}

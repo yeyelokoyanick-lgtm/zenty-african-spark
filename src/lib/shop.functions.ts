@@ -2,9 +2,26 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export interface Shop {
+  id: string;
+  user_id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  color: string;
+  logo_url: string | null;
+  banner_url: string | null;
+  facebook_pixel_id: string | null;
+  facebook_pixel_enabled: boolean;
+  whatsapp_number: string | null;
+  whatsapp_enabled: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export const getMyShop = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .handler(async ({ context }): Promise<{ shop: Shop | null }> => {
     const { supabase, userId } = context;
     const { data, error } = await supabase
       .from("shops" as any)
@@ -12,7 +29,7 @@ export const getMyShop = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .single();
     if (error && (error as any).code !== "PGRST116") throw error;
-    return { shop: data ?? null };
+    return { shop: (data as Shop) ?? null };
   });
 
 export const upsertShop = createServerFn({ method: "POST" })

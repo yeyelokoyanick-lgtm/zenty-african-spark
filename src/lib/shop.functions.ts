@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 export interface Shop {
   id: string;
@@ -18,6 +19,20 @@ export interface Shop {
   created_at: string;
   updated_at: string;
 }
+
+export const getShopBySlug = createServerFn({ method: "GET" })
+  .inputValidator((input: { slug: string }) =>
+    z.object({ slug: z.string().min(1) }).parse(input)
+  )
+  .handler(async ({ data }): Promise<{ shop: Shop | null }> => {
+    const { data: shop, error } = await supabaseAdmin
+      .from("shops")
+      .select("*")
+      .eq("slug", data.slug)
+      .single();
+    if (error && (error as any).code !== "PGRST116") throw error;
+    return { shop: (shop as unknown as Shop) ?? null };
+  });
 
 export const getMyShop = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

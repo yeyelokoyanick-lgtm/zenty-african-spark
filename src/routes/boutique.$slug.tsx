@@ -63,7 +63,7 @@ function FacebookPixel({ pixelId }: { pixelId: string }) {
     if (!pixelId || typeof window === "undefined") return;
     if ((window as any).fbq) return;
     const w = window as any;
-    const n = w.fbq = function (...args: any[]) {
+    const n: any = w.fbq = function (...args: any[]) {
       n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
     };
     if (!w._fbq) w._fbq = n;

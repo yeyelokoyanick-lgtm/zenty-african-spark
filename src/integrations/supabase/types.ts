@@ -44,6 +44,57 @@ export type Database = {
         }
         Relationships: []
       }
+      shops: {
+        Row: {
+          banner_url: string | null
+          color: string
+          created_at: string
+          description: string | null
+          facebook_pixel_enabled: boolean
+          facebook_pixel_id: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          slug: string
+          updated_at: string
+          user_id: string
+          whatsapp_enabled: boolean
+          whatsapp_number: string | null
+        }
+        Insert: {
+          banner_url?: string | null
+          color?: string
+          created_at?: string
+          description?: string | null
+          facebook_pixel_enabled?: boolean
+          facebook_pixel_id?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          slug: string
+          updated_at?: string
+          user_id: string
+          whatsapp_enabled?: boolean
+          whatsapp_number?: string | null
+        }
+        Update: {
+          banner_url?: string | null
+          color?: string
+          created_at?: string
+          description?: string | null
+          facebook_pixel_enabled?: boolean
+          facebook_pixel_id?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string
+          user_id?: string
+          whatsapp_enabled?: boolean
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

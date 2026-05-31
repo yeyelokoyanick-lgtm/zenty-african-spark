@@ -1,23 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { ShoppingBag, MapPin, Phone, User, Check, ShieldCheck, Truck } from "lucide-react";
+import { ShoppingBag, MapPin, Phone, User, Check, ShieldCheck, Truck, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
+import { getShopBySlug, type Shop } from "@/lib/shop.functions";
 
 const PURPLE = "#6B4BCC";
 
 export const Route = createFileRoute("/boutique/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${formatShopName(params.slug)} — Boutique ZENTY` },
-      { name: "description", content: `Découvrez les produits de ${formatShopName(params.slug)} et commandez en Mobile Money ou à la livraison.` },
-    ],
-  }),
+  loader: async ({ params }) => {
+    const { shop } = await getShopBySlug({ data: { slug: params.slug } });
+    return { shop };
+  },
+  head: ({ params, loaderData }) => {
+    const shop = (loaderData as any)?.shop as Shop | undefined;
+    const shopName = shop?.name ?? formatShopName(params.slug);
+    return {
+      meta: [
+        { title: `${shopName} — Boutique ZENTY` },
+        { name: "description", content: `Découvrez les produits de ${shopName} et commandez en Mobile Money ou à la livraison.` },
+      ],
+    };
+  },
   component: BoutiquePage,
 });
 
@@ -49,35 +58,79 @@ const orderSchema = z.object({
   payment: z.enum(["mtn", "moov", "cod"]),
 });
 
+function FacebookPixel({ pixelId }: { pixelId: string }) {
+  useEffect(() => {
+    if (!pixelId || typeof window === "undefined") return;
+    if ((window as any).fbq) return;
+    const n = (window as any).fbq = function() {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!(window as any)._fbq) (window as any)._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = "2.0";
+    n.queue = [];
+    const t = document.createElement("script");
+    t.async = true;
+    t.src = "https://connect.facebook.net/en_US/fbevents.js";
+    const s = document.getElementsByTagName("script")[0];
+    s.parentNode!.insertBefore(t, s);
+    n("init", pixelId);
+    n("track", "PageView");
+  }, [pixelId]);
+  return null;
+}
+
 function BoutiquePage() {
   const { slug } = Route.useParams();
-  const shopName = formatShopName(slug);
+  const { shop } = Route.useLoaderData() as { shop: Shop | null };
+  const shopName = shop?.name ?? formatShopName(slug);
+  const shopColor = shop?.color ?? PURPLE;
+  const shopDesc = shop?.description ?? "Boutique en ligne · Livraison rapide · Paiement à la livraison disponible";
+
   const [selected, setSelected] = useState<Product | null>(null);
   const [success, setSuccess] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Facebook Pixel */}
+      {shop?.facebook_pixel_enabled && shop?.facebook_pixel_id && (
+        <FacebookPixel pixelId={shop.facebook_pixel_id} />
+      )}
+
+      {/* WhatsApp Float */}
+      {shop?.whatsapp_enabled && shop?.whatsapp_number && (
+        <a
+          href={`https://wa.me/${shop.whatsapp_number.replace(/\D/g, "")}`}
+          target="_blank"
+          rel="noreferrer"
+          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110"
+          style={{ backgroundColor: "#25D366" }}
+          aria-label="Contacter sur WhatsApp"
+        >
+          <MessageCircle className="h-7 w-7 text-white" />
+        </a>
+      )}
+
       {/* Shop header */}
       <header className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 -z-10"
-          style={{ background: `linear-gradient(135deg, ${PURPLE}18, transparent 70%)` }}
+          style={{ background: `linear-gradient(135deg, ${shopColor}18, transparent 70%)` }}
         />
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 py-10 text-center sm:flex-row sm:text-left">
           <div
             className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-2xl font-bold text-white shadow-lg"
-            style={{ backgroundColor: PURPLE, boxShadow: `0 10px 30px ${PURPLE}40` }}
+            style={{ backgroundColor: shopColor, boxShadow: `0 10px 30px ${shopColor}40` }}
           >
             {shopName.charAt(0)}
           </div>
           <div className="flex-1">
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{shopName}</h1>
-            <p className="mt-1.5 max-w-xl text-sm text-muted-foreground">
-              Boutique en ligne · Livraison rapide · Paiement à la livraison disponible
-            </p>
+            <p className="mt-1.5 max-w-xl text-sm text-muted-foreground">{shopDesc}</p>
             <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
-              <Badge icon={<ShieldCheck className="h-3 w-3" />} text="Vendeur vérifié" />
-              <Badge icon={<Truck className="h-3 w-3" />} text="Livraison 24-72h" />
+              <Badge color={shopColor} icon={<ShieldCheck className="h-3 w-3" />} text="Vendeur vérifié" />
+              <Badge color={shopColor} icon={<Truck className="h-3 w-3" />} text="Livraison 24-72h" />
             </div>
           </div>
         </div>
@@ -106,11 +159,11 @@ function BoutiquePage() {
               <div className="p-3 sm:p-4">
                 <h3 className="line-clamp-1 text-sm font-semibold sm:text-base">{p.name}</h3>
                 <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{p.desc}</p>
-                <p className="mt-2 text-base font-bold" style={{ color: PURPLE }}>{formatFCFA(p.price)}</p>
+                <p className="mt-2 text-base font-bold" style={{ color: shopColor }}>{formatFCFA(p.price)}</p>
                 <button
                   onClick={() => { setSelected(p); setSuccess(false); }}
                   className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-white transition-all hover:-translate-y-0.5 sm:text-sm"
-                  style={{ backgroundColor: PURPLE, boxShadow: `0 6px 18px ${PURPLE}40` }}
+                  style={{ backgroundColor: shopColor, boxShadow: `0 6px 18px ${shopColor}40` }}
                 >
                   <ShoppingBag className="h-4 w-4" />
                   Commander
@@ -136,10 +189,11 @@ function BoutiquePage() {
             <OrderForm
               product={selected}
               onSuccess={() => setSuccess(true)}
+              shopColor={shopColor}
             />
           )}
           {selected && success && (
-            <SuccessView onClose={() => setSelected(null)} />
+            <SuccessView onClose={() => setSelected(null)} shopColor={shopColor} />
           )}
         </DialogContent>
       </Dialog>
@@ -147,18 +201,18 @@ function BoutiquePage() {
   );
 }
 
-function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
+function Badge({ icon, text, color }: { icon: React.ReactNode; text: string; color: string }) {
   return (
     <span
       className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium"
-      style={{ backgroundColor: `${PURPLE}12`, color: PURPLE }}
+      style={{ backgroundColor: `${color}12`, color }}
     >
       {icon} {text}
     </span>
   );
 }
 
-function OrderForm({ product, onSuccess }: { product: Product; onSuccess: () => void }) {
+function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSuccess: () => void; shopColor: string }) {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "", payment: "cod" as "mtn" | "moov" | "cod" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -186,7 +240,7 @@ function OrderForm({ product, onSuccess }: { product: Product; onSuccess: () => 
       <DialogHeader>
         <DialogTitle>Commander · {product.name}</DialogTitle>
         <DialogDescription>
-          Total : <span className="font-semibold" style={{ color: PURPLE }}>{formatFCFA(product.price)}</span>
+          Total : <span className="font-semibold" style={{ color: shopColor }}>{formatFCFA(product.price)}</span>
         </DialogDescription>
       </DialogHeader>
       <form onSubmit={submit} className="space-y-4 pt-2">
@@ -210,9 +264,9 @@ function OrderForm({ product, onSuccess }: { product: Product; onSuccess: () => 
             onValueChange={(v) => setForm({ ...form, payment: v as typeof form.payment })}
             className="space-y-2"
           >
-            <PayOption value="mtn" label="MTN Mobile Money" tag="MoMo" />
-            <PayOption value="moov" label="Moov Money" tag="Moov" />
-            <PayOption value="cod" label="Paiement à la livraison" tag="Cash" recommended />
+            <PayOption value="mtn" label="MTN Mobile Money" tag="MoMo" color={shopColor} />
+            <PayOption value="moov" label="Moov Money" tag="Moov" color={shopColor} />
+            <PayOption value="cod" label="Paiement à la livraison" tag="Cash" color={shopColor} recommended />
           </RadioGroup>
         </div>
 
@@ -220,7 +274,7 @@ function OrderForm({ product, onSuccess }: { product: Product; onSuccess: () => 
           type="submit"
           disabled={submitting}
           className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:opacity-60"
-          style={{ backgroundColor: PURPLE, boxShadow: `0 10px 24px ${PURPLE}50` }}
+          style={{ backgroundColor: shopColor, boxShadow: `0 10px 24px ${shopColor}50` }}
         >
           {submitting ? "Envoi..." : `Confirmer la commande · ${formatFCFA(product.price)}`}
         </button>
@@ -244,12 +298,12 @@ function Field({ label, icon, error, children }: { label: string; icon?: React.R
   );
 }
 
-function PayOption({ value, label, tag, recommended }: { value: string; label: string; tag: string; recommended?: boolean }) {
+function PayOption({ value, label, tag, recommended, color }: { value: string; label: string; tag: string; recommended?: boolean; color: string }) {
   return (
     <label
       htmlFor={`pay-${value}`}
       className="flex cursor-pointer items-center justify-between rounded-xl border border-border bg-card p-3 transition-colors has-[[data-state=checked]]:border-[color:var(--ring)] has-[[data-state=checked]]:bg-accent/30"
-      style={{ ["--ring" as string]: PURPLE }}
+      style={{ ["--ring" as string]: color }}
     >
       <div className="flex items-center gap-3">
         <RadioGroupItem id={`pay-${value}`} value={value} />
@@ -257,7 +311,7 @@ function PayOption({ value, label, tag, recommended }: { value: string; label: s
       </div>
       <span
         className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase"
-        style={recommended ? { backgroundColor: PURPLE, color: "white" } : { backgroundColor: `${PURPLE}15`, color: PURPLE }}
+        style={recommended ? { backgroundColor: color, color: "white" } : { backgroundColor: `${color}15`, color }}
       >
         {recommended ? "Recommandé" : tag}
       </span>
@@ -265,12 +319,12 @@ function PayOption({ value, label, tag, recommended }: { value: string; label: s
   );
 }
 
-function SuccessView({ onClose }: { onClose: () => void }) {
+function SuccessView({ onClose, shopColor }: { onClose: () => void; shopColor: string }) {
   return (
     <div className="py-4 text-center">
       <div
         className="mx-auto flex h-16 w-16 items-center justify-center rounded-full"
-        style={{ backgroundColor: `${PURPLE}15`, color: PURPLE }}
+        style={{ backgroundColor: `${shopColor}15`, color: shopColor }}
       >
         <Check className="h-8 w-8" />
       </div>
@@ -281,7 +335,7 @@ function SuccessView({ onClose }: { onClose: () => void }) {
       <button
         onClick={onClose}
         className="mt-6 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-white"
-        style={{ backgroundColor: PURPLE }}
+        style={{ backgroundColor: shopColor }}
       >
         Continuer mes achats
       </button>

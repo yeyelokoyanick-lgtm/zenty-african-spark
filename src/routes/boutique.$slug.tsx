@@ -62,10 +62,11 @@ function FacebookPixel({ pixelId }: { pixelId: string }) {
   useEffect(() => {
     if (!pixelId || typeof window === "undefined") return;
     if ((window as any).fbq) return;
-    const n = (window as any).fbq = function() {
-      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    const w = window as any;
+    const n = w.fbq = function (...args: any[]) {
+      n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
     };
-    if (!(window as any)._fbq) (window as any)._fbq = n;
+    if (!w._fbq) w._fbq = n;
     n.push = n;
     n.loaded = true;
     n.version = "2.0";

@@ -29,7 +29,7 @@ export const getMyShop = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .single();
     if (error && (error as any).code !== "PGRST116") throw error;
-    return { shop: (data as Shop) ?? null };
+    return { shop: (data as unknown as Shop) ?? null };
   });
 
 export const upsertShop = createServerFn({ method: "POST" })

@@ -7,11 +7,11 @@ export const getMyShop = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const { data, error } = await supabase
-      .from("shops")
+      .from("shops" as any)
       .select("*")
       .eq("user_id", userId)
       .single();
-    if (error && error.code !== "PGRST116") throw error; // PGRST116 = no rows
+    if (error && (error as any).code !== "PGRST116") throw error;
     return { shop: data ?? null };
   });
 
@@ -39,16 +39,15 @@ export const upsertShop = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
-    // Check if shop exists
     const { data: existing } = await supabase
-      .from("shops")
+      .from("shops" as any)
       .select("id")
       .eq("user_id", userId)
       .single();
 
     if (existing) {
       const { data: shop, error } = await supabase
-        .from("shops")
+        .from("shops" as any)
         .update(data)
         .eq("user_id", userId)
         .select()
@@ -57,8 +56,8 @@ export const upsertShop = createServerFn({ method: "POST" })
       return { shop };
     } else {
       const { data: shop, error } = await supabase
-        .from("shops")
-        .insert({ ...data, user_id: userId })
+        .from("shops" as any)
+        .insert({ ...data, user_id: userId } as any)
         .select()
         .single();
       if (error) throw error;

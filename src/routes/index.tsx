@@ -206,28 +206,45 @@ function LandingPage() {
           <p className="mt-3 text-muted-foreground">Tout ce qu'il te faut pour vendre, dans une seule app.</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {features.map((f) => (
-            <Link
-              key={f.title}
-              to="/register"
-              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
-            >
-              <div className="aspect-[16/10] w-full overflow-hidden">
-                <img
-                  src={f.image}
-                  alt={f.title}
-                  loading="lazy"
-                  width={1024}
-                  height={640}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-7">
-                <h3 className="text-lg font-semibold">{f.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
-              </div>
-            </Link>
-          ))}
+          {features.map((f) => {
+            const isAlibaba = f.title === "Import depuis Alibaba";
+            const cardClass =
+              "group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl";
+            const inner = (
+              <>
+                <div className="aspect-[16/10] w-full overflow-hidden">
+                  <img
+                    src={f.image}
+                    alt={f.title}
+                    loading="lazy"
+                    width={1024}
+                    height={640}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="text-lg font-semibold">{f.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+                  {isAlibaba && (
+                    <a
+                      href="https://www.alibaba.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-5 inline-flex w-fit items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary-foreground shadow-md transition hover:opacity-90"
+                      style={{ background: "var(--brand-orange)" }}
+                    >
+                      Trouver des produits gagnants
+                    </a>
+                  )}
+                </div>
+              </>
+            );
+            return isAlibaba ? (
+              <div key={f.title} className={cardClass}>{inner}</div>
+            ) : (
+              <Link key={f.title} to="/register" className={cardClass}>{inner}</Link>
+            );
+          })}
         </div>
       </section>
 

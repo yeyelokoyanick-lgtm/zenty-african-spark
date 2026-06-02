@@ -44,6 +44,7 @@ function DashboardPage() {
             title="Importer depuis Alibaba"
             description="Trouve des produits à succès."
             cta="Trouve des produits"
+            to="/import-alibaba"
           />
           <ActionCard
             tone="purple"

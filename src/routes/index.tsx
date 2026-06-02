@@ -18,8 +18,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import featureBoutique from "@/assets/feature-boutique.png.asset.json";
-import featureMomo from "@/assets/feature-momo.jpg";
-import featureAlibaba from "@/assets/feature-alibaba.jpg";
+import featureMomo from "@/assets/feature-momo.png.asset.json";
+import featureAlibaba from "@/assets/feature-alibaba.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -76,13 +76,13 @@ const features = [
   },
   {
     icon: Smartphone,
-    image: featureMomo,
+    image: featureMomo.url,
     title: "Mobile Money intégré",
     desc: "Encaisse via MTN MoMo, Moov et Wave. Tes clients paient comme ils ont l'habitude.",
   },
   {
     icon: PackageSearch,
-    image: featureAlibaba,
+    image: featureAlibaba.url,
     title: "Import depuis Alibaba",
     desc: "Importe des produits gagnants en un clic et commence à vendre immédiatement.",
   },

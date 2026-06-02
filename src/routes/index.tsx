@@ -17,7 +17,7 @@ import { Logo } from "@/components/layout/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import featureBoutique from "@/assets/feature-boutique.jpg";
+import featureBoutique from "@/assets/feature-boutique.png.asset.json";
 import featureMomo from "@/assets/feature-momo.jpg";
 import featureAlibaba from "@/assets/feature-alibaba.jpg";
 
@@ -70,7 +70,7 @@ function CtaButton({
 const features = [
   {
     icon: Rocket,
-    image: featureBoutique,
+    image: featureBoutique.url,
     title: "Boutique en 5 min",
     desc: "Lance ta boutique en ligne professionnelle sans coder, depuis ton téléphone.",
   },

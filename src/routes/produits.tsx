@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Plus, Search, PackageSearch } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -99,8 +99,10 @@ function ProduitsPage() {
             <p className="mt-1 text-muted-foreground">Gère tes produits et commence à vendre.</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => setImportOpen(true)}>
-              <PackageSearch className="h-4 w-4" /> Importer depuis Alibaba
+            <Button variant="outline" asChild>
+              <Link to="/import-alibaba">
+                <PackageSearch className="h-4 w-4" /> Importer depuis Alibaba
+              </Link>
             </Button>
             <Button
               onClick={() => { setEditing(null); setAddOpen(true); }}

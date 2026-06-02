@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export type ActionTone = "blue" | "orange" | "purple";
 
@@ -28,12 +29,16 @@ interface ActionCardProps {
   cta: string;
   icon: LucideIcon;
   tone: ActionTone;
+  to?: string;
 }
 
-export function ActionCard({ title, description, cta, icon: Icon, tone }: ActionCardProps) {
+export function ActionCard({ title, description, cta, icon: Icon, tone, to }: ActionCardProps) {
   const style = toneStyles[tone];
+  const Wrapper: any = to ? Link : "div";
+  const wrapperProps: any = to ? { to } : {};
   return (
-    <div
+    <Wrapper
+      {...wrapperProps}
       className="group relative flex flex-col justify-between gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
       style={{ backgroundImage: style.bg, boxShadow: `0 0 0 1px ${style.ring} inset` }}
     >
@@ -50,10 +55,14 @@ export function ActionCard({ title, description, cta, icon: Icon, tone }: Action
       <Button
         variant="outline"
         className="w-fit border-foreground/10 bg-card font-medium hover:bg-foreground hover:text-background"
+        asChild={!!to}
       >
-        {cta}
-        <ArrowRight className="h-4 w-4" />
+        {to ? (
+          <span>{cta}<ArrowRight className="h-4 w-4" /></span>
+        ) : (
+          <>{cta}<ArrowRight className="h-4 w-4" /></>
+        )}
       </Button>
-    </div>
+    </Wrapper>
   );
 }

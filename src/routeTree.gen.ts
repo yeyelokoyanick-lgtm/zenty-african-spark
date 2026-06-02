@@ -17,6 +17,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as MaBoutiqueRouteImport } from './routes/ma-boutique'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ImportAlibabaRouteImport } from './routes/import-alibaba'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
@@ -69,6 +70,11 @@ const MaBoutiqueRoute = MaBoutiqueRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportAlibabaRoute = ImportAlibabaRouteImport.update({
+  id: '/import-alibaba',
+  path: '/import-alibaba',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/import-alibaba': typeof ImportAlibabaRoute
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/import-alibaba': typeof ImportAlibabaRoute
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/import-alibaba': typeof ImportAlibabaRoute
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
     | '/creer-boutique'
     | '/dashboard'
     | '/forgot-password'
+    | '/import-alibaba'
     | '/login'
     | '/ma-boutique'
     | '/marketing'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/creer-boutique'
     | '/dashboard'
     | '/forgot-password'
+    | '/import-alibaba'
     | '/login'
     | '/ma-boutique'
     | '/marketing'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/creer-boutique'
     | '/dashboard'
     | '/forgot-password'
+    | '/import-alibaba'
     | '/login'
     | '/ma-boutique'
     | '/marketing'
@@ -290,6 +302,7 @@ export interface RootRouteChildren {
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  ImportAlibabaRoute: typeof ImportAlibabaRoute
   LoginRoute: typeof LoginRoute
   MaBoutiqueRoute: typeof MaBoutiqueRoute
   MarketingRoute: typeof MarketingRoute
@@ -358,6 +371,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import-alibaba': {
+      id: '/import-alibaba'
+      path: '/import-alibaba'
+      fullPath: '/import-alibaba'
+      preLoaderRoute: typeof ImportAlibabaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -475,6 +495,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  ImportAlibabaRoute: ImportAlibabaRoute,
   LoginRoute: LoginRoute,
   MaBoutiqueRoute: MaBoutiqueRoute,
   MarketingRoute: MarketingRoute,
@@ -489,3 +510,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

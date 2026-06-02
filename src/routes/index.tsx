@@ -17,6 +17,9 @@ import { Logo } from "@/components/layout/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import featureBoutique from "@/assets/feature-boutique.jpg";
+import featureMomo from "@/assets/feature-momo.jpg";
+import featureAlibaba from "@/assets/feature-alibaba.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,16 +70,19 @@ function CtaButton({
 const features = [
   {
     icon: Rocket,
+    image: featureBoutique,
     title: "Boutique en 5 min",
     desc: "Lance ta boutique en ligne professionnelle sans coder, depuis ton téléphone.",
   },
   {
     icon: Smartphone,
+    image: featureMomo,
     title: "Mobile Money intégré",
     desc: "Encaisse via MTN MoMo, Moov et Wave. Tes clients paient comme ils ont l'habitude.",
   },
   {
     icon: PackageSearch,
+    image: featureAlibaba,
     title: "Import depuis Alibaba",
     desc: "Importe des produits gagnants en un clic et commence à vendre immédiatement.",
   },
@@ -203,16 +209,22 @@ function LandingPage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="group rounded-2xl border border-border bg-card p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
+              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
             >
-              <div
-                className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl"
-                style={{ backgroundColor: `${PURPLE}15`, color: PURPLE }}
-              >
-                <f.icon className="h-6 w-6" />
+              <div className="aspect-[16/10] w-full overflow-hidden">
+                <img
+                  src={f.image}
+                  alt={f.title}
+                  loading="lazy"
+                  width={1024}
+                  height={640}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
-              <h3 className="text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+              <div className="p-7">
+                <h3 className="text-lg font-semibold">{f.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+              </div>
             </div>
           ))}
         </div>

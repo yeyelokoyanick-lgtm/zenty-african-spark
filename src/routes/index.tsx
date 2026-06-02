@@ -207,8 +207,9 @@ function LandingPage() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {features.map((f) => (
-            <div
+            <Link
               key={f.title}
+              to="/register"
               className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="aspect-[16/10] w-full overflow-hidden">
@@ -225,7 +226,7 @@ function LandingPage() {
                 <h3 className="text-lg font-semibold">{f.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

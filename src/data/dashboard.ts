@@ -3,16 +3,17 @@ export type OrderStatus = "Attente" | "Expédiée" | "Nouvelle";
 export interface RecentOrder {
   id: string;
   customer: string;
+  city: string;
   amount: number;
   status: OrderStatus;
 }
 
 export const recentOrders: RecentOrder[] = [
-  { id: "CMD-1042", customer: "Jacques M.", amount: 12500, status: "Nouvelle" },
-  { id: "CMD-1041", customer: "Aïcha B.", amount: 8400, status: "Attente" },
-  { id: "CMD-1040", customer: "Mamadou D.", amount: 24900, status: "Expédiée" },
-  { id: "CMD-1039", customer: "Fatou K.", amount: 5600, status: "Nouvelle" },
-  { id: "CMD-1038", customer: "Ibrahim S.", amount: 17200, status: "Expédiée" },
+  { id: "CMD-1042", customer: "Awa Diop", city: "Cotonou", amount: 12500, status: "Nouvelle" },
+  { id: "CMD-1041", customer: "Kofi Mensah", city: "Lomé", amount: 8400, status: "Attente" },
+  { id: "CMD-1040", customer: "Adjoa Boateng", city: "Abidjan", amount: 24900, status: "Expédiée" },
+  { id: "CMD-1039", customer: "Ibrahim Diallo", city: "Cotonou", amount: 5600, status: "Nouvelle" },
+  { id: "CMD-1038", customer: "Fatou Ndiaye", city: "Lomé", amount: 17200, status: "Expédiée" },
 ];
 
 export const salesWeek = [
@@ -33,10 +34,10 @@ export const salesMonth = [
 ];
 
 export const stats = [
-  { label: "Ventes du jour", value: "25 300 FCFA", trend: "+12%", icon: "sales" as const },
-  { label: "Commandes", value: "12 nouvelles", trend: "+3", icon: "orders" as const },
-  { label: "Visiteurs", value: "450 aujourd'hui", trend: "+8%", icon: "visitors" as const },
-  { label: "Produits en ligne", value: "120 actifs", trend: "+5", icon: "products" as const },
+  { label: "Revenus", value: "842 500 FCFA", trend: "+12%", icon: "sales" as const },
+  { label: "Commandes", value: "47", trend: "+8", icon: "orders" as const },
+  { label: "Produits", value: "12", trend: "+2", icon: "products" as const },
+  { label: "Visiteurs", value: "1 204", trend: "+18%", icon: "visitors" as const },
 ];
 
 export function formatFCFA(value: number): string {

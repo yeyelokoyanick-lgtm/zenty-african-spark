@@ -26,14 +26,17 @@ export function RecentOrders() {
           <li key={order.id} className="flex items-center justify-between gap-3 py-3">
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-foreground">{order.customer}</p>
-              <span
-                className={cn(
-                  "mt-1 inline-flex rounded-full px-2 py-0.5 text-xs font-medium",
-                  statusStyles[order.status],
-                )}
-              >
-                {order.status}
-              </span>
+              <div className="mt-1 flex items-center gap-2">
+                <span
+                  className={cn(
+                    "inline-flex rounded-full px-2 py-0.5 text-xs font-medium",
+                    statusStyles[order.status],
+                  )}
+                >
+                  {order.status}
+                </span>
+                <span className="text-xs text-muted-foreground">{order.city}</span>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-sm font-semibold text-foreground">{formatFCFA(order.amount)}</span>

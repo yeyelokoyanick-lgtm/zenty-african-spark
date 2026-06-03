@@ -1,13 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Laptop, PackageSearch, Smartphone, Wallet, ShoppingBag, Users, Boxes } from "lucide-react";
+import { useState } from "react";
+import {
+  Wallet, ShoppingBag, Users, Boxes,
+  Plus, ClipboardList, Palette, Share2,
+} from "lucide-react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/layout/AppShell";
 import { HeroBanner } from "@/components/dashboard/HeroBanner";
-import { ActionCard } from "@/components/dashboard/ActionCard";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { SalesChart } from "@/components/dashboard/SalesChart";
 import { RecentOrders } from "@/components/dashboard/RecentOrders";
-import { HelpCard } from "@/components/dashboard/HelpCard";
-import { MarketingCard } from "@/components/dashboard/MarketingCard";
+import { QuickActionCard } from "@/components/dashboard/QuickActionCard";
+import { AlibabaBanner } from "@/components/dashboard/AlibabaBanner";
+import { AddProductModal } from "@/components/products/AddProductModal";
 import { stats } from "@/data/dashboard";
 
 export const Route = createFileRoute("/dashboard")({
@@ -25,42 +30,48 @@ export const Route = createFileRoute("/dashboard")({
 const statIcons = { sales: Wallet, orders: ShoppingBag, visitors: Users, products: Boxes } as const;
 
 function DashboardPage() {
+  const [addOpen, setAddOpen] = useState(false);
+
+  const sharePopup = async () => {
+    const url = `${window.location.origin}/boutique/ma-boutique`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Ma boutique ZENTY", url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success("Lien copié dans le presse-papier");
+      }
+    } catch {
+      /* ignore */
+    }
+  };
+
   return (
     <AppShell>
       <div className="space-y-6 lg:space-y-8">
         <HeroBanner />
 
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <ActionCard
-            tone="blue"
-            icon={Laptop}
-            title="Créer ta Boutique en 5 Minutes"
-            description="Lance ta boutique en ligne maintenant."
-            cta="Lance ta boutique"
-          />
-          <ActionCard
-            tone="orange"
-            icon={PackageSearch}
-            title="Importer depuis Alibaba"
-            description="Trouve des produits à succès."
-            cta="Trouve des produits"
-            to="/import-alibaba"
-          />
-          <ActionCard
-            tone="purple"
-            icon={Smartphone}
-            title="Activer Mobile Money"
-            description="Accepte les paiements MTN & Moov."
-            cta="Accepte les paiements"
-          />
-        </section>
-
+        {/* Stats */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((s) => (
             <StatCard key={s.label} label={s.label} value={s.value} trend={s.trend} icon={statIcons[s.icon]} />
           ))}
         </section>
 
+        {/* Quick actions */}
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Actions rapides
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <QuickActionCard icon={Plus} label="Ajouter un produit" tone="violet" onClick={() => setAddOpen(true)} />
+            <QuickActionCard icon={ClipboardList} label="Voir les commandes" tone="blue" to="/commandes" />
+            <QuickActionCard icon={Palette} label="Personnaliser la boutique" tone="green" to="/ma-boutique" />
+            <QuickActionCard icon={Share2} label="Partager ma boutique" tone="orange" onClick={sharePopup} />
+          </div>
+        </section>
+
+        {/* Chart + recent orders */}
         <section className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <SalesChart />
@@ -70,11 +81,16 @@ function DashboardPage() {
           </div>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-2">
-          <HelpCard />
-          <MarketingCard />
-        </section>
+        {/* Alibaba banner */}
+        <AlibabaBanner />
       </div>
+
+      <AddProductModal
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        onSave={() => { toast.success("Produit ajouté"); setAddOpen(false); }}
+        initial={null}
+      />
     </AppShell>
   );
 }

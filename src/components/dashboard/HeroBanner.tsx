@@ -17,10 +17,10 @@ export function HeroBanner() {
       <div className="relative max-w-2xl">
         <p className="text-sm font-medium uppercase tracking-wider opacity-80">Tableau de bord</p>
         <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
-          Bienvenue sur ZENTY, Karim&nbsp;!
+          Bienvenue sur ZENTY, Karim <span aria-hidden>👋</span>
         </h1>
         <p className="mt-3 text-base opacity-90 sm:text-lg">
-          Crée ta boutique en ligne et commence à vendre en quelques minutes.
+          Voici un aperçu de ton activité aujourd'hui.
         </p>
       </div>
     </section>

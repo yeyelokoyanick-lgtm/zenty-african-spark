@@ -1,12 +1,13 @@
 import { useState } from "react";
 import {
   ResponsiveContainer,
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
   CartesianGrid,
+  Cell,
 } from "recharts";
 import { salesWeek, salesMonth, formatFCFA } from "@/data/dashboard";
 import { cn } from "@/lib/utils";
@@ -44,18 +45,12 @@ export function SalesChart() {
 
       <div className="mt-5 h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-            <defs>
-              <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="oklch(0.45 0.31 268)" stopOpacity={0.4} />
-                <stop offset="100%" stopColor="oklch(0.52 0.29 295)" stopOpacity={0} />
-              </linearGradient>
-            </defs>
+          <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
             <XAxis dataKey="label" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
             <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
             <Tooltip
-              cursor={{ stroke: "var(--brand-purple)", strokeWidth: 1, strokeDasharray: "4 4" }}
+              cursor={{ fill: "var(--brand-purple)", fillOpacity: 0.08 }}
               contentStyle={{
                 background: "var(--color-card)",
                 border: "1px solid var(--color-border)",
@@ -64,14 +59,12 @@ export function SalesChart() {
               }}
               formatter={(v: number) => [formatFCFA(v), "Ventes"]}
             />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="var(--brand-blue)"
-              strokeWidth={2.5}
-              fill="url(#salesGradient)"
-            />
-          </AreaChart>
+            <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+              {data.map((_, i) => (
+                <Cell key={i} fill="var(--brand-purple)" />
+              ))}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </div>

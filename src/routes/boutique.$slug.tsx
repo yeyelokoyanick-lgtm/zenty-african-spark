@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { ShoppingBag, MapPin, Phone, User, Check, ShieldCheck, MessageCircle, Minus, Plus, BadgeCheck } from "lucide-react";
+import { ShoppingBag, MapPin, Phone, User, Check, MessageCircle, Minus, Plus, BadgeCheck } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

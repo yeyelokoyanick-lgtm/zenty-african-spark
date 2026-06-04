@@ -3,16 +3,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Search,
   Rocket,
-  Box,
-  ShoppingBag,
   CreditCard,
-  Wallet,
-  Megaphone,
+  ShoppingBag,
   MessageCircle,
-  Mail,
-  ArrowRight,
-  BookOpen,
-  type LucideIcon,
+  ChevronRight,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -24,13 +18,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/aide")({
   head: () => ({
     meta: [
       { title: "Centre d'aide — ZENTY" },
-      { name: "description", content: "Trouve rapidement des réponses à tes questions sur ZENTY : boutique, produits, commandes COD, paiements, abonnement." },
+      { name: "description", content: "Trouve rapidement des réponses à tes questions sur ZENTY : création de boutique, produits, commandes, paiements." },
       { property: "og:title", content: "Centre d'aide — ZENTY" },
       { property: "og:description", content: "Guides, FAQ et support pour réussir ton e-commerce avec ZENTY." },
     ],
@@ -38,109 +31,106 @@ export const Route = createFileRoute("/aide")({
   component: AidePage,
 });
 
-const WHATSAPP_NUMBER = "2250700000000"; // placeholder support number
+const WHATSAPP_NUMBER = "22900000000";
 
-type Category = {
-  id: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  tone: "primary" | "accent" | "success" | "warning";
-};
+interface FaqItem {
+  q: string;
+  a: string;
+  category: string;
+}
 
-const CATEGORIES: Category[] = [
-  { id: "demarrage", title: "Démarrage", description: "Créer ta boutique et commencer", icon: Rocket, tone: "primary" },
-  { id: "produits", title: "Produits", description: "Ajouter et gérer tes produits", icon: Box, tone: "accent" },
-  { id: "commandes", title: "Commandes", description: "Gérer les commandes et livraisons", icon: ShoppingBag, tone: "success" },
-  { id: "paiements", title: "Paiements", description: "Paiement à la livraison et Mobile Money", icon: CreditCard, tone: "warning" },
-  { id: "abonnement", title: "Abonnement", description: "Plans et facturation", icon: Wallet, tone: "primary" },
-  { id: "marketing", title: "Marketing", description: "Augmenter tes ventes", icon: Megaphone, tone: "accent" },
-];
-
-const TONE_CLASSES: Record<Category["tone"], string> = {
-  primary: "bg-primary/10 text-primary",
-  accent: "bg-accent/15 text-accent",
-  success: "bg-success/15 text-success",
-  warning: "bg-warning/15 text-warning",
-};
-
-const FAQS: { q: string; a: string }[] = [
+const FAQS: FaqItem[] = [
+  // Démarrer
   {
-    q: "Comment créer ma boutique ?",
-    a: "Rends-toi sur le tableau de bord et clique sur « Créer ta boutique en 5 minutes ». Choisis ton nom, ajoute ton logo et publie ta première vitrine — aucune compétence technique requise.",
+    category: "Démarrer",
+    q: "Comment créer ma boutique sur ZENTY ?",
+    a: "Inscris-toi gratuitement, choisis le nom de ta boutique, ajoute tes produits et partage ton lien. Tout se fait en moins de 5 minutes, sans aucune connaissance technique.",
   },
   {
-    q: "Comment ajouter un produit ?",
-    a: "Va dans la page Produits puis clique sur « Ajouter un produit ». Renseigne le titre, le prix en FCFA, une photo et le stock. Tu peux aussi importer directement depuis Alibaba avec un simple lien.",
+    category: "Démarrer",
+    q: "Comment partager ma boutique avec mes clients ?",
+    a: "Dans ton tableau de bord, clique sur 'Partager ma boutique'. Tu obtiens un lien unique que tu peux envoyer sur WhatsApp, Facebook ou Instagram directement.",
   },
   {
-    q: "Comment fonctionne le paiement à la livraison ?",
-    a: "Le client commande sans payer en ligne. Tu reçois la commande, tu confirmes par téléphone, le livreur encaisse en espèces et tu reçois ton paiement. C'est le mode le plus utilisé en Afrique.",
+    category: "Démarrer",
+    q: "Comment ajouter mes produits ?",
+    a: "Va dans 'Produits' → '+ Ajouter un produit'. Remplis le nom, le prix en FCFA, le stock et ajoute des photos. Ton produit est visible sur ta boutique immédiatement.",
+  },
+  // Paiements
+  {
+    category: "Paiements",
+    q: "Comment activer MTN Mobile Money ?",
+    a: "Dans 'Paiements', active le toggle MTN MoMo. Tes clients pourront payer directement via Mobile Money. Les fonds sont reversés sur ton numéro dans un délai de 24-48h.",
   },
   {
+    category: "Paiements",
+    q: "Comment recevoir mon argent ?",
+    a: "Dans 'Paiements' → 'Reversement', entre ton numéro Mobile Money et le montant à retirer. Le transfert est effectué sous 24h ouvrées.",
+  },
+  {
+    category: "Paiements",
+    q: "Quels modes de paiement puis-je accepter ?",
+    a: "ZENTY supporte : Paiement à la livraison, MTN Mobile Money, Moov Money, Wave et Orange Money. Tu peux activer ou désactiver chaque méthode selon ta préférence.",
+  },
+  // Commandes
+  {
+    category: "Commandes",
     q: "Comment confirmer une commande ?",
-    a: "Dans Commandes, ouvre la commande « En attente », appelle le client via le bouton téléphone, puis clique sur « Confirmer ». Tu peux ensuite la marquer expédiée puis livrée.",
+    a: "Dans 'Commandes', clique sur les 3 points de la commande et sélectionne 'Confirmée'. Ton client reçoit automatiquement une notification WhatsApp.",
   },
   {
-    q: "Comment passer au plan Pro ?",
-    a: "Va sur la page Abonnement, choisis le plan Pro et clique sur « Passer au Pro ». Paiement par Mobile Money (MTN, Moov) ou carte bancaire. Tu peux annuler à tout moment.",
+    category: "Commandes",
+    q: "Comment contacter mon client ?",
+    a: "Clique sur le numéro de téléphone dans le tableau des commandes pour appeler directement, ou utilise le bouton WhatsApp pour envoyer un message pré-rempli.",
   },
   {
-    q: "Comment contacter un client ?",
-    a: "Dans la fiche commande, son numéro est mis en évidence. Un clic sur « Appeler client » ouvre directement l'appel depuis ton téléphone.",
+    category: "Commandes",
+    q: "Que faire si un client refuse la livraison ?",
+    a: "Change le statut de la commande en 'Annulée' et note la raison. Contacte le client via WhatsApp pour comprendre et proposer une solution alternative.",
   },
 ];
 
-const GUIDES: { title: string; description: string }[] = [
-  { title: "Créer ta boutique en 5 minutes", description: "Le guide express pour lancer ta vitrine ZENTY." },
-  { title: "Ajouter ton premier produit", description: "Photos, prix, stock — tout ce qu'il faut savoir." },
-  { title: "Gérer les commandes COD", description: "Confirmation, livraison et encaissement étape par étape." },
-  { title: "Booster tes ventes", description: "Astuces marketing pour vendre plus chaque semaine." },
+const CATEGORIES = [
+  {
+    id: "demarrer",
+    title: "Démarrer",
+    description: "Créer ta boutique et commencer à vendre",
+    icon: Rocket,
+    color: "bg-primary/10 text-primary",
+  },
+  {
+    id: "paiements",
+    title: "Paiements",
+    description: "Mobile Money, reversements et modes de paiement",
+    icon: CreditCard,
+    color: "bg-success/15 text-success",
+  },
+  {
+    id: "commandes",
+    title: "Commandes",
+    description: "Gérer les commandes et livraisons",
+    icon: ShoppingBag,
+    color: "bg-warning/15 text-warning",
+  },
 ];
 
 function AidePage() {
   const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const q = query.trim().toLowerCase();
 
-  const filteredCategories = useMemo(
-    () =>
-      q
-        ? CATEGORIES.filter(
-            (c) =>
-              c.title.toLowerCase().includes(q) ||
-              c.description.toLowerCase().includes(q),
-          )
-        : CATEGORIES,
-    [q],
-  );
-
-  const filteredFaqs = useMemo(
-    () =>
-      q
-        ? FAQS.filter(
-            (f) => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q),
-          )
-        : FAQS,
-    [q],
-  );
-
-  const filteredGuides = useMemo(
-    () =>
-      q
-        ? GUIDES.filter(
-            (g) =>
-              g.title.toLowerCase().includes(q) ||
-              g.description.toLowerCase().includes(q),
-          )
-        : GUIDES,
-    [q],
-  );
-
-  const noResults =
-    q.length > 0 &&
-    filteredCategories.length === 0 &&
-    filteredFaqs.length === 0 &&
-    filteredGuides.length === 0;
+  const filteredFaqs = useMemo(() => {
+    let items = FAQS;
+    if (activeCategory) {
+      items = items.filter((f) => f.category === activeCategory);
+    }
+    if (q) {
+      items = items.filter(
+        (f) => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q),
+      );
+    }
+    return items;
+  }, [q, activeCategory]);
 
   const openWhatsApp = () => {
     window.open(
@@ -150,15 +140,11 @@ function AidePage() {
     );
   };
 
-  const sendMessage = () => {
-    toast.success("Message envoyé — notre équipe te répond sous 24h.");
-  };
-
   return (
     <AppShell>
-      {/* Header */}
+      {/* Hero */}
       <section
-        className="overflow-hidden rounded-3xl px-6 py-10 text-center text-white sm:px-10 sm:py-14"
+        className="overflow-hidden rounded-3xl px-6 py-12 text-center text-white sm:px-10 sm:py-16"
         style={{ background: "var(--gradient-brand)" }}
       >
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -179,132 +165,136 @@ function AidePage() {
         </div>
       </section>
 
-      {/* No results */}
-      {noResults && (
-        <Card className="mt-8 rounded-2xl p-8 text-center">
-          <h2 className="text-lg font-semibold text-foreground">Aucun résultat trouvé</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Essaye d'autres mots-clés ou contacte directement notre support.
-          </p>
-          <Button onClick={openWhatsApp} className="mt-4 rounded-xl">
-            <MessageCircle /> Contactez le support
-          </Button>
-        </Card>
-      )}
-
       {/* Categories */}
-      {filteredCategories.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-bold text-foreground">Catégories</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Parcours l'aide par thématique
-          </p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredCategories.map((c) => {
-              const Icon = c.icon;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+      <section className="mt-10">
+        <h2 className="text-xl font-bold text-foreground">Catégories</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Parcours l'aide par thématique
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {CATEGORIES.map((c) => {
+            const Icon = c.icon;
+            const isActive = activeCategory === c.title;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() =>
+                  setActiveCategory(isActive ? null : c.title)
+                }
+                className={`group flex items-start gap-4 rounded-2xl border p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md ${
+                  isActive
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-card"
+                }`}
+              >
+                <div
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${c.color}`}
                 >
-                  <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${TONE_CLASSES[c.tone]}`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground">{c.title}</h3>
-                    <p className="mt-0.5 text-sm text-muted-foreground">{c.description}</p>
-                  </div>
-                  <ArrowRight className="mt-1 h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      )}
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-foreground">{c.title}</h3>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {c.description}
+                  </p>
+                </div>
+                <ChevronRight
+                  className={`mt-1 h-4 w-4 transition-transform ${
+                    isActive
+                      ? "rotate-90 text-primary"
+                      : "text-muted-foreground group-hover:translate-x-0.5"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
-      {/* FAQ */}
-      {filteredFaqs.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Questions fréquentes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Réponses rapides aux questions les plus courantes
-          </p>
+      {/* FAQ Accordion */}
+      <section className="mt-12">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-foreground">
+              Questions fréquentes
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {activeCategory
+                ? `Catégorie : ${activeCategory}`
+                : "Réponses rapides aux questions les plus courantes"}
+            </p>
+          </div>
+          {activeCategory && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setActiveCategory(null)}
+              className="text-primary"
+            >
+              Voir tout
+            </Button>
+          )}
+        </div>
+
+        {filteredFaqs.length > 0 ? (
           <Card className="mt-5 rounded-2xl px-2 sm:px-4">
             <Accordion type="single" collapsible className="w-full">
               {filteredFaqs.map((f, i) => (
-                <AccordionItem key={f.q} value={`faq-${i}`} className="border-border">
+                <AccordionItem
+                  key={`${f.category}-${i}`}
+                  value={`faq-${i}`}
+                  className="border-border"
+                >
                   <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:no-underline sm:text-base">
                     {f.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">
+                  <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </Card>
-        </section>
-      )}
+        ) : (
+          <Card className="mt-5 rounded-2xl p-8 text-center">
+            <p className="text-sm text-muted-foreground">
+              Aucune question ne correspond à ta recherche.
+            </p>
+            <Button
+              onClick={() => {
+                setQuery("");
+                setActiveCategory(null);
+              }}
+              variant="outline"
+              className="mt-3 rounded-xl"
+            >
+              Réinitialiser la recherche
+            </Button>
+          </Card>
+        )}
+      </section>
 
-      {/* Guides */}
-      {filteredGuides.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Guides populaires</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Les ressources les plus consultées par les marchands ZENTY
-          </p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            {filteredGuides.map((g) => (
-              <Card key={g.title} className="flex flex-col rounded-2xl p-5 shadow-sm transition-shadow hover:shadow-md">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <BookOpen className="h-5 w-5" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">{g.title}</h3>
-                </div>
-                <p className="mt-3 flex-1 text-sm text-muted-foreground">{g.description}</p>
-                <Button variant="outline" className="mt-4 w-fit rounded-xl">
-                  Voir guide <ArrowRight />
-                </Button>
-              </Card>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Contact support */}
-      <section
-        className="mt-14 overflow-hidden rounded-3xl p-8 text-center text-white sm:p-10"
-        style={{ background: "var(--gradient-brand)" }}
-      >
-        <h2 className="text-2xl font-bold sm:text-3xl">Besoin d'aide ?</h2>
-        <p className="mx-auto mt-2 max-w-md text-sm text-white/85 sm:text-base">
-          Notre équipe est là pour vous aider, du lundi au samedi.
+      {/* Bottom Support */}
+      <section className="mt-14 overflow-hidden rounded-3xl bg-white p-8 text-center shadow-sm sm:p-10">
+        <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+          Besoin d'aide supplémentaire ?
+        </h2>
+        <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground sm:text-base">
+          Notre équipe te répond directement sur WhatsApp
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
             onClick={openWhatsApp}
             size="lg"
-            className="h-12 rounded-xl bg-white px-6 text-sm font-semibold text-primary hover:bg-white/90"
+            className="h-12 rounded-xl bg-success px-6 text-sm font-semibold text-white hover:bg-success/90"
           >
-            <MessageCircle /> Contacter sur WhatsApp
-          </Button>
-          <Button
-            onClick={sendMessage}
-            size="lg"
-            variant="outline"
-            className="h-12 rounded-xl border-white/40 bg-transparent px-6 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
-          >
-            <Mail /> Envoyer un message
+            <MessageCircle className="h-5 w-5" />
+            Contacter le support WhatsApp
           </Button>
         </div>
-        <p className="mt-4 text-xs text-white/70">
-          Tu peux aussi consulter nos{" "}
-          <Link to="/abonnement" className="underline underline-offset-2 hover:text-white">
-            plans d'abonnement
-          </Link>
-          .
+        <p className="mt-4 text-xs text-muted-foreground">
+          Disponible du lundi au samedi, 8h - 20h
         </p>
       </section>
     </AppShell>

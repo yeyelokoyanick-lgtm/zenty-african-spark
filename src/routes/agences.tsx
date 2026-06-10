@@ -40,6 +40,7 @@ const COUNTRIES = [
   { label: "🇨🇮 Côte d'Ivoire", value: "Côte d'Ivoire" }, { label: "🇸🇳 Sénégal", value: "Sénégal" },
   { label: "🇨🇲 Cameroun", value: "Cameroun" }, { label: "🇲🇱 Mali", value: "Mali" },
   { label: "🇧🇫 Burkina Faso", value: "Burkina Faso" },
+  { label: "🇬🇳 Guinée", value: "Guinée" },
 ];
 
 function AgencesPage() {
@@ -65,20 +66,11 @@ function AgencesPage() {
       />
 
       <div className="rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-card)] mb-6">
-        <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
+        <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
           <Select value={country} onValueChange={setCountry}>
             <SelectTrigger><SelectValue placeholder="Pays" /></SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <Select value={type} onValueChange={(v) => setType(v as typeof type)}>
-            <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="Closeur">Closeurs</SelectItem>
-              <SelectItem value="Livreur">Livreurs</SelectItem>
-              <SelectItem value="both">Les deux</SelectItem>
             </SelectContent>
           </Select>
           <div className="relative">
@@ -86,6 +78,27 @@ function AgencesPage() {
             <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ville" className="pl-9" />
           </div>
           <Button>Rechercher</Button>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {([
+            ["all", "Tous"],
+            ["Closeur", "Closeurs"],
+            ["Livreur", "Livreurs"],
+            ["both", "Les deux"],
+          ] as const).map(([val, label]) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => setType(val)}
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                type === val
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border bg-card text-foreground hover:bg-muted"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -150,7 +163,7 @@ function AgencesPage() {
             <p className="mt-1 text-white/85">Inscris ton agence sur ZENTY et reçois des missions chaque semaine.</p>
           </div>
           <Button asChild variant="secondary" className="text-foreground">
-            <Link to="/agences">Inscrire mon agence</Link>
+            <a href="/inscrire-agence">Inscrire mon agence</a>
           </Button>
         </div>
       </div>
@@ -166,6 +179,10 @@ function AgencesPage() {
                 <div>
                   <p className="font-semibold mb-1">Services</p>
                   <p className="text-muted-foreground">{open.types.join(" + ")}</p>
+                </div>
+                <div>
+                  <p className="font-semibold mb-1">Zones de couverture</p>
+                  <p className="text-muted-foreground">{open.city} et environs · livraison dans tout le {open.country}</p>
                 </div>
                 <div>
                   <p className="font-semibold mb-1">Commission</p>

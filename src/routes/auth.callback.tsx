@@ -4,7 +4,7 @@ import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { supabase } from "@/integrations/supabase/client";
 
-const PURPLE = "#6B4BCC";
+const PURPLE = "#4645E7";
 
 export const Route = createFileRoute("/auth/callback")({
   head: () => ({

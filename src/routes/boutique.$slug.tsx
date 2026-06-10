@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { getShopBySlug, type Shop } from "@/lib/shop.functions";
 
-const PURPLE = "#6B4BCC";
+const PURPLE = "#4645E7";
 
 export const Route = createFileRoute("/boutique/$slug")({
   loader: async ({ params }) => {

@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-const PURPLE = "#6B4BCC";
+const PURPLE = "#4645E7";
 
 function CtaButton({
   children,

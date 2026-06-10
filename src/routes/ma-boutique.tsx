@@ -35,7 +35,7 @@ function MaBoutiquePage() {
   const [name, setName] = useState("Ma Boutique ZENTY");
   const [slug, setSlug] = useState("ma-boutique");
   const [desc, setDesc] = useState("Produits authentiques livrés partout en Afrique.");
-  const [color, setColor] = useState("#6B4BCC");
+  const [color, setColor] = useState("#4645E7");
   const [pixelId, setPixelId] = useState("");
   const [pixelEnabled, setPixelEnabled] = useState(false);
   const [waNumber, setWaNumber] = useState("");
@@ -47,7 +47,7 @@ function MaBoutiquePage() {
       setName(shop.name || "Ma Boutique ZENTY");
       setSlug(shop.slug || "ma-boutique");
       setDesc(shop.description || "Produits authentiques livrés partout en Afrique.");
-      setColor(shop.color || "#6B4BCC");
+      setColor(shop.color || "#4645E7");
       setPixelId(shop.facebook_pixel_id || "");
       setPixelEnabled(shop.facebook_pixel_enabled || false);
       setWaNumber(shop.whatsapp_number || "");

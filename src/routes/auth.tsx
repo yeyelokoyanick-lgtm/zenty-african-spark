@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
-const PURPLE = "#6B4BCC";
+const PURPLE = "#4645E7";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),

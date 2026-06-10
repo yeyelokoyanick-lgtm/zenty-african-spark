@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
-const PURPLE = "#6B4BCC";
+const PURPLE = "#4645E7";
 
 export const Route = createFileRoute("/creer-boutique")({
   head: () => ({
@@ -116,7 +116,7 @@ function CreateShopPage() {
   if (authLoading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin" style={{ color: "#6B4BCC" }} />
+        <Loader2 className="h-8 w-8 animate-spin" style={{ color: "#4645E7" }} />
       </div>
     );
   }

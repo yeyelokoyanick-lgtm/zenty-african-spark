@@ -26,6 +26,7 @@ import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AgencesRouteImport } from './routes/agences'
+import { Route as AffiliationRouteImport } from './routes/affiliation'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
@@ -117,6 +118,11 @@ const AgencesRoute = AgencesRouteImport.update({
   path: '/agences',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AffiliationRoute = AffiliationRouteImport.update({
+  id: '/affiliation',
+  path: '/affiliation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AbonnementRoute = AbonnementRouteImport.update({
   id: '/abonnement',
   path: '/abonnement',
@@ -146,6 +152,7 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
+  '/affiliation': typeof AffiliationRoute
   '/agences': typeof AgencesRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
@@ -170,6 +177,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
+  '/affiliation': typeof AffiliationRoute
   '/agences': typeof AgencesRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/abonnement': typeof AbonnementRoute
+  '/affiliation': typeof AffiliationRoute
   '/agences': typeof AgencesRoute
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/abonnement'
+    | '/affiliation'
     | '/agences'
     | '/aide'
     | '/auth'
@@ -245,6 +255,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/abonnement'
+    | '/affiliation'
     | '/agences'
     | '/aide'
     | '/auth'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/abonnement'
+    | '/affiliation'
     | '/agences'
     | '/aide'
     | '/auth'
@@ -294,6 +306,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AbonnementRoute: typeof AbonnementRoute
+  AffiliationRoute: typeof AffiliationRoute
   AgencesRoute: typeof AgencesRoute
   AideRoute: typeof AideRoute
   AuthRoute: typeof AuthRouteWithChildren
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgencesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/affiliation': {
+      id: '/affiliation'
+      path: '/affiliation'
+      fullPath: '/affiliation'
+      preLoaderRoute: typeof AffiliationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/abonnement': {
       id: '/abonnement'
       path: '/abonnement'
@@ -487,6 +507,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AbonnementRoute: AbonnementRoute,
+  AffiliationRoute: AffiliationRoute,
   AgencesRoute: AgencesRoute,
   AideRoute: AideRoute,
   AuthRoute: AuthRouteWithChildren,

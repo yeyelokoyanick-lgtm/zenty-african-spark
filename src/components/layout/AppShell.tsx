@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, ShoppingBag, Package, CreditCard, Store, Users,
-  Megaphone, Handshake, Gem, HelpCircle, Settings, Search, Bell,
+  Megaphone, Handshake, Gem, HelpCircle, Settings, Search, Bell, Banknote,
   Menu, X, LogOut, User as UserIcon,
 } from "lucide-react";
 import { Logo } from "./Logo";
@@ -35,6 +35,7 @@ const groups: { title: string; items: NavItem[] }[] = [
     title: "Croissance",
     items: [
       { to: "/marketing", label: "Marketing", icon: Megaphone },
+      { to: "/affiliation", label: "Affiliation", icon: Banknote },
       { to: "/agences", label: "Agences", icon: Handshake },
     ],
   },

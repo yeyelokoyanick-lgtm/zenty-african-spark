@@ -341,6 +341,51 @@ function AbonnementPage() {
         })}
       </section>
 
+      {/* Security badge */}
+      <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
+        <Lock className="h-3.5 w-3.5" />
+        Paiements 100% sécurisés par FedaPay — MTN MoMo, Moov Money et carte bancaire acceptés
+      </p>
+
+      {/* Billing history */}
+      <section className="mt-12">
+        <h2 className="text-xl font-bold text-foreground">Historique des paiements</h2>
+        <Card className="mt-4 overflow-hidden rounded-2xl">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Date</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Plan</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Montant</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Méthode</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { date: "01/05/2026", plan: "Pro", amount: "5 000 FCFA", method: "MTN MoMo", status: "Payé" },
+                  { date: "01/04/2026", plan: "Pro", amount: "5 000 FCFA", method: "Moov Money", status: "Payé" },
+                  { date: "01/03/2026", plan: "Starter", amount: "Gratuit", method: "—", status: "Actif" },
+                ].map((r, i) => (
+                  <tr key={i} className={cn(i % 2 === 1 && "bg-muted/20")}>
+                    <td className="px-4 py-3 text-foreground">{r.date}</td>
+                    <td className="px-4 py-3 text-foreground">{r.plan}</td>
+                    <td className="px-4 py-3 text-foreground">{r.amount}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{r.method}</td>
+                    <td className="px-4 py-3">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-semibold text-success">
+                        ✓ {r.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </section>
+
       {/* Comparison table */}
       <section className="mt-14">
         <h2 className="text-center text-2xl font-bold text-foreground">Compare les plans</h2>
@@ -451,6 +496,61 @@ function AbonnementPage() {
           <Link to="/produits">Créer ma boutique maintenant</Link>
         </Button>
       </section>
+
+      {/* Confirmation modal */}
+      <Dialog open={!!modalPlan} onOpenChange={(o) => !o && setModalPlan(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirmer votre abonnement</DialogTitle>
+            <DialogDescription>
+              {modalPlan && (
+                <>Plan <span className="font-semibold text-foreground">{modalPlan.name}</span> — <span className="font-semibold text-foreground">{formatFcfa(modalPlan.monthly)} FCFA / mois</span></>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Nom complet</Label>
+              <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jean Dupont" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jean@example.com" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="phone">Numéro WhatsApp</Label>
+              <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+229..." />
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setModalPlan(null)} disabled={processing}>Annuler</Button>
+            <Button onClick={handleConfirm} disabled={processing || !sdkReady} className="h-11 px-6 font-semibold">
+              {processing ? "Traitement..." : sdkReady ? "Procéder au paiement" : "Chargement..."}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success state */}
+      <Dialog open={!!successPlan} onOpenChange={(o) => !o && setSuccessPlan(null)}>
+        <DialogContent className="sm:max-w-md text-center">
+          <div className="flex flex-col items-center py-4">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-success/15 animate-in zoom-in-50 duration-500">
+              <CheckCircle2 className="h-12 w-12 text-success" />
+            </div>
+            <h3 className="mt-4 text-2xl font-bold text-foreground">🎉 Félicitations !</h3>
+            <p className="mt-2 text-sm text-foreground">
+              Votre abonnement ZENTY <span className="font-semibold">{successPlan?.name}</span> est maintenant actif.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Toutes les fonctionnalités sont débloquées. Bonne vente !
+            </p>
+            <Button asChild className="mt-6 h-11 w-full rounded-xl font-semibold">
+              <Link to="/dashboard" onClick={() => setSuccessPlan(null)}>Retour au tableau de bord</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AppShell>
   );
 }

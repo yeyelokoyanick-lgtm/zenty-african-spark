@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset, Lock, CheckCircle2 } from "lucide-react";
+import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+const FEDAPAY_PUBLIC_KEY = "pk_live_q1abaAhxGMqRDimt4ZQGrcnd";
+
+declare global {
+  interface Window {
+    FedaPay?: any;
+  }
+}
 
 export const Route = createFileRoute("/abonnement")({
   head: () => ({
@@ -92,17 +104,120 @@ function formatFcfa(n: number) {
 
 function AbonnementPage() {
   const [billing, setBilling] = useState<Billing>("monthly");
+  const [modalPlan, setModalPlan] = useState<Plan | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", phone: "+229" });
+  const [processing, setProcessing] = useState(false);
+  const [activePlan, setActivePlan] = useState<"starter" | "pro" | "business">("starter");
+  const [successPlan, setSuccessPlan] = useState<{ name: string; price: string } | null>(null);
+  const [sdkReady, setSdkReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.FedaPay) { setSdkReady(true); return; }
+    const existing = document.querySelector<HTMLScriptElement>('script[data-fedapay]');
+    if (existing) {
+      existing.addEventListener("load", () => setSdkReady(true));
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = "https://cdn.fedapay.com/checkout.js?v=1.1.7";
+    s.async = true;
+    s.dataset.fedapay = "true";
+    s.onload = () => setSdkReady(true);
+    document.body.appendChild(s);
+  }, []);
+
+  const fireConfetti = () => {
+    const end = Date.now() + 1200;
+    (function frame() {
+      confetti({ particleCount: 4, angle: 60, spread: 70, origin: { x: 0 } });
+      confetti({ particleCount: 4, angle: 120, spread: 70, origin: { x: 1 } });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  };
+
+  const launchFedapay = (plan: Plan) => {
+    if (!window.FedaPay) {
+      toast.error("Le module de paiement n'est pas encore prêt. Réessayez dans un instant.");
+      return;
+    }
+    const amount = plan.id === "pro" ? 500000 : 1000000;
+    const label = plan.id === "pro" ? "Pro" : "Business";
+    const priceLabel = plan.id === "pro" ? "5 000 FCFA" : "10 000 FCFA";
+    setProcessing(true);
+    try {
+      const widget = window.FedaPay.init({
+        public_key: FEDAPAY_PUBLIC_KEY,
+        transaction: {
+          amount,
+          description: `Abonnement ZENTY ${label} — 1 mois`,
+          currency: { iso: "XOF" },
+        },
+        customer: {
+          email: form.email,
+          lastname: form.name,
+          phone_number: { number: form.phone, country: "BJ" },
+        },
+        onComplete: (resp: any) => {
+          setProcessing(false);
+          if (resp.reason === window.FedaPay.DIALOG_DISMISSED) {
+            toast.error("Paiement annulé");
+          } else {
+            setActivePlan(plan.id);
+            setSuccessPlan({ name: label, price: priceLabel });
+            setModalPlan(null);
+            fireConfetti();
+          }
+        },
+      });
+      widget.open();
+    } catch (e) {
+      setProcessing(false);
+      toast.error("Une erreur est survenue lors de l'initialisation du paiement.");
+    }
+  };
+
+  const handleConfirm = () => {
+    if (!modalPlan) return;
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      toast.error("Merci de remplir tous les champs.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      toast.error("Email invalide.");
+      return;
+    }
+    launchFedapay(modalPlan);
+  };
 
   const handleSelect = (plan: Plan) => {
     if (plan.id === "starter") {
+      setActivePlan("starter");
       toast.success("Plan Starter activé. Bienvenue sur ZENTY !");
-    } else {
-      toast.success(`Redirection vers le paiement — Plan ${plan.name}`);
+      return;
     }
+    setModalPlan(plan);
   };
 
   return (
     <AppShell>
+      {/* Active plan banner */}
+      <div className="mb-6 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm shadow-sm">
+        <span className="text-muted-foreground">Plan actuel :</span>
+        <span
+          className={cn(
+            "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold",
+            activePlan === "starter"
+              ? "bg-muted text-foreground"
+              : "bg-success/15 text-success",
+          )}
+        >
+          {activePlan === "starter" && "Plan Starter"}
+          {activePlan === "pro" && "Plan Pro — Actif ✓"}
+          {activePlan === "business" && "Plan Business — Actif ✓"}
+        </span>
+      </div>
+
       {/* Header */}
       <section className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

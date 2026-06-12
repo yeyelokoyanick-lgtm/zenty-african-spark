@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset, Lock, CheckCircle2 } from "lucide-react";
+import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+const FEDAPAY_PUBLIC_KEY = "pk_live_q1abaAhxGMqRDimt4ZQGrcnd";
+
+declare global {
+  interface Window {
+    FedaPay?: any;
+  }
+}
 
 export const Route = createFileRoute("/abonnement")({
   head: () => ({
@@ -92,17 +104,120 @@ function formatFcfa(n: number) {
 
 function AbonnementPage() {
   const [billing, setBilling] = useState<Billing>("monthly");
+  const [modalPlan, setModalPlan] = useState<Plan | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", phone: "+229" });
+  const [processing, setProcessing] = useState(false);
+  const [activePlan, setActivePlan] = useState<"starter" | "pro" | "business">("starter");
+  const [successPlan, setSuccessPlan] = useState<{ name: string; price: string } | null>(null);
+  const [sdkReady, setSdkReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.FedaPay) { setSdkReady(true); return; }
+    const existing = document.querySelector<HTMLScriptElement>('script[data-fedapay]');
+    if (existing) {
+      existing.addEventListener("load", () => setSdkReady(true));
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = "https://cdn.fedapay.com/checkout.js?v=1.1.7";
+    s.async = true;
+    s.dataset.fedapay = "true";
+    s.onload = () => setSdkReady(true);
+    document.body.appendChild(s);
+  }, []);
+
+  const fireConfetti = () => {
+    const end = Date.now() + 1200;
+    (function frame() {
+      confetti({ particleCount: 4, angle: 60, spread: 70, origin: { x: 0 } });
+      confetti({ particleCount: 4, angle: 120, spread: 70, origin: { x: 1 } });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  };
+
+  const launchFedapay = (plan: Plan) => {
+    if (!window.FedaPay) {
+      toast.error("Le module de paiement n'est pas encore prêt. Réessayez dans un instant.");
+      return;
+    }
+    const amount = plan.id === "pro" ? 500000 : 1000000;
+    const label = plan.id === "pro" ? "Pro" : "Business";
+    const priceLabel = plan.id === "pro" ? "5 000 FCFA" : "10 000 FCFA";
+    setProcessing(true);
+    try {
+      const widget = window.FedaPay.init({
+        public_key: FEDAPAY_PUBLIC_KEY,
+        transaction: {
+          amount,
+          description: `Abonnement ZENTY ${label} — 1 mois`,
+          currency: { iso: "XOF" },
+        },
+        customer: {
+          email: form.email,
+          lastname: form.name,
+          phone_number: { number: form.phone, country: "BJ" },
+        },
+        onComplete: (resp: any) => {
+          setProcessing(false);
+          if (resp.reason === window.FedaPay.DIALOG_DISMISSED) {
+            toast.error("Paiement annulé");
+          } else {
+            setActivePlan(plan.id);
+            setSuccessPlan({ name: label, price: priceLabel });
+            setModalPlan(null);
+            fireConfetti();
+          }
+        },
+      });
+      widget.open();
+    } catch (e) {
+      setProcessing(false);
+      toast.error("Une erreur est survenue lors de l'initialisation du paiement.");
+    }
+  };
+
+  const handleConfirm = () => {
+    if (!modalPlan) return;
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      toast.error("Merci de remplir tous les champs.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      toast.error("Email invalide.");
+      return;
+    }
+    launchFedapay(modalPlan);
+  };
 
   const handleSelect = (plan: Plan) => {
     if (plan.id === "starter") {
+      setActivePlan("starter");
       toast.success("Plan Starter activé. Bienvenue sur ZENTY !");
-    } else {
-      toast.success(`Redirection vers le paiement — Plan ${plan.name}`);
+      return;
     }
+    setModalPlan(plan);
   };
 
   return (
     <AppShell>
+      {/* Active plan banner */}
+      <div className="mb-6 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm shadow-sm">
+        <span className="text-muted-foreground">Plan actuel :</span>
+        <span
+          className={cn(
+            "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold",
+            activePlan === "starter"
+              ? "bg-muted text-foreground"
+              : "bg-success/15 text-success",
+          )}
+        >
+          {activePlan === "starter" && "Plan Starter"}
+          {activePlan === "pro" && "Plan Pro — Actif ✓"}
+          {activePlan === "business" && "Plan Business — Actif ✓"}
+        </span>
+      </div>
+
       {/* Header */}
       <section className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -226,6 +341,51 @@ function AbonnementPage() {
         })}
       </section>
 
+      {/* Security badge */}
+      <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
+        <Lock className="h-3.5 w-3.5" />
+        Paiements 100% sécurisés par FedaPay — MTN MoMo, Moov Money et carte bancaire acceptés
+      </p>
+
+      {/* Billing history */}
+      <section className="mt-12">
+        <h2 className="text-xl font-bold text-foreground">Historique des paiements</h2>
+        <Card className="mt-4 overflow-hidden rounded-2xl">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Date</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Plan</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Montant</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Méthode</th>
+                  <th className="px-4 py-3 text-left font-semibold text-foreground">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { date: "01/05/2026", plan: "Pro", amount: "5 000 FCFA", method: "MTN MoMo", status: "Payé" },
+                  { date: "01/04/2026", plan: "Pro", amount: "5 000 FCFA", method: "Moov Money", status: "Payé" },
+                  { date: "01/03/2026", plan: "Starter", amount: "Gratuit", method: "—", status: "Actif" },
+                ].map((r, i) => (
+                  <tr key={i} className={cn(i % 2 === 1 && "bg-muted/20")}>
+                    <td className="px-4 py-3 text-foreground">{r.date}</td>
+                    <td className="px-4 py-3 text-foreground">{r.plan}</td>
+                    <td className="px-4 py-3 text-foreground">{r.amount}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{r.method}</td>
+                    <td className="px-4 py-3">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-semibold text-success">
+                        ✓ {r.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </section>
+
       {/* Comparison table */}
       <section className="mt-14">
         <h2 className="text-center text-2xl font-bold text-foreground">Compare les plans</h2>
@@ -336,6 +496,61 @@ function AbonnementPage() {
           <Link to="/produits">Créer ma boutique maintenant</Link>
         </Button>
       </section>
+
+      {/* Confirmation modal */}
+      <Dialog open={!!modalPlan} onOpenChange={(o) => !o && setModalPlan(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirmer votre abonnement</DialogTitle>
+            <DialogDescription>
+              {modalPlan && (
+                <>Plan <span className="font-semibold text-foreground">{modalPlan.name}</span> — <span className="font-semibold text-foreground">{formatFcfa(modalPlan.monthly)} FCFA / mois</span></>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Nom complet</Label>
+              <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jean Dupont" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jean@example.com" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="phone">Numéro WhatsApp</Label>
+              <Input id="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+229..." />
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setModalPlan(null)} disabled={processing}>Annuler</Button>
+            <Button onClick={handleConfirm} disabled={processing || !sdkReady} className="h-11 px-6 font-semibold">
+              {processing ? "Traitement..." : sdkReady ? "Procéder au paiement" : "Chargement..."}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success state */}
+      <Dialog open={!!successPlan} onOpenChange={(o) => !o && setSuccessPlan(null)}>
+        <DialogContent className="sm:max-w-md text-center">
+          <div className="flex flex-col items-center py-4">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-success/15 animate-in zoom-in-50 duration-500">
+              <CheckCircle2 className="h-12 w-12 text-success" />
+            </div>
+            <h3 className="mt-4 text-2xl font-bold text-foreground">🎉 Félicitations !</h3>
+            <p className="mt-2 text-sm text-foreground">
+              Votre abonnement ZENTY <span className="font-semibold">{successPlan?.name}</span> est maintenant actif.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Toutes les fonctionnalités sont débloquées. Bonne vente !
+            </p>
+            <Button asChild className="mt-6 h-11 w-full rounded-xl font-semibold">
+              <Link to="/dashboard" onClick={() => setSuccessPlan(null)}>Retour au tableau de bord</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AppShell>
   );
 }

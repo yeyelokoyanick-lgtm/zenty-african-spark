@@ -36,9 +36,9 @@ import { ORDER_STATUSES, type Order, type OrderStatus } from "@/types/order";
 export const Route = createFileRoute("/commandes")({
   head: () => ({
     meta: [
-      { title: "Commandes — ZENTY" },
+      { title: "Commandes — AFRISELL" },
       { name: "description", content: "Gère et confirme tes commandes COD en un clic." },
-      { property: "og:title", content: "Commandes — ZENTY" },
+      { property: "og:title", content: "Commandes — AFRISELL" },
       { property: "og:description", content: "Gestion COD optimisée pour vendeurs africains." },
     ],
   }),

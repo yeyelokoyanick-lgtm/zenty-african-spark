@@ -31,13 +31,13 @@ import { formatFCFA } from "@/data/dashboard";
 export const Route = createFileRoute("/paiements")({
   head: () => ({
     meta: [
-      { title: "Paiements — ZENTY" },
+      { title: "Paiements — AFRISELL" },
       {
         name: "description",
         content:
-          "Gérez vos revenus, méthodes de paiement et reversements Mobile Money sur ZENTY.",
+          "Gérez vos revenus, méthodes de paiement et reversements Mobile Money sur AFRISELL.",
       },
-      { property: "og:title", content: "Paiements — ZENTY" },
+      { property: "og:title", content: "Paiements — AFRISELL" },
       {
         property: "og:description",
         content: "Revenus, Mobile Money et reversements sécurisés.",

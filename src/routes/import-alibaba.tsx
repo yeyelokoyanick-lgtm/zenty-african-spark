@@ -2,23 +2,23 @@ import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Search, Sparkles, TrendingUp, Plus } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
+import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { fcfa } from "@/components/zenty/format";
+import { fcfa } from "@/components/afrisell/format";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/import-alibaba")({
   head: () => ({
     meta: [
-      { title: "Importer depuis Alibaba — ZENTY" },
+      { title: "Importer depuis Alibaba — AFRISELL" },
       {
         name: "description",
         content:
-          "Trouve des produits gagnants sur Alibaba et ajoute-les à ta boutique ZENTY en un clic.",
+          "Trouve des produits gagnants sur Alibaba et ajoute-les à ta boutique AFRISELL en un clic.",
       },
-      { property: "og:title", content: "Importer depuis Alibaba — ZENTY" },
+      { property: "og:title", content: "Importer depuis Alibaba — AFRISELL" },
       {
         property: "og:description",
         content: "Importe des produits tendance et lance tes ventes immédiatement.",

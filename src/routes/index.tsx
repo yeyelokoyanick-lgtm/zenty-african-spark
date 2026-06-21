@@ -24,13 +24,13 @@ import featureAlibaba from "@/assets/feature-alibaba.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ZENTY — Vends en ligne en Afrique avec Mobile Money" },
+      { title: "AFRISELL — Vends en ligne en Afrique avec Mobile Money" },
       {
         name: "description",
         content:
-          "Crée ta boutique en ligne en 5 minutes et encaisse en MTN MoMo, Moov et Wave. ZENTY est la plateforme e-commerce des marchands africains.",
+          "Crée ta boutique en ligne en 5 minutes et encaisse en MTN MoMo, Moov et Wave. AFRISELL est la plateforme e-commerce des marchands africains.",
       },
-      { property: "og:title", content: "ZENTY — Vends en ligne en Afrique" },
+      { property: "og:title", content: "AFRISELL — Vends en ligne en Afrique" },
       {
         property: "og:description",
         content:
@@ -94,14 +94,14 @@ const testimonials = [
     city: "Dakar, Sénégal",
     initials: "AD",
     quote:
-      "Avec ZENTY j'ai lancé ma boutique de cosmétiques en une après-midi. Je reçois mes paiements Wave directement, c'est magique.",
+      "Avec AFRISELL j'ai lancé ma boutique de cosmétiques en une après-midi. Je reçois mes paiements Wave directement, c'est magique.",
   },
   {
     name: "Kouadio Yao",
     city: "Abidjan, Côte d'Ivoire",
     initials: "KY",
     quote:
-      "Je gère plus de 80 commandes par semaine depuis ZENTY. Le paiement à la livraison et MTN MoMo fonctionnent parfaitement.",
+      "Je gère plus de 80 commandes par semaine depuis AFRISELL. Le paiement à la livraison et MTN MoMo fonctionnent parfaitement.",
   },
   {
     name: "Fatou Aïkpé",
@@ -129,7 +129,7 @@ function LandingPage() {
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link to="/" aria-label="ZENTY accueil">
+          <Link to="/" aria-label="AFRISELL accueil">
             <Logo />
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
@@ -186,7 +186,7 @@ function LandingPage() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            ZENTY te donne une boutique professionnelle, la gestion de tes commandes et les
+            AFRISELL te donne une boutique professionnelle, la gestion de tes commandes et les
             paiements MTN MoMo, Moov et Wave — en 5 minutes.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -202,7 +202,7 @@ function LandingPage() {
       {/* Features */}
       <section id="features" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Pourquoi ZENTY ?</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Pourquoi AFRISELL ?</h2>
           <p className="mt-3 text-muted-foreground">Tout ce qu'il te faut pour vendre, dans une seule app.</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -252,7 +252,7 @@ function LandingPage() {
       <section id="testimonials" className="bg-muted/40 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent déjà avec ZENTY</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent déjà avec AFRISELL</h2>
             <p className="mt-3 text-muted-foreground">Des marchands de toute l'Afrique francophone nous font confiance.</p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -349,7 +349,7 @@ function LandingPage() {
           </div>
         </div>
         <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} ZENTY. Tous droits réservés.
+          © {new Date().getFullYear()} AFRISELL. Tous droits réservés.
         </div>
       </footer>
     </div>

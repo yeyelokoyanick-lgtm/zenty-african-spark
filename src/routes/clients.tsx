@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Users, UserPlus, Repeat, Search, Phone, MessageCircle } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
-import { StatTile } from "@/components/zenty/StatTile";
+import { PageHeader } from "@/components/afrisell/PageHeader";
+import { StatTile } from "@/components/afrisell/StatTile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { fcfa } from "@/components/zenty/format";
+import { fcfa } from "@/components/afrisell/format";
 import { useState } from "react";
 
 export const Route = createFileRoute("/clients")({
-  head: () => ({ meta: [{ title: "Clients — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Clients — AFRISELL" }] }),
   component: ClientsPage,
 });
 

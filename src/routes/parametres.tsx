@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
+import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 export const Route = createFileRoute("/parametres")({
-  head: () => ({ meta: [{ title: "Paramètres — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Paramètres — AFRISELL" }] }),
   component: ParamsPage,
 });
 
@@ -66,7 +66,7 @@ function ParamsPage() {
               ["Nouvelles commandes par email", true],
               ["Notifications WhatsApp", true],
               ["SMS pour reversements", false],
-              ["Newsletter ZENTY", true],
+              ["Newsletter AFRISELL", true],
             ].map(([label, def]) => (
               <div key={label as string} className="flex items-center justify-between border-b border-border pb-3 last:border-0">
                 <span className="text-sm">{label}</span>

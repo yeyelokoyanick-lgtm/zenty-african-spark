@@ -8,7 +8,7 @@ export function Logo() {
       >
         Z
       </div>
-      <span className="text-xl font-extrabold tracking-tight text-primary">ZENTY</span>
+      <span className="text-xl font-extrabold tracking-tight text-primary">AFRISELL</span>
     </div>
   );
 }

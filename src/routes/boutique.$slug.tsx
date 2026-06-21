@@ -22,7 +22,7 @@ export const Route = createFileRoute("/boutique/$slug")({
     const shopName = shop?.name ?? formatShopName(params.slug);
     return {
       meta: [
-        { title: `${shopName} — Boutique ZENTY` },
+        { title: `${shopName} — Boutique AFRISELL` },
         { name: "description", content: `Découvrez les produits de ${shopName} et commandez en Mobile Money ou à la livraison.` },
       ],
     };
@@ -137,7 +137,7 @@ function BoutiquePage() {
               <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                 <MapPin className="h-3.5 w-3.5" /> {city}, {country} {countryFlag}
               </span>
-              <Badge color={shopColor} icon={<BadgeCheck className="h-3 w-3" />} text="Boutique vérifiée ZENTY" />
+              <Badge color={shopColor} icon={<BadgeCheck className="h-3 w-3" />} text="Boutique vérifiée AFRISELL" />
             </div>
           </div>
         </div>
@@ -205,7 +205,7 @@ function BoutiquePage() {
               >
                 Z
               </span>
-              ZENTY
+              AFRISELL
             </Link>
           </div>
           <Link

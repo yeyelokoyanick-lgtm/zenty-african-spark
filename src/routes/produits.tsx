@@ -22,10 +22,10 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/produits")({
   head: () => ({
     meta: [
-      { title: "Produits — ZENTY" },
-      { name: "description", content: "Gère ton catalogue de produits sur ZENTY : ajoute, importe et organise facilement." },
-      { property: "og:title", content: "Produits — ZENTY" },
-      { property: "og:description", content: "Gestion produits ZENTY pour vendeurs africains." },
+      { title: "Produits — AFRISELL" },
+      { name: "description", content: "Gère ton catalogue de produits sur AFRISELL : ajoute, importe et organise facilement." },
+      { property: "og:title", content: "Produits — AFRISELL" },
+      { property: "og:description", content: "Gestion produits AFRISELL pour vendeurs africains." },
     ],
   }),
   component: ProduitsPage,

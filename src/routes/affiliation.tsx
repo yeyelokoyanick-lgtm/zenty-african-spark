@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
-import { StatTile } from "@/components/zenty/StatTile";
+import { PageHeader } from "@/components/afrisell/PageHeader";
+import { StatTile } from "@/components/afrisell/StatTile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,7 @@ import {
 } from "recharts";
 
 export const Route = createFileRoute("/affiliation")({
-  head: () => ({ meta: [{ title: "Affiliation — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Affiliation — AFRISELL" }] }),
   component: AffiliationPage,
 });
 
@@ -60,7 +60,7 @@ function generateCode() {
 function AffiliationPage() {
   const [isAffiliate, setIsAffiliate] = useState(true);
   const [code, setCode] = useState("MONCODE123");
-  const link = `https://zenty.shop/ref/${code}`;
+  const link = `https://afrisell.shop/ref/${code}`;
 
   const chartData = useMemo(() => {
     const data: { day: string; gains: number }[] = [];
@@ -78,19 +78,19 @@ function AffiliationPage() {
   };
 
   const waMsg = encodeURIComponent(
-    `🚀 Crée ta boutique en ligne GRATUITEMENT avec ZENTY ! Vends tes produits et encaisse en Mobile Money. Inscris-toi ici 👉 ${link}`,
+    `🚀 Crée ta boutique en ligne GRATUITEMENT avec AFRISELL ! Vends tes produits et encaisse en Mobile Money. Inscris-toi ici 👉 ${link}`,
   );
 
   if (!isAffiliate) {
     return (
       <AppShell>
-        <PageHeader title="Programme d'Affiliation ZENTY" subtitle="Parraine des marchands et gagne 1,5$ (875 FCFA) par inscription réussie" />
+        <PageHeader title="Programme d'Affiliation AFRISELL" subtitle="Parraine des marchands et gagne 1,5$ (875 FCFA) par inscription réussie" />
         <div
           className="rounded-2xl p-8 sm:p-12 text-white shadow-[var(--shadow-card)] max-w-2xl mx-auto"
           style={{ background: "var(--gradient-brand)" }}
         >
           <Sparkles className="h-10 w-10 mb-3" />
-          <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">Rejoins le programme d'affiliation ZENTY</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">Rejoins le programme d'affiliation AFRISELL</h2>
           <p className="text-white/90 mb-6">Gagne 1,5$ par marchand parrainé. Sans limite.</p>
           <div className="space-y-3 bg-white/10 backdrop-blur p-4 rounded-xl">
             <Label className="text-white">Choisis ton code d'affiliation</Label>
@@ -125,7 +125,7 @@ function AffiliationPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Programme d'Affiliation ZENTY"
+        title="Programme d'Affiliation AFRISELL"
         subtitle="Parraine des marchands et gagne 1,5$ (875 FCFA) par inscription réussie"
         actions={
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary">

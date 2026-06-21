@@ -68,7 +68,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center px-5 border-b border-border">
-        <Link to="/dashboard" aria-label="ZENTY" onClick={onNavigate}>
+        <Link to="/dashboard" aria-label="AFRISELL" onClick={onNavigate}>
           <Logo />
         </Link>
       </div>

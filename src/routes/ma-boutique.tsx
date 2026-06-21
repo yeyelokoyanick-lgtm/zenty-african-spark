@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
+import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyShop, upsertShop } from "@/lib/shop.functions";
 
 export const Route = createFileRoute("/ma-boutique")({
-  head: () => ({ meta: [{ title: "Ma Boutique — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Ma Boutique — AFRISELL" }] }),
   component: MaBoutiquePage,
 });
 
@@ -32,7 +32,7 @@ function MaBoutiquePage() {
 
   const shop = shopData?.shop;
 
-  const [name, setName] = useState("Ma Boutique ZENTY");
+  const [name, setName] = useState("Ma Boutique AFRISELL");
   const [slug, setSlug] = useState("ma-boutique");
   const [desc, setDesc] = useState("Produits authentiques livrés partout en Afrique.");
   const [color, setColor] = useState("#4645E7");
@@ -44,7 +44,7 @@ function MaBoutiquePage() {
 
   useEffect(() => {
     if (shop) {
-      setName(shop.name || "Ma Boutique ZENTY");
+      setName(shop.name || "Ma Boutique AFRISELL");
       setSlug(shop.slug || "ma-boutique");
       setDesc(shop.description || "Produits authentiques livrés partout en Afrique.");
       setColor(shop.color || "#4645E7");
@@ -55,7 +55,7 @@ function MaBoutiquePage() {
     }
   }, [shop]);
 
-  const url = `zenty.shop/${slug}`;
+  const url = `afrisell.shop/${slug}`;
 
   async function handleSave() {
     setSaving(true);
@@ -145,7 +145,7 @@ src="https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1"/>
               <div>
                 <Label>URL boutique</Label>
                 <div className="flex mt-1">
-                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-border bg-muted text-sm text-muted-foreground">zenty.shop/</span>
+                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-border bg-muted text-sm text-muted-foreground">afrisell.shop/</span>
                   <Input value={slug} onChange={(e) => setSlug(e.target.value.replace(/[^a-z0-9-]/g, ""))} className="rounded-l-none" />
                 </div>
               </div>

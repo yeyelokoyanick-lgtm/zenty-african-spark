@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
+import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/marketing")({
-  head: () => ({ meta: [{ title: "Marketing — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Marketing — AFRISELL" }] }),
   component: MarketingPage,
 });
 
@@ -24,7 +24,7 @@ const PROMOS = [
 function MarketingPage() {
   const [pixelOn, setPixelOn] = useState(false);
   const [waOn, setWaOn] = useState(true);
-  const url = "https://zenty.shop/ma-boutique";
+  const url = "https://afrisell.shop/ma-boutique";
 
   return (
     <AppShell>

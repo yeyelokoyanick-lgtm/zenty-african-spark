@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
-import { PageHeader } from "@/components/zenty/PageHeader";
+import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/agences")({
-  head: () => ({ meta: [{ title: "Agences — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Agences — AFRISELL" }] }),
   component: AgencesPage,
 });
 
@@ -62,7 +62,7 @@ function AgencesPage() {
     <AppShell>
       <PageHeader
         title="Trouver une Agence de Vente & Livraison"
-        subtitle="Des closeurs et livreurs qualifiés, vérifiés par ZENTY, disponibles dans ton pays."
+        subtitle="Des closeurs et livreurs qualifiés, vérifiés par AFRISELL, disponibles dans ton pays."
       />
 
       <div className="rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-card)] mb-6">
@@ -160,7 +160,7 @@ function AgencesPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold">Tu es closeur ou livreur ?</h2>
-            <p className="mt-1 text-white/85">Inscris ton agence sur ZENTY et reçois des missions chaque semaine.</p>
+            <p className="mt-1 text-white/85">Inscris ton agence sur AFRISELL et reçois des missions chaque semaine.</p>
           </div>
           <Button asChild variant="secondary" className="text-foreground">
             <a href="/inscrire-agence">Inscrire mon agence</a>

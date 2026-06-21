@@ -15,11 +15,11 @@ const PURPLE = "#4645E7";
 export const Route = createFileRoute("/creer-boutique")({
   head: () => ({
     meta: [
-      { title: "Créer ma boutique — ZENTY" },
+      { title: "Créer ma boutique — AFRISELL" },
       {
         name: "description",
         content:
-          "Lance ta boutique en ligne ZENTY en 5 minutes. Mobile Money, paiement à la livraison, gestion des commandes.",
+          "Lance ta boutique en ligne AFRISELL en 5 minutes. Mobile Money, paiement à la livraison, gestion des commandes.",
       },
     ],
   }),
@@ -173,10 +173,10 @@ function CreateShopPage() {
         }
       }
       if (typeof window !== "undefined") {
-        const all = JSON.parse(localStorage.getItem("zenty.shops") || "[]");
+        const all = JSON.parse(localStorage.getItem("afrisell.shops") || "[]");
         all.push(payload);
-        localStorage.setItem("zenty.shops", JSON.stringify(all));
-        localStorage.setItem("zenty.currentShop", JSON.stringify(payload));
+        localStorage.setItem("afrisell.shops", JSON.stringify(all));
+        localStorage.setItem("afrisell.currentShop", JSON.stringify(payload));
       }
       toast.success("Ta boutique est en ligne !");
       navigate({ to: "/boutique/$slug", params: { slug } });
@@ -189,7 +189,7 @@ function CreateShopPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" aria-label="ZENTY accueil">
+          <Link to="/" aria-label="AFRISELL accueil">
             <Logo />
           </Link>
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
@@ -274,7 +274,7 @@ function CreateShopPage() {
                 <Label htmlFor="slug" className="mb-1.5 block">Adresse de ta boutique *</Label>
                 <div className="flex items-center rounded-md border border-input bg-transparent focus-within:ring-1 focus-within:ring-ring">
                   <span className="select-none border-r border-border px-3 py-2 text-sm text-muted-foreground">
-                    zenty.app/boutique/
+                    afrisell.app/boutique/
                   </span>
                   <input
                     id="slug"
@@ -389,7 +389,7 @@ function CreateShopPage() {
                 </div>
               </div>
               <p className="rounded-xl border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-                En créant ta boutique, tu acceptes les conditions d'utilisation de ZENTY. Tu peux modifier ces infos à tout moment depuis ton tableau de bord.
+                En créant ta boutique, tu acceptes les conditions d'utilisation de AFRISELL. Tu peux modifier ces infos à tout moment depuis ton tableau de bord.
               </p>
             </div>
           )}

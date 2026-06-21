@@ -18,9 +18,9 @@ import { stats } from "@/data/dashboard";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Tableau de Bord — ZENTY" },
-      { name: "description", content: "Gère ta boutique en ligne ZENTY : ventes, commandes, paiements Mobile Money en Afrique." },
-      { property: "og:title", content: "Tableau de Bord — ZENTY" },
+      { title: "Tableau de Bord — AFRISELL" },
+      { name: "description", content: "Gère ta boutique en ligne AFRISELL : ventes, commandes, paiements Mobile Money en Afrique." },
+      { property: "og:title", content: "Tableau de Bord — AFRISELL" },
       { property: "og:description", content: "La plateforme e-commerce pour vendeurs africains." },
     ],
   }),
@@ -36,7 +36,7 @@ function DashboardPage() {
     const url = `${window.location.origin}/boutique/ma-boutique`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Ma boutique ZENTY", url });
+        await navigator.share({ title: "Ma boutique AFRISELL", url });
       } else {
         await navigator.clipboard.writeText(url);
         toast.success("Lien copié dans le presse-papier");

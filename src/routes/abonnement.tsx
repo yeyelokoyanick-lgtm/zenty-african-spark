@@ -22,10 +22,10 @@ declare global {
 export const Route = createFileRoute("/abonnement")({
   head: () => ({
     meta: [
-      { title: "Abonnement — ZENTY" },
-      { name: "description", content: "Choisis ton plan ZENTY et lance ton business en ligne en Afrique. Starter gratuit, Pro et Business." },
-      { property: "og:title", content: "Abonnement — ZENTY" },
-      { property: "og:description", content: "Plans simples et flexibles pour vendre en ligne avec ZENTY." },
+      { title: "Abonnement — AFRISELL" },
+      { name: "description", content: "Choisis ton plan AFRISELL et lance ton business en ligne en Afrique. Starter gratuit, Pro et Business." },
+      { property: "og:title", content: "Abonnement — AFRISELL" },
+      { property: "og:description", content: "Plans simples et flexibles pour vendre en ligne avec AFRISELL." },
     ],
   }),
   component: AbonnementPage,
@@ -150,7 +150,7 @@ function AbonnementPage() {
         public_key: FEDAPAY_PUBLIC_KEY,
         transaction: {
           amount,
-          description: `Abonnement ZENTY ${label} — 1 mois`,
+          description: `Abonnement AFRISELL ${label} — 1 mois`,
           currency: { iso: "XOF" },
         },
         customer: {
@@ -193,7 +193,7 @@ function AbonnementPage() {
   const handleSelect = (plan: Plan) => {
     if (plan.id === "starter") {
       setActivePlan("starter");
-      toast.success("Plan Starter activé. Bienvenue sur ZENTY !");
+      toast.success("Plan Starter activé. Bienvenue sur AFRISELL !");
       return;
     }
     setModalPlan(plan);
@@ -224,7 +224,7 @@ function AbonnementPage() {
           Choisis ton plan
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-          Lance et développe ton business en ligne avec ZENTY
+          Lance et développe ton business en ligne avec AFRISELL
         </p>
 
         {/* Toggle */}
@@ -461,7 +461,7 @@ function AbonnementPage() {
 
         <Card className="rounded-2xl p-6">
           <h3 className="text-lg font-bold text-foreground">Tu peux nous faire confiance</h3>
-          <p className="mt-1 text-sm text-muted-foreground">Choisis ZENTY en toute sérénité.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Choisis AFRISELL en toute sérénité.</p>
           <ul className="mt-4 space-y-3">
             <li className="flex items-center gap-3 text-sm text-foreground">
               <ShieldCheck className="h-5 w-5 text-success" />
@@ -486,7 +486,7 @@ function AbonnementPage() {
       >
         <h2 className="text-2xl font-bold sm:text-3xl">Prêt à lancer ton business ?</h2>
         <p className="mx-auto mt-2 max-w-lg text-sm text-white/85 sm:text-base">
-          Rejoins des milliers de marchands africains qui vendent déjà avec ZENTY.
+          Rejoins des milliers de marchands africains qui vendent déjà avec AFRISELL.
         </p>
         <Button
           asChild
@@ -540,7 +540,7 @@ function AbonnementPage() {
             </div>
             <h3 className="mt-4 text-2xl font-bold text-foreground">🎉 Félicitations !</h3>
             <p className="mt-2 text-sm text-foreground">
-              Votre abonnement ZENTY <span className="font-semibold">{successPlan?.name}</span> est maintenant actif.
+              Votre abonnement AFRISELL <span className="font-semibold">{successPlan?.name}</span> est maintenant actif.
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               Toutes les fonctionnalités sont débloquées. Bonne vente !

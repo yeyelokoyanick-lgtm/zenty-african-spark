@@ -22,12 +22,12 @@ import { formatFCFA } from "@/data/dashboard";
 export const Route = createFileRoute("/checkout/$productId")({
   head: () => ({
     meta: [
-      { title: "Commander — ZENTY" },
+      { title: "Commander — AFRISELL" },
       {
         name: "description",
         content: "Finalise ta commande en quelques secondes — paiement à la livraison.",
       },
-      { property: "og:title", content: "Commander — ZENTY" },
+      { property: "og:title", content: "Commander — AFRISELL" },
       {
         property: "og:description",
         content: "Checkout simple et rapide, paiement cash à la livraison.",
@@ -112,7 +112,7 @@ function CheckoutPage() {
       paymentMethod: "cash_on_delivery" as const,
       createdAt: new Date().toISOString(),
     };
-    console.log("[ZENTY] New order:", orderPayload);
+    console.log("[AFRISELL] New order:", orderPayload);
 
     setTimeout(() => {
       setSubmitting(false);

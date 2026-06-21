@@ -22,10 +22,10 @@ import {
 export const Route = createFileRoute("/aide")({
   head: () => ({
     meta: [
-      { title: "Centre d'aide — ZENTY" },
-      { name: "description", content: "Trouve rapidement des réponses à tes questions sur ZENTY : création de boutique, produits, commandes, paiements." },
-      { property: "og:title", content: "Centre d'aide — ZENTY" },
-      { property: "og:description", content: "Guides, FAQ et support pour réussir ton e-commerce avec ZENTY." },
+      { title: "Centre d'aide — AFRISELL" },
+      { name: "description", content: "Trouve rapidement des réponses à tes questions sur AFRISELL : création de boutique, produits, commandes, paiements." },
+      { property: "og:title", content: "Centre d'aide — AFRISELL" },
+      { property: "og:description", content: "Guides, FAQ et support pour réussir ton e-commerce avec AFRISELL." },
     ],
   }),
   component: AidePage,
@@ -43,7 +43,7 @@ const FAQS: FaqItem[] = [
   // Démarrer
   {
     category: "Démarrer",
-    q: "Comment créer ma boutique sur ZENTY ?",
+    q: "Comment créer ma boutique sur AFRISELL ?",
     a: "Inscris-toi gratuitement, choisis le nom de ta boutique, ajoute tes produits et partage ton lien. Tout se fait en moins de 5 minutes, sans aucune connaissance technique.",
   },
   {
@@ -70,7 +70,7 @@ const FAQS: FaqItem[] = [
   {
     category: "Paiements",
     q: "Quels modes de paiement puis-je accepter ?",
-    a: "ZENTY supporte : Paiement à la livraison, MTN Mobile Money, Moov Money, Wave et Orange Money. Tu peux activer ou désactiver chaque méthode selon ta préférence.",
+    a: "AFRISELL supporte : Paiement à la livraison, MTN Mobile Money, Moov Money, Wave et Orange Money. Tu peux activer ou désactiver chaque méthode selon ta préférence.",
   },
   // Commandes
   {
@@ -134,7 +134,7 @@ function AidePage() {
 
   const openWhatsApp = () => {
     window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Bonjour ZENTY, j'ai besoin d'aide.")}`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Bonjour AFRISELL, j'ai besoin d'aide.")}`,
       "_blank",
       "noopener,noreferrer",
     );
@@ -148,7 +148,7 @@ function AidePage() {
         style={{ background: "var(--gradient-brand)" }}
       >
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Centre d'aide ZENTY
+          Centre d'aide AFRISELL
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-sm text-white/85 sm:text-base">
           Trouve rapidement des réponses à tes questions

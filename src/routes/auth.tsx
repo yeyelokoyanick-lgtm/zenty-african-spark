@@ -21,8 +21,8 @@ export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Connexion — ZENTY" },
-      { name: "description", content: "Crée ton compte ZENTY et lance ta boutique en ligne en 5 minutes." },
+      { title: "Connexion — AFRISELL" },
+      { name: "description", content: "Crée ton compte AFRISELL et lance ta boutique en ligne en 5 minutes." },
     ],
   }),
   component: AuthPage,
@@ -114,7 +114,7 @@ function AuthPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" aria-label="ZENTY accueil"><Logo /></Link>
+          <Link to="/" aria-label="AFRISELL accueil"><Logo /></Link>
           <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Accueil
           </Link>
@@ -128,7 +128,7 @@ function AuthPage() {
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             {mode === "signup"
-              ? "Quelques infos pour démarrer ta boutique ZENTY."
+              ? "Quelques infos pour démarrer ta boutique AFRISELL."
               : "Heureux de te revoir 👋"}
           </p>
         </div>
@@ -276,7 +276,7 @@ function EmailSentScreen({ email, onBack }: { email: string; onBack: () => void 
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" aria-label="ZENTY accueil"><Logo /></Link>
+          <Link to="/" aria-label="AFRISELL accueil"><Logo /></Link>
         </div>
       </header>
       <main className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">

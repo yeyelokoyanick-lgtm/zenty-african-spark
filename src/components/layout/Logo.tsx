@@ -6,9 +6,9 @@ export function Logo() {
         style={{ background: "var(--gradient-brand)" }}
         aria-hidden="true"
       >
-        Z
+        A
       </div>
-      <span className="text-xl font-extrabold tracking-tight text-primary">ZENTY</span>
+      <span className="text-xl font-extrabold tracking-tight text-primary">AFRISELL</span>
     </div>
   );
 }

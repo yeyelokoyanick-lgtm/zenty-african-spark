@@ -8,7 +8,7 @@ const PURPLE = "#4645E7";
 
 export const Route = createFileRoute("/auth/callback")({
   head: () => ({
-    meta: [{ title: "Vérification — ZENTY" }],
+    meta: [{ title: "Vérification — AFRISELL" }],
   }),
   component: CallbackPage,
 });
@@ -63,7 +63,7 @@ function CallbackPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center px-4 sm:px-6">
-          <Link to="/" aria-label="ZENTY accueil"><Logo /></Link>
+          <Link to="/" aria-label="AFRISELL accueil"><Logo /></Link>
         </div>
       </header>
       <main className="mx-auto max-w-md px-4 py-20 text-center sm:px-6">

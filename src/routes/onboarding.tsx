@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 
 export const Route = createFileRoute("/onboarding")({
-  head: () => ({ meta: [{ title: "Démarrer — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Démarrer — AFRISELL" }] }),
   component: OnboardingPage,
 });
 
@@ -25,7 +25,7 @@ function OnboardingPage() {
   const [pay, setPay] = useState({ momo: true, moov: false, wave: false, cod: true });
   const nav = useNavigate();
   const slug = shop.name.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || "ma-boutique";
-  const url = `https://zenty.shop/${slug}`;
+  const url = `https://afrisell.shop/${slug}`;
 
   return (
     <div className="min-h-screen bg-background">

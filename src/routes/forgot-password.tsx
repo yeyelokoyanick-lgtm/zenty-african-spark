@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/forgot-password")({
-  head: () => ({ meta: [{ title: "Mot de passe oublié — ZENTY" }] }),
+  head: () => ({ meta: [{ title: "Mot de passe oublié — AFRISELL" }] }),
   component: ForgotPage,
 });
 
@@ -43,7 +43,7 @@ function ForgotPage() {
           <h2 className="text-3xl font-extrabold leading-tight">Pas de panique 👋</h2>
           <p className="mt-3 text-white/85">On t'envoie un lien sécurisé pour réinitialiser ton mot de passe.</p>
         </div>
-        <p className="text-xs text-white/70">© 2026 ZENTY — Your African E-commerce Hub</p>
+        <p className="text-xs text-white/70">© 2026 AFRISELL — Your African E-commerce Hub</p>
       </aside>
       <main className="flex flex-col p-6 sm:p-10">
         <Link to="/auth" search={{ mode: "signin" }} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">

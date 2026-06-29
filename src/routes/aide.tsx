@@ -31,7 +31,7 @@ export const Route = createFileRoute("/aide")({
   component: AidePage,
 });
 
-const WHATSAPP_NUMBER = "22900000000";
+const WHATSAPP_NUMBER = "+2250777087360";
 
 interface FaqItem {
   q: string;

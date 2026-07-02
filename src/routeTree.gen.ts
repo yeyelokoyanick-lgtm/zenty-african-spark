@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProduitsDigitauxRouteImport } from './routes/produits-digitaux'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as PaiementsRouteImport } from './routes/paiements'
@@ -36,6 +37,11 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsDigitauxRoute = ProduitsDigitauxRouteImport.update({
+  id: '/produits-digitaux',
+  path: '/produits-digitaux',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProduitsRoute = ProduitsRouteImport.update({
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByTo {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/auth/callback'
     | '/boutique/$slug'
@@ -323,6 +335,7 @@ export interface RootRouteChildren {
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
   ProduitsRoute: typeof ProduitsRoute
+  ProduitsDigitauxRoute: typeof ProduitsDigitauxRoute
   RegisterRoute: typeof RegisterRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
@@ -335,6 +348,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits-digitaux': {
+      id: '/produits-digitaux'
+      path: '/produits-digitaux'
+      fullPath: '/produits-digitaux'
+      preLoaderRoute: typeof ProduitsDigitauxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/produits': {
@@ -524,6 +544,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
   ProduitsRoute: ProduitsRoute,
+  ProduitsDigitauxRoute: ProduitsDigitauxRoute,
   RegisterRoute: RegisterRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,

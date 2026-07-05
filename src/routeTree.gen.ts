@@ -15,6 +15,7 @@ import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as MaBoutiqueRouteImport } from './routes/ma-boutique'
 import { Route as LoginRouteImport } from './routes/login'
@@ -33,6 +34,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -62,6 +66,11 @@ const PaiementsRoute = PaiementsRouteImport.update({
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketingRoute = MarketingRouteImport.update({
@@ -154,6 +163,24 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/callback',
   getParentRoute: () => AuthRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -171,15 +198,19 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
+  '/mcp': typeof McpRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -197,15 +228,19 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
+  '/mcp': typeof McpRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -224,15 +259,19 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/ma-boutique': typeof MaBoutiqueRoute
   '/marketing': typeof MarketingRoute
+  '/mcp': typeof McpRoute
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -252,15 +291,19 @@ export interface FileRouteTypes {
     | '/login'
     | '/ma-boutique'
     | '/marketing'
+    | '/mcp'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
     | '/produits-digitaux'
     | '/register'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -278,15 +321,19 @@ export interface FileRouteTypes {
     | '/login'
     | '/ma-boutique'
     | '/marketing'
+    | '/mcp'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
     | '/produits-digitaux'
     | '/register'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -304,15 +351,19 @@ export interface FileRouteTypes {
     | '/login'
     | '/ma-boutique'
     | '/marketing'
+    | '/mcp'
     | '/onboarding'
     | '/paiements'
     | '/parametres'
     | '/produits'
     | '/produits-digitaux'
     | '/register'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -331,14 +382,18 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MaBoutiqueRoute: typeof MaBoutiqueRoute
   MarketingRoute: typeof MarketingRoute
+  McpRoute: typeof McpRoute
   OnboardingRoute: typeof OnboardingRoute
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
   ProduitsRoute: typeof ProduitsRoute
   ProduitsDigitauxRoute: typeof ProduitsDigitauxRoute
   RegisterRoute: typeof RegisterRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -383,6 +438,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketing': {
@@ -511,6 +573,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -540,14 +623,19 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MaBoutiqueRoute: MaBoutiqueRoute,
   MarketingRoute: MarketingRoute,
+  McpRoute: McpRoute,
   OnboardingRoute: OnboardingRoute,
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
   ProduitsRoute: ProduitsRoute,
   ProduitsDigitauxRoute: ProduitsDigitauxRoute,
   RegisterRoute: RegisterRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

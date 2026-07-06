@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProduitsDigitauxRouteImport } from './routes/produits-digitaux'
 import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as PaiementsRouteImport } from './routes/paiements'
@@ -41,6 +42,11 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsDigitauxRoute = ProduitsDigitauxRouteImport.update({
+  id: '/produits-digitaux',
+  path: '/produits-digitaux',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProduitsRoute = ProduitsRouteImport.update({
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -233,6 +240,7 @@ export interface FileRoutesByTo {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -264,6 +272,7 @@ export interface FileRoutesById {
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/produits': typeof ProduitsRoute
+  '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -296,6 +305,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/paiements'
     | '/parametres'
     | '/produits'
+    | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -387,6 +399,7 @@ export interface RootRouteChildren {
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
   ProduitsRoute: typeof ProduitsRoute
+  ProduitsDigitauxRoute: typeof ProduitsDigitauxRoute
   RegisterRoute: typeof RegisterRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -403,6 +416,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits-digitaux': {
+      id: '/produits-digitaux'
+      path: '/produits-digitaux'
+      fullPath: '/produits-digitaux'
+      preLoaderRoute: typeof ProduitsDigitauxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/produits': {
@@ -628,6 +648,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
   ProduitsRoute: ProduitsRoute,
+  ProduitsDigitauxRoute: ProduitsDigitauxRoute,
   RegisterRoute: RegisterRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:

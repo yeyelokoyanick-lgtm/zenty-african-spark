@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { getShopBySlug, type Shop } from "@/lib/shop.functions";
+import { createOrderNotification, paymentLabel } from "@/lib/notifications";
 
 const PURPLE = "#4645E7";
 
@@ -256,6 +257,7 @@ function Badge({ icon, text, color }: { icon: React.ReactNode; text: string; col
 }
 
 function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSuccess: (info: { firstName: string; total: number; quantity: number }) => void; shopColor: string }) {
+  const { shop } = Route.useLoaderData() as { shop: Shop | null };
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "", quantity: 1, payment: "cod" as "mtn" | "moov" | "cod" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -275,8 +277,27 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
     setTimeout(() => {
       setSubmitting(false);
       const firstName = form.fullName.trim().split(/\s+/)[0] ?? "";
+      const notif = createOrderNotification({
+        shopName: shop?.name ?? "Ma Boutique",
+        merchantEmail: null,
+        merchantWhatsapp: shop?.whatsapp_number ?? null,
+        client: {
+          name: form.fullName.trim(),
+          phone: form.phone.trim(),
+          whatsapp: form.phone.trim(),
+          city: form.city.trim(),
+          country: "Bénin",
+          address: form.address.trim(),
+        },
+        items: [{ name: product.name, quantity: form.quantity, price: product.price, image: product.image }],
+        total,
+        paymentMethod: paymentLabel(form.payment),
+      });
+      if (notif.whatsappUrl) {
+        window.open(notif.whatsappUrl, "_blank", "noopener,noreferrer");
+      }
       onSuccess({ firstName, total, quantity: form.quantity });
-      toast.success("Commande envoyée");
+      toast.success("📧 Email envoyé + 💬 WhatsApp notifié");
     }, 600);
   };
 

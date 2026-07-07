@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 const navItems = [
   { to: "/dashboard" as const, label: "Tableau de Bord" },
@@ -45,6 +46,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <NotificationBell />
           <DropdownMenu>
             <DropdownMenuTrigger className="hidden items-center gap-2 rounded-full border border-border bg-card px-2 py-1 text-sm transition hover:shadow-md md:flex">
               <Avatar className="h-7 w-7">

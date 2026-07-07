@@ -10,7 +10,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getPrefs, setPrefs, DEFAULT_PREFS, type NotificationChannelPrefs } from "@/lib/notifications";
 
 export const Route = createFileRoute("/parametres")({
   head: () => ({ meta: [{ title: "Paramètres — AFRISELL" }] }),
@@ -21,6 +22,14 @@ function ParamsPage() {
   const { user } = useAuth();
   const [name, setName] = useState((user?.user_metadata?.full_name as string) ?? "");
   const initials = (name || user?.email || "U").toString().split(/\s+/).map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+  const [prefs, setPrefsState] = useState<NotificationChannelPrefs>(DEFAULT_PREFS);
+  useEffect(() => { setPrefsState(getPrefs()); }, []);
+  const updatePref = (key: keyof NotificationChannelPrefs, value: boolean) => {
+    const next = { ...prefs, [key]: value };
+    setPrefsState(next);
+    setPrefs(next);
+    toast.success("Préférence enregistrée");
+  };
 
   return (
     <AppShell>
@@ -62,15 +71,16 @@ function ParamsPage() {
 
         <TabsContent value="notifs">
           <div className="rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-card)] space-y-4 max-w-2xl">
-            {[
-              ["Nouvelles commandes par email", true],
-              ["Notifications WhatsApp", true],
-              ["SMS pour reversements", false],
-              ["Newsletter AFRISELL", true],
-            ].map(([label, def]) => (
-              <div key={label as string} className="flex items-center justify-between border-b border-border pb-3 last:border-0">
+            {([
+              ["emailOrders", "📧 Email à chaque nouvelle commande"],
+              ["whatsappOrders", "💬 WhatsApp à chaque nouvelle commande"],
+              ["dailyDigest", "📧 Email de résumé quotidien des ventes"],
+              ["inApp", "🔔 Notification dans l'app"],
+              ["lowStock", "📦 Alerte stock faible (produit < 3 unités)"],
+            ] as [keyof NotificationChannelPrefs, string][]).map(([key, label]) => (
+              <div key={key} className="flex items-center justify-between border-b border-border pb-3 last:border-0">
                 <span className="text-sm">{label}</span>
-                <Switch defaultChecked={def as boolean} />
+                <Switch checked={prefs[key]} onCheckedChange={(v) => updatePref(key, v)} />
               </div>
             ))}
           </div>

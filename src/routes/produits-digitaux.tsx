@@ -1088,14 +1088,14 @@ function ProductFormDialog({ open, onOpenChange, initial, onSave }: {
                   ) : (
                     <div
                       className="flex h-12 w-12 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: `${BRAND}12` }}
+                      style={{ backgroundColor: "#4645E712" }}
                     >
-                      <ImageIcon className="h-6 w-6" style={{ color: BRAND }} />
+                      <ImageIcon className="h-6 w-6" style={{ color: "#4645E7" }} />
                     </div>
                   )}
                   <p className="text-sm text-foreground">
                     Glisser votre fichier ici ou{" "}
-                    <span className="font-medium" style={{ color: BRAND }}>cliquez ici</span> pour l'importer
+                    <span className="font-medium" style={{ color: "#4645E7" }}>cliquez ici</span> pour l'importer
                   </p>
                   <input
                     id="cover-file"

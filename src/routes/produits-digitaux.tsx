@@ -1069,9 +1069,48 @@ function ProductFormDialog({ open, onOpenChange, initial, onSave }: {
                 </div>
               </div>
               <div>
-                <Label htmlFor="cover">URL image de couverture</Label>
-                <Input id="cover" className="mt-1.5" placeholder="https://..."
-                  value={form.cover} onChange={(e) => setForm({ ...form, cover: e.target.value })} />
+                <Label>Image de couverture <span className="text-destructive">*</span></Label>
+                <label
+                  htmlFor="cover-file"
+                  onDragOver={(e) => { e.preventDefault(); }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files?.[0];
+                    if (!file || !file.type.startsWith("image/")) return;
+                    const reader = new FileReader();
+                    reader.onload = () => setForm({ ...form, cover: reader.result as string });
+                    reader.readAsDataURL(file);
+                  }}
+                  className="mt-1.5 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border bg-muted/30 px-6 py-8 text-center transition-colors hover:bg-muted/50"
+                >
+                  {form.cover ? (
+                    <img src={form.cover} alt="Couverture" className="h-32 w-32 rounded-xl object-cover" />
+                  ) : (
+                    <div
+                      className="flex h-12 w-12 items-center justify-center rounded-xl"
+                      style={{ backgroundColor: `${BRAND}12` }}
+                    >
+                      <ImageIcon className="h-6 w-6" style={{ color: BRAND }} />
+                    </div>
+                  )}
+                  <p className="text-sm text-foreground">
+                    Glisser votre fichier ici ou{" "}
+                    <span className="font-medium" style={{ color: BRAND }}>cliquez ici</span> pour l'importer
+                  </p>
+                  <input
+                    id="cover-file"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const reader = new FileReader();
+                      reader.onload = () => setForm({ ...form, cover: reader.result as string });
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                </label>
               </div>
               <div>
                 <Label htmlFor="slug">Slug de partage (optionnel)</Label>

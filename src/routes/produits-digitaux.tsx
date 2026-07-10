@@ -377,35 +377,47 @@ function ProduitsDigitauxPage() {
 
   /* ---------- Actions ---------- */
 
-  const handleDelete = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    setSelected((s) => s.filter((x) => x !== id));
-    toast.success("Produit digital supprimé");
-  };
-
-  const handleDuplicate = (p: DigitalProduct) => {
-    const copy: DigitalProduct = {
-      ...p, id: `dp-${Date.now()}`, name: p.name + " (copie)",
-      slug: p.slug + "-copie", sales: 0, revenue: 0, views: 0,
-      status: "draft", createdAt: new Date().toISOString().slice(0, 10),
-    };
-    setProducts((prev) => [copy, ...prev]);
-    toast.success("Produit dupliqué");
-  };
-
-  const handleSave = (data: Omit<DigitalProduct, "id" | "sales" | "revenue" | "views" | "rating" | "createdAt">) => {
-    if (editing) {
-      setProducts((prev) => prev.map((p) => (p.id === editing.id ? { ...p, ...data } : p)));
-      toast.success("Produit mis à jour");
-    } else {
-      const newP: DigitalProduct = {
-        ...data, id: `dp-${Date.now()}`, sales: 0, revenue: 0, views: 0, rating: 0,
-        createdAt: new Date().toISOString().slice(0, 10),
-      };
-      setProducts((prev) => [newP, ...prev]);
-      toast.success("Produit digital publié");
+  const handleDelete = async (id: string) => {
+    try {
+      await apiDeleteProduct(id);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setSelected((s) => s.filter((x) => x !== id));
+      toast.success("Produit digital supprimé");
+    } catch (err: any) {
+      toast.error(err?.message || "Suppression impossible");
     }
-    setAddOpen(false); setEditing(null);
+  };
+
+  const handleDuplicate = async (p: DigitalProduct) => {
+    try {
+      const original = await listMyProducts("digital").then((rs) => rs.find((r) => r.id === p.id));
+      if (!original) throw new Error("Introuvable");
+      const row = await apiDuplicate(original);
+      setProducts((prev) => [rowToDigital(row), ...prev]);
+      toast.success("Produit dupliqué");
+    } catch (err: any) {
+      toast.error(err?.message || "Duplication impossible");
+    }
+  };
+
+  const handleSave = async (
+    data: Omit<DigitalProduct, "id" | "sales" | "revenue" | "views" | "rating" | "createdAt">,
+  ) => {
+    if (!user) { toast.error("Connecte-toi pour publier"); return; }
+    try {
+      if (editing) {
+        const row = await updateProduct(editing.id, digitalToInput(data));
+        setProducts((prev) => prev.map((p) => (p.id === editing.id ? rowToDigital(row) : p)));
+        toast.success("Produit mis à jour");
+      } else {
+        const row = await createProduct(digitalToInput(data));
+        setProducts((prev) => [rowToDigital(row), ...prev]);
+        toast.success("Produit digital publié");
+      }
+      setAddOpen(false); setEditing(null);
+    } catch (err: any) {
+      toast.error(err?.message || "Enregistrement impossible");
+    }
   };
 
   const copyLink = (slug: string) => {
@@ -414,17 +426,24 @@ function ProduitsDigitauxPage() {
     toast.success("Lien copié");
   };
 
-  const bulkAction = (action: "publish" | "draft" | "delete") => {
+  const bulkAction = async (action: "publish" | "draft" | "delete") => {
     if (selected.length === 0) return;
-    if (action === "delete") {
-      setProducts((prev) => prev.filter((p) => !selected.includes(p.id)));
-      toast.success(`${selected.length} produit(s) supprimé(s)`);
-    } else {
-      const status: ProductStatus = action === "publish" ? "active" : "draft";
-      setProducts((prev) => prev.map((p) => selected.includes(p.id) ? { ...p, status } : p));
-      toast.success(`${selected.length} produit(s) mis à jour`);
+    try {
+      if (action === "delete") {
+        await apiBulkDelete(selected);
+        setProducts((prev) => prev.filter((p) => !selected.includes(p.id)));
+        toast.success(`${selected.length} produit(s) supprimé(s)`);
+      } else {
+        const dbStatus = action === "publish" ? "published" : "draft";
+        const uiStatus: ProductStatus = action === "publish" ? "active" : "draft";
+        await bulkUpdateStatus(selected, dbStatus);
+        setProducts((prev) => prev.map((p) => selected.includes(p.id) ? { ...p, status: uiStatus } : p));
+        toast.success(`${selected.length} produit(s) mis à jour`);
+      }
+      setSelected([]);
+    } catch (err: any) {
+      toast.error(err?.message || "Action impossible");
     }
-    setSelected([]);
   };
 
   const toggleSelect = (id: string) =>

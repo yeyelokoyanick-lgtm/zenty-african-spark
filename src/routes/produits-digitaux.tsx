@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Plus, Search, Download, Link2, Copy, Eye, Pencil, Trash2, Upload,
@@ -36,6 +36,21 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatFCFA } from "@/data/dashboard";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  listMyProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct as apiDeleteProduct,
+  bulkUpdateStatus,
+  bulkDelete as apiBulkDelete,
+  duplicateProduct as apiDuplicate,
+  uploadProductImage,
+  uploadDigitalFile,
+  fileKindFromName,
+  formatBytes,
+  type ProductRow,
+} from "@/lib/products-api";
 
 export const Route = createFileRoute("/produits-digitaux")({
   head: () => ({

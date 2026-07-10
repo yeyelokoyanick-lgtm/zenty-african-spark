@@ -541,7 +541,7 @@ function ProduitsDigitauxPage() {
           <StatCard icon={<DollarSign className="h-5 w-5" />} label="Revenus" value={formatFCFA(totals.revenue)} trend="+18% ce mois" tone="success" />
           <StatCard icon={<ShoppingBag className="h-5 w-5" />} label="Ventes" value={String(totals.totalSales)} trend={`Panier moyen ${formatFCFA(totals.aov)}`} />
           <StatCard icon={<Users className="h-5 w-5" />} label="Clients uniques" value={String(totals.buyers)} trend={`${customers.length} identifiés`} />
-          <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Conversion" value={`${totals.conv}%`} trend={`${totals.views.toLocaleString()} vues`} tone="success" />
+          <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Conversion" value={`${totals.conv}%`} trend={`${new Intl.NumberFormat("fr-FR").format(totals.views)} vues`} tone="success" />
         </div>
 
         <Tabs defaultValue="apercu" className="w-full">

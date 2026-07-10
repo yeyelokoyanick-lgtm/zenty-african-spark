@@ -14,6 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
+      products: {
+        Row: {
+          access_password: string | null
+          category: string | null
+          compare_price: number | null
+          cover_url: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          download_limit: number | null
+          expiration_days: number | null
+          featured: boolean
+          file_name: string | null
+          file_size: number | null
+          file_url: string | null
+          gallery: Json
+          id: string
+          image_url: string | null
+          license_key_enabled: boolean
+          name: string
+          password_protected: boolean
+          price: number
+          sales_count: number
+          shop_id: string
+          slug: string | null
+          status: string
+          stock: number
+          tags: Json
+          type: string
+          updated_at: string
+          user_id: string
+          views_count: number
+        }
+        Insert: {
+          access_password?: string | null
+          category?: string | null
+          compare_price?: number | null
+          cover_url?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          download_limit?: number | null
+          expiration_days?: number | null
+          featured?: boolean
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string | null
+          gallery?: Json
+          id?: string
+          image_url?: string | null
+          license_key_enabled?: boolean
+          name: string
+          password_protected?: boolean
+          price?: number
+          sales_count?: number
+          shop_id: string
+          slug?: string | null
+          status?: string
+          stock?: number
+          tags?: Json
+          type?: string
+          updated_at?: string
+          user_id: string
+          views_count?: number
+        }
+        Update: {
+          access_password?: string | null
+          category?: string | null
+          compare_price?: number | null
+          cover_url?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          download_limit?: number | null
+          expiration_days?: number | null
+          featured?: boolean
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string | null
+          gallery?: Json
+          id?: string
+          image_url?: string | null
+          license_key_enabled?: boolean
+          name?: string
+          password_protected?: boolean
+          price?: number
+          sales_count?: number
+          shop_id?: string
+          slug?: string | null
+          status?: string
+          stock?: number
+          tags?: Json
+          type?: string
+          updated_at?: string
+          user_id?: string
+          views_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           city: string | null

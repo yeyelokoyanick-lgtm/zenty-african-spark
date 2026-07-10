@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Plus, Search, Download, Link2, Copy, Eye, Pencil, Trash2, Upload,
@@ -36,6 +36,21 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatFCFA } from "@/data/dashboard";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  listMyProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct as apiDeleteProduct,
+  bulkUpdateStatus,
+  bulkDelete as apiBulkDelete,
+  duplicateProduct as apiDuplicate,
+  uploadProductImage,
+  uploadDigitalFile,
+  fileKindFromName,
+  formatBytes,
+  type ProductRow,
+} from "@/lib/products-api";
 
 export const Route = createFileRoute("/produits-digitaux")({
   head: () => ({
@@ -207,10 +222,75 @@ const PIE_COLORS = ["#4645E7", "#7C7BE9", "#A5A4EE", "#22c55e", "#f59e0b", "#ef4
 
 /* ---------------- Page ---------------- */
 
+function rowToDigital(r: ProductRow): DigitalProduct {
+  const dbToUiStatus: Record<string, ProductStatus> =
+    { published: "active", draft: "draft", archived: "archived" };
+  return {
+    id: r.id,
+    name: r.name,
+    description: r.description ?? "",
+    price: Number(r.price),
+    comparePrice: r.compare_price ? Number(r.compare_price) : undefined,
+    cover: r.cover_url || r.image_url || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=600&fit=crop",
+    fileName: r.file_name ?? "",
+    fileKind: (r.file_name ? fileKindFromName(r.file_name) : "pdf"),
+    fileSize: formatBytes(r.file_size),
+    sales: r.sales_count,
+    revenue: r.sales_count * Number(r.price),
+    views: r.views_count,
+    rating: 0,
+    category: r.category ?? "Ebook",
+    status: dbToUiStatus[r.status] ?? "draft",
+    createdAt: r.created_at.slice(0, 10),
+    slug: r.slug ?? "",
+    downloadLimit: r.download_limit ?? 0,
+    expiryDays: r.expiration_days ?? 0,
+    passwordProtected: r.password_protected,
+    licenseEnabled: r.license_key_enabled,
+    featured: r.featured,
+  };
+}
+
+function digitalToInput(d: Partial<DigitalProduct>) {
+  const uiToDbStatus: Record<string, "published" | "draft" | "archived"> =
+    { active: "published", draft: "draft", archived: "archived" };
+  return {
+    type: "digital" as const,
+    name: d.name ?? "",
+    description: d.description ?? null,
+    price: Number(d.price ?? 0),
+    compare_price: d.comparePrice && d.comparePrice > 0 ? d.comparePrice : null,
+    cover_url: d.cover ?? null,
+    file_name: d.fileName ?? null,
+    category: d.category ?? null,
+    status: uiToDbStatus[d.status ?? "active"] ?? "published",
+    slug: d.slug ?? null,
+    download_limit: d.downloadLimit ?? null,
+    expiration_days: d.expiryDays ?? null,
+    password_protected: !!d.passwordProtected,
+    license_key_enabled: !!d.licenseEnabled,
+    featured: !!d.featured,
+  };
+}
+
 function ProduitsDigitauxPage() {
-  const [products, setProducts] = useState<DigitalProduct[]>(DEMO_PRODUCTS);
+  const { user, loading: authLoading } = useAuth();
+  const [products, setProducts] = useState<DigitalProduct[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const [sales, setSales] = useState<Sale[]>(DEMO_SALES);
   const [coupons, setCoupons] = useState<Coupon[]>(DEMO_COUPONS);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) { setLoadingProducts(false); return; }
+    let cancelled = false;
+    setLoadingProducts(true);
+    listMyProducts("digital")
+      .then((rows) => { if (!cancelled) setProducts(rows.map(rowToDigital)); })
+      .catch((err) => toast.error(err?.message || "Chargement impossible"))
+      .finally(() => { if (!cancelled) setLoadingProducts(false); });
+    return () => { cancelled = true; };
+  }, [user, authLoading]);
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -297,35 +377,47 @@ function ProduitsDigitauxPage() {
 
   /* ---------- Actions ---------- */
 
-  const handleDelete = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    setSelected((s) => s.filter((x) => x !== id));
-    toast.success("Produit digital supprimé");
-  };
-
-  const handleDuplicate = (p: DigitalProduct) => {
-    const copy: DigitalProduct = {
-      ...p, id: `dp-${Date.now()}`, name: p.name + " (copie)",
-      slug: p.slug + "-copie", sales: 0, revenue: 0, views: 0,
-      status: "draft", createdAt: new Date().toISOString().slice(0, 10),
-    };
-    setProducts((prev) => [copy, ...prev]);
-    toast.success("Produit dupliqué");
-  };
-
-  const handleSave = (data: Omit<DigitalProduct, "id" | "sales" | "revenue" | "views" | "rating" | "createdAt">) => {
-    if (editing) {
-      setProducts((prev) => prev.map((p) => (p.id === editing.id ? { ...p, ...data } : p)));
-      toast.success("Produit mis à jour");
-    } else {
-      const newP: DigitalProduct = {
-        ...data, id: `dp-${Date.now()}`, sales: 0, revenue: 0, views: 0, rating: 0,
-        createdAt: new Date().toISOString().slice(0, 10),
-      };
-      setProducts((prev) => [newP, ...prev]);
-      toast.success("Produit digital publié");
+  const handleDelete = async (id: string) => {
+    try {
+      await apiDeleteProduct(id);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setSelected((s) => s.filter((x) => x !== id));
+      toast.success("Produit digital supprimé");
+    } catch (err: any) {
+      toast.error(err?.message || "Suppression impossible");
     }
-    setAddOpen(false); setEditing(null);
+  };
+
+  const handleDuplicate = async (p: DigitalProduct) => {
+    try {
+      const original = await listMyProducts("digital").then((rs) => rs.find((r) => r.id === p.id));
+      if (!original) throw new Error("Introuvable");
+      const row = await apiDuplicate(original);
+      setProducts((prev) => [rowToDigital(row), ...prev]);
+      toast.success("Produit dupliqué");
+    } catch (err: any) {
+      toast.error(err?.message || "Duplication impossible");
+    }
+  };
+
+  const handleSave = async (
+    data: Omit<DigitalProduct, "id" | "sales" | "revenue" | "views" | "rating" | "createdAt">,
+  ) => {
+    if (!user) { toast.error("Connecte-toi pour publier"); return; }
+    try {
+      if (editing) {
+        const row = await updateProduct(editing.id, digitalToInput(data));
+        setProducts((prev) => prev.map((p) => (p.id === editing.id ? rowToDigital(row) : p)));
+        toast.success("Produit mis à jour");
+      } else {
+        const row = await createProduct(digitalToInput(data));
+        setProducts((prev) => [rowToDigital(row), ...prev]);
+        toast.success("Produit digital publié");
+      }
+      setAddOpen(false); setEditing(null);
+    } catch (err: any) {
+      toast.error(err?.message || "Enregistrement impossible");
+    }
   };
 
   const copyLink = (slug: string) => {
@@ -334,17 +426,24 @@ function ProduitsDigitauxPage() {
     toast.success("Lien copié");
   };
 
-  const bulkAction = (action: "publish" | "draft" | "delete") => {
+  const bulkAction = async (action: "publish" | "draft" | "delete") => {
     if (selected.length === 0) return;
-    if (action === "delete") {
-      setProducts((prev) => prev.filter((p) => !selected.includes(p.id)));
-      toast.success(`${selected.length} produit(s) supprimé(s)`);
-    } else {
-      const status: ProductStatus = action === "publish" ? "active" : "draft";
-      setProducts((prev) => prev.map((p) => selected.includes(p.id) ? { ...p, status } : p));
-      toast.success(`${selected.length} produit(s) mis à jour`);
+    try {
+      if (action === "delete") {
+        await apiBulkDelete(selected);
+        setProducts((prev) => prev.filter((p) => !selected.includes(p.id)));
+        toast.success(`${selected.length} produit(s) supprimé(s)`);
+      } else {
+        const dbStatus = action === "publish" ? "published" : "draft";
+        const uiStatus: ProductStatus = action === "publish" ? "active" : "draft";
+        await bulkUpdateStatus(selected, dbStatus);
+        setProducts((prev) => prev.map((p) => selected.includes(p.id) ? { ...p, status: uiStatus } : p));
+        toast.success(`${selected.length} produit(s) mis à jour`);
+      }
+      setSelected([]);
+    } catch (err: any) {
+      toast.error(err?.message || "Action impossible");
     }
-    setSelected([]);
   };
 
   const toggleSelect = (id: string) =>
@@ -442,7 +541,7 @@ function ProduitsDigitauxPage() {
           <StatCard icon={<DollarSign className="h-5 w-5" />} label="Revenus" value={formatFCFA(totals.revenue)} trend="+18% ce mois" tone="success" />
           <StatCard icon={<ShoppingBag className="h-5 w-5" />} label="Ventes" value={String(totals.totalSales)} trend={`Panier moyen ${formatFCFA(totals.aov)}`} />
           <StatCard icon={<Users className="h-5 w-5" />} label="Clients uniques" value={String(totals.buyers)} trend={`${customers.length} identifiés`} />
-          <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Conversion" value={`${totals.conv}%`} trend={`${totals.views.toLocaleString()} vues`} tone="success" />
+          <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Conversion" value={`${totals.conv}%`} trend={`${new Intl.NumberFormat("fr-FR").format(totals.views)} vues`} tone="success" />
         </div>
 
         <Tabs defaultValue="apercu" className="w-full">

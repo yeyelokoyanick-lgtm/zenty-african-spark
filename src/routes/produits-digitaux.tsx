@@ -222,10 +222,75 @@ const PIE_COLORS = ["#4645E7", "#7C7BE9", "#A5A4EE", "#22c55e", "#f59e0b", "#ef4
 
 /* ---------------- Page ---------------- */
 
+function rowToDigital(r: ProductRow): DigitalProduct {
+  const dbToUiStatus: Record<string, ProductStatus> =
+    { published: "active", draft: "draft", archived: "archived" };
+  return {
+    id: r.id,
+    name: r.name,
+    description: r.description ?? "",
+    price: Number(r.price),
+    comparePrice: r.compare_price ? Number(r.compare_price) : undefined,
+    cover: r.cover_url || r.image_url || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=600&fit=crop",
+    fileName: r.file_name ?? "",
+    fileKind: (r.file_name ? fileKindFromName(r.file_name) : "pdf"),
+    fileSize: formatBytes(r.file_size),
+    sales: r.sales_count,
+    revenue: r.sales_count * Number(r.price),
+    views: r.views_count,
+    rating: 0,
+    category: r.category ?? "Ebook",
+    status: dbToUiStatus[r.status] ?? "draft",
+    createdAt: r.created_at.slice(0, 10),
+    slug: r.slug ?? "",
+    downloadLimit: r.download_limit ?? 0,
+    expiryDays: r.expiration_days ?? 0,
+    passwordProtected: r.password_protected,
+    licenseEnabled: r.license_key_enabled,
+    featured: r.featured,
+  };
+}
+
+function digitalToInput(d: Partial<DigitalProduct>) {
+  const uiToDbStatus: Record<string, "published" | "draft" | "archived"> =
+    { active: "published", draft: "draft", archived: "archived" };
+  return {
+    type: "digital" as const,
+    name: d.name ?? "",
+    description: d.description ?? null,
+    price: Number(d.price ?? 0),
+    compare_price: d.comparePrice && d.comparePrice > 0 ? d.comparePrice : null,
+    cover_url: d.cover ?? null,
+    file_name: d.fileName ?? null,
+    category: d.category ?? null,
+    status: uiToDbStatus[d.status ?? "active"] ?? "published",
+    slug: d.slug ?? null,
+    download_limit: d.downloadLimit ?? null,
+    expiration_days: d.expiryDays ?? null,
+    password_protected: !!d.passwordProtected,
+    license_key_enabled: !!d.licenseEnabled,
+    featured: !!d.featured,
+  };
+}
+
 function ProduitsDigitauxPage() {
-  const [products, setProducts] = useState<DigitalProduct[]>(DEMO_PRODUCTS);
+  const { user, loading: authLoading } = useAuth();
+  const [products, setProducts] = useState<DigitalProduct[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const [sales, setSales] = useState<Sale[]>(DEMO_SALES);
   const [coupons, setCoupons] = useState<Coupon[]>(DEMO_COUPONS);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) { setLoadingProducts(false); return; }
+    let cancelled = false;
+    setLoadingProducts(true);
+    listMyProducts("digital")
+      .then((rows) => { if (!cancelled) setProducts(rows.map(rowToDigital)); })
+      .catch((err) => toast.error(err?.message || "Chargement impossible"))
+      .finally(() => { if (!cancelled) setLoadingProducts(false); });
+    return () => { cancelled = true; };
+  }, [user, authLoading]);
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");

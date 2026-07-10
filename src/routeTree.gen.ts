@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProduitsDigitauxRouteImport } from './routes/produits-digitaux'
-import { Route as ProduitsRouteImport } from './routes/produits'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -47,11 +46,6 @@ const RegisterRoute = RegisterRouteImport.update({
 const ProduitsDigitauxRoute = ProduitsDigitauxRouteImport.update({
   id: '/produits-digitaux',
   path: '/produits-digitaux',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProduitsRoute = ProduitsRouteImport.update({
-  id: '/produits',
-  path: '/produits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParametresRoute = ParametresRouteImport.update({
@@ -208,7 +202,6 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
-  '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -239,7 +232,6 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
-  '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -271,7 +263,6 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
-  '/produits': typeof ProduitsRoute
   '/produits-digitaux': typeof ProduitsDigitauxRoute
   '/register': typeof RegisterRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -304,7 +295,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/paiements'
     | '/parametres'
-    | '/produits'
     | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
@@ -335,7 +325,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/paiements'
     | '/parametres'
-    | '/produits'
     | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
@@ -366,7 +355,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/paiements'
     | '/parametres'
-    | '/produits'
     | '/produits-digitaux'
     | '/register'
     | '/.mcp/list-tools'
@@ -398,7 +386,6 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
-  ProduitsRoute: typeof ProduitsRoute
   ProduitsDigitauxRoute: typeof ProduitsDigitauxRoute
   RegisterRoute: typeof RegisterRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
@@ -423,13 +410,6 @@ declare module '@tanstack/react-router' {
       path: '/produits-digitaux'
       fullPath: '/produits-digitaux'
       preLoaderRoute: typeof ProduitsDigitauxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/produits': {
-      id: '/produits'
-      path: '/produits'
-      fullPath: '/produits'
-      preLoaderRoute: typeof ProduitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parametres': {
@@ -647,7 +627,6 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
-  ProduitsRoute: ProduitsRoute,
   ProduitsDigitauxRoute: ProduitsDigitauxRoute,
   RegisterRoute: RegisterRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import type { Product } from "@/types/product";
+import { uploadProductImage } from "@/lib/products-api";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,12 +30,19 @@ export function AddProductModal({ open, onOpenChange, onSave, initial }: AddProd
   const [description, setDescription] = useState(initial?.description ?? "");
   const [image, setImage] = useState(initial?.image ?? "");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploading, setUploading] = useState(false);
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result as string);
-    reader.readAsDataURL(file);
+    try {
+      setUploading(true);
+      const url = await uploadProductImage(file);
+      setImage(url);
+    } catch (err: any) {
+      toast.error(err?.message || "Échec de l'envoi de l'image");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,7 +53,7 @@ export function AddProductModal({ open, onOpenChange, onSave, initial }: AddProd
       price: Number(price),
       stock: Number(stock || 0),
       description: description.trim(),
-      image: image || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&h=200&fit=crop",
+      image: image || "",
     });
     setName(""); setPrice(""); setStock(""); setDescription(""); setImage("");
     onOpenChange(false);
@@ -70,7 +79,8 @@ export function AddProductModal({ open, onOpenChange, onSave, initial }: AddProd
             </div>
             <div className="flex-1">
               <Label htmlFor="image" className="mb-1.5 block text-xs">Image du produit</Label>
-              <Input id="image" type="file" accept="image/*" onChange={handleImageChange} />
+              <Input id="image" type="file" accept="image/*" onChange={handleImageChange} disabled={uploading} />
+              {uploading && <p className="mt-1 text-xs text-muted-foreground">Envoi en cours…</p>}
             </div>
           </div>
 

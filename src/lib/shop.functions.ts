@@ -34,6 +34,32 @@ export const getShopBySlug = createServerFn({ method: "GET" })
     return { shop: (shop as unknown as Shop) ?? null };
   });
 
+export interface PublicProduct {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  description: string | null;
+  image_url: string | null;
+  gallery: string[] | null;
+}
+
+export const getShopPublicProducts = createServerFn({ method: "GET" })
+  .inputValidator((input: { shopId: string }) =>
+    z.object({ shopId: z.string().uuid() }).parse(input)
+  )
+  .handler(async ({ data }): Promise<{ products: PublicProduct[] }> => {
+    const { data: products, error } = await supabaseAdmin
+      .from("products" as any)
+      .select("id, name, price, stock, description, image_url, gallery")
+      .eq("shop_id", data.shopId)
+      .eq("type", "physical")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { products: (products ?? []) as unknown as PublicProduct[] };
+  });
+
 export const getMyShop = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<{ shop: Shop | null }> => {

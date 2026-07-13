@@ -1,43 +1,58 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Users, UserPlus, Repeat, Search, Phone, MessageCircle } from "lucide-react";
+import { Users, UserPlus, Repeat, Search, MessageCircle, Loader2 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageHeader } from "@/components/afrisell/PageHeader";
 import { StatTile } from "@/components/afrisell/StatTile";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { fcfa } from "@/components/afrisell/format";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { listMyOrders, aggregateCustomers, type OrderRow } from "@/lib/orders-api";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/clients")({
   head: () => ({ meta: [{ title: "Clients — AFRISELL" }] }),
   component: ClientsPage,
 });
 
-const CLIENTS = [
-  { name: "Awa Diop", phone: "+221 77 123 45 67", city: "Dakar", orders: 5, total: 87500, last: "2026-05-22" },
-  { name: "Kofi Mensah", phone: "+228 90 12 34 56", city: "Lomé", orders: 3, total: 42000, last: "2026-05-20" },
-  { name: "Adjoa Boateng", phone: "+225 07 88 11 22", city: "Abidjan", orders: 8, total: 156000, last: "2026-05-23" },
-  { name: "Ibrahim Diallo", phone: "+229 91 22 33 44", city: "Cotonou", orders: 2, total: 18500, last: "2026-05-18" },
-  { name: "Fatou Ndiaye", phone: "+221 78 555 12 34", city: "Thiès", orders: 12, total: 245000, last: "2026-05-24" },
-  { name: "Yao Kouadio", phone: "+225 05 44 22 11", city: "Bouaké", orders: 1, total: 22000, last: "2026-05-15" },
-  { name: "Amina Traoré", phone: "+223 76 11 22 33", city: "Bamako", orders: 4, total: 64000, last: "2026-05-21" },
-  { name: "Sékou Camara", phone: "+224 62 99 88 77", city: "Conakry", orders: 2, total: 31000, last: "2026-05-19" },
-  { name: "Mariam Ouédraogo", phone: "+226 70 22 11 88", city: "Ouagadougou", orders: 6, total: 98000, last: "2026-05-23" },
-  { name: "Émile Tchato", phone: "+237 6 55 44 33 22", city: "Douala", orders: 3, total: 51000, last: "2026-05-17" },
-];
+function formatDate(iso: string) {
+  try { return new Date(iso).toLocaleDateString("fr-FR"); } catch { return iso.slice(0, 10); }
+}
 
 function ClientsPage() {
+  const { user, loading: authLoading } = useAuth();
+  const [rows, setRows] = useState<OrderRow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
-  const filtered = CLIENTS.filter((c) =>
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) { setLoading(false); return; }
+    let cancelled = false;
+    setLoading(true);
+    listMyOrders()
+      .then((r) => { if (!cancelled) setRows(r); })
+      .catch((e) => toast.error(e?.message || "Chargement impossible"))
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [user, authLoading]);
+
+  const clients = useMemo(() => aggregateCustomers(rows), [rows]);
+  const filtered = clients.filter((c) =>
     c.name.toLowerCase().includes(q.toLowerCase()) || c.phone.includes(q)
   );
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const newThisMonth = clients.filter((c) => c.last >= monthStart).length;
+  const recurring = clients.filter((c) => c.orders > 1).length;
+
   return (
     <AppShell>
       <PageHeader title="Clients" subtitle="Tous tes acheteurs en un coup d'œil." />
       <div className="grid gap-4 sm:grid-cols-3 mb-6">
-        <StatTile icon={Users} label="Total clients" value={String(CLIENTS.length)} />
-        <StatTile icon={UserPlus} label="Nouveaux ce mois" value="4" tone="success" />
-        <StatTile icon={Repeat} label="Clients récurrents" value="6" tone="warning" />
+        <StatTile icon={Users} label="Total clients" value={String(clients.length)} />
+        <StatTile icon={UserPlus} label="Nouveaux ce mois" value={String(newThisMonth)} tone="success" />
+        <StatTile icon={Repeat} label="Clients récurrents" value={String(recurring)} tone="warning" />
       </div>
       <div className="rounded-xl border border-border bg-card shadow-[var(--shadow-card)]">
         <div className="p-4 border-b border-border">
@@ -47,6 +62,13 @@ function ClientsPage() {
           </div>
         </div>
         <div className="overflow-x-auto">
+          {authLoading || loading ? (
+            <div className="flex items-center justify-center p-12 text-muted-foreground">
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement…
+            </div>
+          ) : !user ? (
+            <div className="p-8 text-center text-muted-foreground">Connecte-toi pour voir tes clients.</div>
+          ) : (
           <table className="w-full text-sm">
             <thead className="text-left text-xs uppercase tracking-wider text-muted-foreground">
               <tr className="border-b border-border">
@@ -67,7 +89,7 @@ function ClientsPage() {
                   <td className="px-4 py-3">{c.city}</td>
                   <td className="px-4 py-3">{c.orders}</td>
                   <td className="px-4 py-3 font-semibold">{fcfa(c.total)}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{c.last}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{formatDate(c.last)}</td>
                   <td className="px-4 py-3 text-right">
                     <a
                       href={`https://wa.me/${c.phone.replace(/[^0-9]/g, "")}`}
@@ -84,6 +106,7 @@ function ClientsPage() {
               )}
             </tbody>
           </table>
+          )}
         </div>
       </div>
     </AppShell>

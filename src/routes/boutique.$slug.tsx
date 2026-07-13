@@ -8,15 +8,25 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { getShopBySlug, type Shop } from "@/lib/shop.functions";
+import { getShopBySlug, getShopPublicProducts, type Shop, type PublicProduct } from "@/lib/shop.functions";
 import { createOrderNotification, paymentLabel } from "@/lib/notifications";
+import { createPublicOrder } from "@/lib/orders-api";
 
 const PURPLE = "#4645E7";
 
 export const Route = createFileRoute("/boutique/$slug")({
   loader: async ({ params }) => {
     const { shop } = await getShopBySlug({ data: { slug: params.slug } });
-    return { shop };
+    let products: PublicProduct[] = [];
+    if (shop?.id) {
+      try {
+        const res = await getShopPublicProducts({ data: { shopId: shop.id } });
+        products = res.products;
+      } catch {
+        products = [];
+      }
+    }
+    return { shop, products };
   },
   head: ({ params, loaderData }) => {
     const shop = (loaderData as any)?.shop as Shop | undefined;
@@ -40,7 +50,7 @@ function formatShopName(slug: string) {
 
 type Product = { id: string; name: string; price: number; image: string; desc: string; stock: number };
 
-const PRODUCTS: Product[] = [
+const DEMO_PRODUCTS: Product[] = [
   { id: "1", name: "Robe wax élégante", price: 15000, image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&h=600&fit=crop", desc: "Tissu wax authentique, coupe moderne.", stock: 12 },
   { id: "2", name: "Sac à main cuir", price: 22000, image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop", desc: "Cuir véritable, fait main au Bénin.", stock: 5 },
   { id: "3", name: "Boubou homme brodé", price: 28000, image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=600&fit=crop", desc: "Tissu bazin riche, broderies dorées.", stock: 8 },
@@ -48,6 +58,17 @@ const PRODUCTS: Product[] = [
   { id: "5", name: "Bijoux dorés set", price: 7500, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&h=600&fit=crop", desc: "Plaqué or, hypoallergénique.", stock: 20 },
   { id: "6", name: "Foulard wax premium", price: 4500, image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600&h=600&fit=crop", desc: "Coton 100%, motifs uniques.", stock: 15 },
 ];
+
+function toProduct(p: PublicProduct): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    price: Number(p.price),
+    image: p.image_url || (p.gallery && p.gallery[0]) || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&h=600&fit=crop",
+    desc: p.description ?? "",
+    stock: p.stock,
+  };
+}
 
 const formatFCFA = (n: number) => new Intl.NumberFormat("fr-FR").format(n) + " FCFA";
 
@@ -86,7 +107,8 @@ function FacebookPixel({ pixelId }: { pixelId: string }) {
 
 function BoutiquePage() {
   const { slug } = Route.useParams();
-  const { shop } = Route.useLoaderData() as { shop: Shop | null };
+  const { shop, products: dbProducts } = Route.useLoaderData() as { shop: Shop | null; products: PublicProduct[] };
+  const PRODUCTS: Product[] = dbProducts.length > 0 ? dbProducts.map(toProduct) : DEMO_PRODUCTS;
   const shopName = shop?.name ?? (slug === "kofi-mode" ? "Boutique Kofi Mode" : formatShopName(slug));
   const shopColor = shop?.color ?? PURPLE;
   const shopDesc = shop?.description ?? "Mode africaine moderne · Livraison rapide · Paiement à la livraison";

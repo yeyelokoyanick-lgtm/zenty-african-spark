@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Download, Phone, Eye, Inbox, MoreVertical } from "lucide-react";
+import { Search, Download, Phone, Eye, Inbox, MoreVertical, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -29,9 +29,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StatusBadge } from "@/components/orders/StatusBadge";
 import { OrderDetailsDrawer } from "@/components/orders/OrderDetailsDrawer";
-import { initialOrders } from "@/data/orders";
 import { formatFCFA } from "@/data/dashboard";
 import { ORDER_STATUSES, type Order, type OrderStatus } from "@/types/order";
+import { listMyOrders, updateOrderStatus as apiUpdateStatus, type OrderRow } from "@/lib/orders-api";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/commandes")({
   head: () => ({
@@ -46,6 +47,23 @@ export const Route = createFileRoute("/commandes")({
 });
 
 type StatusFilter = "Toutes" | OrderStatus;
+
+function rowToOrder(r: OrderRow): Order {
+  return {
+    id: r.order_number,
+    customerName: r.customer_name,
+    phone: r.customer_phone,
+    city: r.customer_city ?? "",
+    address: r.customer_address ?? "",
+    productName: r.product_name,
+    productImage: r.product_image ?? undefined,
+    quantity: r.quantity,
+    amount: Number(r.total),
+    status: (r.status as OrderStatus),
+    createdAt: r.created_at,
+    paymentMethod: "cash_on_delivery",
+  };
+}
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
@@ -91,11 +109,27 @@ function exportCSV(orders: Order[]) {
 }
 
 function CommandesPage() {
-  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const { user, loading: authLoading } = useAuth();
+  const [rows, setRows] = useState<OrderRow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("Toutes");
   const [selected, setSelected] = useState<Order | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) { setLoading(false); return; }
+    let cancelled = false;
+    setLoading(true);
+    listMyOrders()
+      .then((r) => { if (!cancelled) setRows(r); })
+      .catch((e) => toast.error(e?.message || "Chargement impossible"))
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [user, authLoading]);
+
+  const orders = useMemo(() => rows.map(rowToOrder), [rows]);
 
   const filtered = useMemo(() => {
     let list = [...orders];
@@ -113,10 +147,17 @@ function CommandesPage() {
     return list;
   }, [orders, search, statusFilter]);
 
-  const updateStatus = (id: string, status: OrderStatus) => {
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
-    setSelected((curr) => (curr && curr.id === id ? { ...curr, status } : curr));
-    toast.success(`Commande ${id} → ${status}`);
+  const updateStatus = async (id: string, status: OrderStatus) => {
+    const row = rows.find((r) => r.order_number === id);
+    if (!row) return;
+    try {
+      await apiUpdateStatus(row.id, status);
+      setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, status } : r)));
+      setSelected((curr) => (curr && curr.id === id ? { ...curr, status } : curr));
+      toast.success(`Commande ${id} → ${status}`);
+    } catch (e: any) {
+      toast.error(e?.message || "Mise à jour impossible");
+    }
   };
 
   const openDetails = (o: Order) => {
@@ -171,7 +212,15 @@ function CommandesPage() {
         </div>
 
         {/* Content */}
-        {filtered.length === 0 ? (
+        {authLoading || loading ? (
+          <div className="flex items-center justify-center rounded-2xl border border-border bg-card p-12 text-muted-foreground">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement…
+          </div>
+        ) : !user ? (
+          <div className="rounded-2xl border border-border bg-card p-8 text-center text-muted-foreground">
+            Connecte-toi pour voir tes commandes.
+          </div>
+        ) : filtered.length === 0 ? (
           <EmptyOrders />
         ) : (
           <>

@@ -14,6 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      orders: {
+        Row: {
+          created_at: string
+          customer_address: string | null
+          customer_city: string | null
+          customer_country: string | null
+          customer_name: string
+          customer_phone: string
+          customer_whatsapp: string | null
+          id: string
+          notes: string | null
+          order_number: string
+          payment_method: string
+          product_id: string | null
+          product_image: string | null
+          product_name: string
+          product_price: number
+          quantity: number
+          shipping: number
+          shop_id: string
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_name: string
+          customer_phone: string
+          customer_whatsapp?: string | null
+          id?: string
+          notes?: string | null
+          order_number?: string
+          payment_method?: string
+          product_id?: string | null
+          product_image?: string | null
+          product_name: string
+          product_price: number
+          quantity?: number
+          shipping?: number
+          shop_id: string
+          status?: string
+          subtotal: number
+          total: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_name?: string
+          customer_phone?: string
+          customer_whatsapp?: string | null
+          id?: string
+          notes?: string | null
+          order_number?: string
+          payment_method?: string
+          product_id?: string | null
+          product_image?: string | null
+          product_name?: string
+          product_price?: number
+          quantity?: number
+          shipping?: number
+          shop_id?: string
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           access_password: string | null

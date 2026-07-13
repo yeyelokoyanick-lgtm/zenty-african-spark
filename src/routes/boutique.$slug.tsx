@@ -285,7 +285,7 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
   const [submitting, setSubmitting] = useState(false);
   const total = useMemo(() => product.price * Math.max(1, form.quantity || 1), [product.price, form.quantity]);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const r = orderSchema.safeParse(form);
     if (!r.success) {
@@ -296,9 +296,30 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
     }
     setErrors({});
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
       const firstName = form.fullName.trim().split(/\s+/)[0] ?? "";
+      const paymentName = paymentLabel(form.payment);
+      if (shop?.id) {
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(product.id);
+        await createPublicOrder({
+          shop_id: shop.id,
+          product_id: isUuid ? product.id : null,
+          product_name: product.name,
+          product_image: product.image,
+          product_price: product.price,
+          quantity: form.quantity,
+          subtotal: total,
+          shipping: 0,
+          total,
+          customer_name: form.fullName.trim(),
+          customer_phone: form.phone.trim(),
+          customer_whatsapp: form.phone.trim(),
+          customer_city: form.city.trim(),
+          customer_country: "Bénin",
+          customer_address: form.address.trim(),
+          payment_method: form.payment,
+        });
+      }
       const notif = createOrderNotification({
         shopName: shop?.name ?? "Ma Boutique",
         merchantEmail: null,
@@ -313,14 +334,18 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
         },
         items: [{ name: product.name, quantity: form.quantity, price: product.price, image: product.image }],
         total,
-        paymentMethod: paymentLabel(form.payment),
+        paymentMethod: paymentName,
       });
       if (notif.whatsappUrl) {
         window.open(notif.whatsappUrl, "_blank", "noopener,noreferrer");
       }
       onSuccess({ firstName, total, quantity: form.quantity });
       toast.success("📧 Email envoyé + 💬 WhatsApp notifié");
-    }, 600);
+    } catch (err: any) {
+      toast.error(err?.message || "Impossible d'enregistrer la commande");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

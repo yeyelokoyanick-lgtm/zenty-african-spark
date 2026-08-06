@@ -76,7 +76,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         {groups.map((g) => (
           <div key={g.title} className="mb-5">
-            <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-[#999999]">
               {g.title}
             </p>
             <ul className="space-y-1">
@@ -89,13 +89,13 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                       to={it.to}
                       onClick={onNavigate}
                       className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        "flex items-center gap-3 border-l-[3px] px-3 py-2.5 text-sm transition-colors",
                         active
-                          ? "bg-primary text-primary-foreground shadow-[var(--shadow-card)]"
-                          : "text-foreground/80 hover:bg-muted hover:text-foreground",
+                          ? "border-l-[color:var(--brand-orange)] bg-[color:var(--brand-orange-light)] font-semibold text-primary"
+                          : "border-l-transparent font-medium text-foreground hover:bg-[color:var(--brand-orange-light)] hover:text-primary",
                       )}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className={cn("h-4 w-4", active ? "text-primary" : "text-muted-foreground")} />
                       <span>{it.label}</span>
                     </Link>
                   </li>
@@ -110,7 +110,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <Avatar className="h-9 w-9">
             <AvatarFallback
               className="text-xs font-semibold text-white"
-              style={{ background: "var(--gradient-brand)" }}
+              style={{ background: "linear-gradient(135deg, #FF6A00, #E55A00)" }}
             >
               {initials}
             </AvatarFallback>
@@ -143,14 +143,14 @@ function Topbar() {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Rechercher produits, commandes..."
-            className="pl-9 rounded-lg bg-muted/50 border-transparent focus-visible:bg-card"
+            className="pl-9 rounded border-[#E8E8E8] bg-card focus-visible:border-[color:var(--brand-orange)]"
           />
         </div>
         <button
           aria-label="Notifications"
           className="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card hover:bg-muted"
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-4 w-4 text-muted-foreground" />
           <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive" />
         </button>
         <DropdownMenu>
@@ -158,7 +158,7 @@ function Topbar() {
             <Avatar className="h-10 w-10">
               <AvatarFallback
                 className="text-xs font-semibold text-white"
-                style={{ background: "var(--gradient-brand)" }}
+                style={{ background: "linear-gradient(135deg, #FF6A00, #E55A00)" }}
               >
                 {initials}
               </AvatarFallback>

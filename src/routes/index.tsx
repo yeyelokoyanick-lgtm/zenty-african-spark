@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import featureBoutique from "@/assets/feature-boutique.png.asset.json";
 import featureMomo from "@/assets/feature-momo.png.asset.json";
 import featureAlibaba from "@/assets/feature-alibaba.png.asset.json";
+import heroDashboard from "@/assets/hero-dashboard.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,18 +48,34 @@ function CtaButton({
   children,
   size = "md",
   to = "/auth",
+  variant = "solid",
 }: {
   children: React.ReactNode;
   size?: "md" | "lg";
   to?: string;
+  variant?: "solid" | "outline";
 }) {
+  const base = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all hover:-translate-y-0.5 active:translate-y-0 ${
+    size === "lg" ? "px-7 py-4 text-base" : "px-5 py-3 text-sm"
+  }`;
+  if (variant === "outline") {
+    return (
+      <Link
+        to={to}
+        search={to === "/auth" ? ({ mode: "signup" as const, redirect: "/creer-boutique" }) : undefined}
+        className={`${base} border-2 bg-transparent`}
+        style={{ borderColor: PURPLE, color: PURPLE }}
+      >
+        {children}
+        <ArrowRight className="h-4 w-4" />
+      </Link>
+    );
+  }
   return (
     <Link
       to={to}
       search={to === "/auth" ? ({ mode: "signup" as const, redirect: "/creer-boutique" }) : undefined}
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 ${
-        size === "lg" ? "px-7 py-4 text-base" : "px-5 py-3 text-sm"
-      }`}
+      className={`${base} text-white shadow-lg hover:shadow-xl`}
       style={{ backgroundColor: PURPLE, boxShadow: `0 10px 30px ${PURPLE}40` }}
     >
       {children}
@@ -72,50 +89,48 @@ const features = [
     icon: Rocket,
     image: featureBoutique.url,
     title: "Boutique en 5 min",
-    desc: "Lance ta boutique en ligne professionnelle sans coder, depuis ton téléphone.",
+    desc: "Lance ta boutique professionnelle sans coder, depuis ton téléphone.",
   },
   {
     icon: Smartphone,
     image: featureMomo.url,
     title: "Mobile Money intégré",
-    desc: "Encaisse via MTN MoMo, Moov et Wave. Tes clients paient comme ils ont l'habitude.",
+    desc: "MTN MoMo, Moov et Wave acceptés nativement.",
   },
   {
     icon: PackageSearch,
     image: featureAlibaba.url,
     title: "Import depuis Alibaba",
-    desc: "Importe des produits gagnants en un clic et commence à vendre immédiatement.",
+    desc: "Trouve des produits gagnants en 1 clic.",
   },
 ];
 
 const testimonials = [
   {
-    name: "Awa Diop",
-    city: "Dakar, Sénégal",
-    initials: "AD",
-    quote:
-      "Avec AFRISELL j'ai lancé ma boutique de cosmétiques en une après-midi. Je reçois mes paiements Wave directement, c'est magique.",
-  },
-  {
-    name: "Kouadio Yao",
-    city: "Abidjan, Côte d'Ivoire",
-    initials: "KY",
-    quote:
-      "Je gère plus de 80 commandes par semaine depuis AFRISELL. Le paiement à la livraison et MTN MoMo fonctionnent parfaitement.",
-  },
-  {
-    name: "Fatou Aïkpé",
+    name: "Kofi A.",
     city: "Cotonou, Bénin",
-    initials: "FA",
+    initials: "KA",
     quote:
-      "L'import Alibaba m'a fait gagner des semaines. Aujourd'hui ma boutique tourne et mes clients adorent l'expérience.",
+      "En 10 minutes ma boutique était en ligne. Mes clients paient en MTN MoMo sans problème !",
+  },
+  {
+    name: "Aminata D.",
+    city: "Abidjan, Côte d'Ivoire",
+    initials: "AD",
+    quote: "J'ai fait mes 50 premières ventes en 2 semaines grâce à AfriSell.",
+  },
+  {
+    name: "Moussa S.",
+    city: "Lomé, Togo",
+    initials: "MS",
+    quote: "Le système de closeurs m'a permis de vendre sans bouger de chez moi.",
   },
 ];
 
 const steps = [
-  { icon: Store, title: "Crée ta boutique", desc: "Choisis un nom, un logo et tu es en ligne." },
-  { icon: PlusCircle, title: "Ajoute tes produits", desc: "Importe d'Alibaba ou ajoute tes propres produits." },
-  { icon: Wallet, title: "Encaisse tes paiements", desc: "Mobile Money et cash à la livraison, sans stress." },
+  { icon: Store, title: "Crée ton compte", desc: "Inscription gratuite en 2 minutes." },
+  { icon: PlusCircle, title: "Ajoute tes produits", desc: "Photos, prix, stock — tout en FCFA." },
+  { icon: Wallet, title: "Encaisse en Mobile Money", desc: "Tes clients paient, tu reçois directement." },
 ];
 
 function LandingPage() {
@@ -169,33 +184,70 @@ function LandingPage() {
             background: `radial-gradient(60% 50% at 50% 0%, ${PURPLE}22, transparent 70%)`,
           }}
         />
-        <div className="mx-auto max-w-5xl px-4 pb-16 pt-14 text-center sm:px-6 sm:pt-20 lg:pt-28">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold"
-            style={{ borderColor: `${PURPLE}40`, color: PURPLE, backgroundColor: `${PURPLE}10` }}
-          >
-            <Star className="h-3.5 w-3.5" /> Fait en Afrique, pour l'Afrique
-          </span>
-          <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Vends en ligne en Afrique,{" "}
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:pt-24">
+          <div className="text-center lg:text-left">
             <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #E52F07)` }}
+              className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold"
+              style={{ borderColor: `${PURPLE}40`, color: PURPLE, backgroundColor: `${PURPLE}10` }}
             >
-              encaisse en Mobile Money
+              <Star className="h-3.5 w-3.5" /> Fait en Afrique, pour l'Afrique
             </span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            AFRISELL te donne une boutique professionnelle, la gestion de tes commandes et les
-            paiements MTN MoMo, Moov et Wave — en 5 minutes.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <CtaButton size="lg">Commencer gratuitement</CtaButton>
-            <a href="#how" className="text-sm font-semibold text-muted-foreground hover:text-foreground">
-              Voir comment ça marche →
-            </a>
+            <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              Vends en ligne en Afrique,{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #E52F07)` }}
+              >
+                encaisse en Mobile Money
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
+              AFRISELL te donne une boutique professionnelle, la gestion de tes commandes et les
+              paiements MTN MoMo, Moov et Wave — en 5 minutes.
+            </p>
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+              <CtaButton size="lg">Commencer gratuitement</CtaButton>
+              <a
+                href="#how"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 px-7 py-4 text-base font-semibold transition-all hover:-translate-y-0.5"
+                style={{ borderColor: PURPLE, color: PURPLE }}
+              >
+                Voir comment ça marche <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              ✓ Sans carte bancaire · ✓ Sans engagement · ✓ Boutique en 5 min
+            </p>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">Sans carte bancaire · Sans engagement</p>
+
+          <div className="relative">
+            <div
+              className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+              style={{ background: `${PURPLE}18` }}
+              aria-hidden="true"
+            />
+            <img
+              src={heroDashboard}
+              alt="Tableau de bord AFRISELL sur ordinateur portable et téléphone"
+              width={1280}
+              height={960}
+              className="mx-auto w-full max-w-xl rounded border border-border bg-card shadow-xl"
+            />
+          </div>
+        </div>
+
+        {/* Social proof bar */}
+        <div className="border-y border-border bg-muted/40">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 px-4 py-5 sm:flex-row sm:px-6 lg:px-8">
+            <div className="flex gap-0.5" style={{ color: PURPLE }}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-current" />
+              ))}
+            </div>
+            <p className="text-sm font-semibold text-foreground">
+              Rejoignez +2 400 marchands africains qui vendent avec AFRISELL
+            </p>
+          </div>
         </div>
       </section>
 
@@ -252,7 +304,7 @@ function LandingPage() {
       <section id="testimonials" className="bg-muted/40 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent déjà avec AFRISELL</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent avec AFRISELL</h2>
             <p className="mt-3 text-muted-foreground">Des marchands de toute l'Afrique francophone nous font confiance.</p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -285,7 +337,7 @@ function LandingPage() {
       {/* How it works */}
       <section id="how" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Comment ça marche</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Comment ça marche ?</h2>
           <p className="mt-3 text-muted-foreground">3 étapes simples pour commencer à vendre.</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -305,6 +357,31 @@ function LandingPage() {
         </div>
         <div className="mt-12 flex justify-center">
           <CtaButton size="lg">Créer ma boutique gratuite</CtaButton>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section
+        className="py-16 text-center lg:py-20"
+        style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #E52F07 100%)` }}
+      >
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            Prêt à vendre en ligne ?
+          </h2>
+          <p className="mt-3 text-base text-white/90 sm:text-lg">
+            Rejoins des milliers de marchands africains sur AFRISELL.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/auth"
+              search={{ mode: "signup" as const, redirect: "/creer-boutique" }}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-bold shadow-lg transition-all hover:-translate-y-0.5"
+              style={{ color: PURPLE }}
+            >
+              Créer ma boutique gratuite <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -348,8 +425,17 @@ function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} AFRISELL. Tous droits réservés.
+        <div className="border-t border-border">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+            <p>© {new Date().getFullYear()} AFRISELL. Tous droits réservés.</p>
+            <nav className="flex flex-wrap items-center justify-center gap-4">
+              <a href="#features" className="hover:text-foreground">Fonctionnalités</a>
+              <Link to="/abonnement" className="hover:text-foreground">Tarifs</Link>
+              <Link to="/agences" className="hover:text-foreground">Agences</Link>
+              <Link to="/aide" className="hover:text-foreground">Aide</Link>
+            </nav>
+            <p className="font-medium">🔒 Paiements sécurisés par FedaPay</p>
+          </div>
         </div>
       </footer>
     </div>

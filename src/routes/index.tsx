@@ -304,7 +304,7 @@ function LandingPage() {
       <section id="testimonials" className="bg-muted/40 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent déjà avec AFRISELL</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ils vendent avec AFRISELL</h2>
             <p className="mt-3 text-muted-foreground">Des marchands de toute l'Afrique francophone nous font confiance.</p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">

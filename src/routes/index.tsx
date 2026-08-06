@@ -337,7 +337,7 @@ function LandingPage() {
       {/* How it works */}
       <section id="how" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Comment ça marche</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Comment ça marche ?</h2>
           <p className="mt-3 text-muted-foreground">3 étapes simples pour commencer à vendre.</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -357,6 +357,31 @@ function LandingPage() {
         </div>
         <div className="mt-12 flex justify-center">
           <CtaButton size="lg">Créer ma boutique gratuite</CtaButton>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section
+        className="py-16 text-center lg:py-20"
+        style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #E52F07 100%)` }}
+      >
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            Prêt à vendre en ligne ?
+          </h2>
+          <p className="mt-3 text-base text-white/90 sm:text-lg">
+            Rejoins des milliers de marchands africains sur AFRISELL.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/auth"
+              search={{ mode: "signup" as const, redirect: "/creer-boutique" }}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-bold shadow-lg transition-all hover:-translate-y-0.5"
+              style={{ color: PURPLE }}
+            >
+              Créer ma boutique gratuite <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -400,8 +425,17 @@ function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} AFRISELL. Tous droits réservés.
+        <div className="border-t border-border">
+          <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+            <p>© {new Date().getFullYear()} AFRISELL. Tous droits réservés.</p>
+            <nav className="flex flex-wrap items-center justify-center gap-4">
+              <a href="#features" className="hover:text-foreground">Fonctionnalités</a>
+              <Link to="/abonnement" className="hover:text-foreground">Tarifs</Link>
+              <Link to="/agences" className="hover:text-foreground">Agences</Link>
+              <Link to="/aide" className="hover:text-foreground">Aide</Link>
+            </nav>
+            <p className="font-medium">🔒 Paiements sécurisés par FedaPay</p>
+          </div>
         </div>
       </footer>
     </div>

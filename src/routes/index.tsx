@@ -184,33 +184,70 @@ function LandingPage() {
             background: `radial-gradient(60% 50% at 50% 0%, ${PURPLE}22, transparent 70%)`,
           }}
         />
-        <div className="mx-auto max-w-5xl px-4 pb-16 pt-14 text-center sm:px-6 sm:pt-20 lg:pt-28">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold"
-            style={{ borderColor: `${PURPLE}40`, color: PURPLE, backgroundColor: `${PURPLE}10` }}
-          >
-            <Star className="h-3.5 w-3.5" /> Fait en Afrique, pour l'Afrique
-          </span>
-          <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Vends en ligne en Afrique,{" "}
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:pt-24">
+          <div className="text-center lg:text-left">
             <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #E52F07)` }}
+              className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold"
+              style={{ borderColor: `${PURPLE}40`, color: PURPLE, backgroundColor: `${PURPLE}10` }}
             >
-              encaisse en Mobile Money
+              <Star className="h-3.5 w-3.5" /> Fait en Afrique, pour l'Afrique
             </span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            AFRISELL te donne une boutique professionnelle, la gestion de tes commandes et les
-            paiements MTN MoMo, Moov et Wave — en 5 minutes.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <CtaButton size="lg">Commencer gratuitement</CtaButton>
-            <a href="#how" className="text-sm font-semibold text-muted-foreground hover:text-foreground">
-              Voir comment ça marche →
-            </a>
+            <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              Vends en ligne en Afrique,{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #E52F07)` }}
+              >
+                encaisse en Mobile Money
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
+              AFRISELL te donne une boutique professionnelle, la gestion de tes commandes et les
+              paiements MTN MoMo, Moov et Wave — en 5 minutes.
+            </p>
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+              <CtaButton size="lg">Commencer gratuitement</CtaButton>
+              <a
+                href="#how"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 px-7 py-4 text-base font-semibold transition-all hover:-translate-y-0.5"
+                style={{ borderColor: PURPLE, color: PURPLE }}
+              >
+                Voir comment ça marche <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              ✓ Sans carte bancaire · ✓ Sans engagement · ✓ Boutique en 5 min
+            </p>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">Sans carte bancaire · Sans engagement</p>
+
+          <div className="relative">
+            <div
+              className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+              style={{ background: `${PURPLE}18` }}
+              aria-hidden="true"
+            />
+            <img
+              src={heroDashboard}
+              alt="Tableau de bord AFRISELL sur ordinateur portable et téléphone"
+              width={1280}
+              height={960}
+              className="mx-auto w-full max-w-xl rounded border border-border bg-card shadow-xl"
+            />
+          </div>
+        </div>
+
+        {/* Social proof bar */}
+        <div className="border-y border-border bg-muted/40">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 px-4 py-5 sm:flex-row sm:px-6 lg:px-8">
+            <div className="flex gap-0.5" style={{ color: PURPLE }}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-current" />
+              ))}
+            </div>
+            <p className="text-sm font-semibold text-foreground">
+              Rejoignez +2 400 marchands africains qui vendent avec AFRISELL
+            </p>
+          </div>
         </div>
       </section>
 

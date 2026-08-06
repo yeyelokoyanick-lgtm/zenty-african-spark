@@ -19,13 +19,13 @@ export function SalesChart() {
   const data = range === "week" ? salesWeek : salesMonth;
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="flex h-full flex-col rounded border border-border bg-card p-5 shadow-[var(--shadow-card)]">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold text-foreground">Ventes &amp; Revenus</h2>
           <p className="text-sm text-muted-foreground">Évolution de tes ventes</p>
         </div>
-        <div className="inline-flex rounded-lg bg-muted p-1">
+        <div className="inline-flex rounded bg-muted p-1">
           {(["week", "month"] as const).map((r) => (
             <button
               key={r}
@@ -46,22 +46,22 @@ export function SalesChart() {
       <div className="mt-5 h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-            <XAxis dataKey="label" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
-            <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" vertical={false} />
+            <XAxis dataKey="label" stroke="#999999" fontSize={12} tickLine={false} axisLine={false} />
+            <YAxis stroke="#999999" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
             <Tooltip
-              cursor={{ fill: "var(--brand-purple)", fillOpacity: 0.08 }}
+              cursor={{ fill: "#FF6A00", fillOpacity: 0.08 }}
               contentStyle={{
                 background: "var(--color-card)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "12px",
+                borderRadius: "4px",
                 fontSize: "12px",
               }}
               formatter={(v: number) => [formatFCFA(v), "Ventes"]}
             />
-            <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+            <Bar dataKey="value" radius={[2, 2, 0, 0]}>
               {data.map((_, i) => (
-                <Cell key={i} fill="var(--brand-purple)" />
+                <Cell key={i} fill="#FF6A00" />
               ))}
             </Bar>
           </BarChart>

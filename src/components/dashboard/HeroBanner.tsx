@@ -1,7 +1,7 @@
 export function HeroBanner() {
   return (
     <section
-      className="relative overflow-hidden rounded-2xl p-6 text-primary-foreground shadow-lg sm:p-10"
+      className="relative overflow-hidden rounded p-6 text-primary-foreground shadow-[var(--shadow-card)] sm:p-10"
       style={{ background: "var(--gradient-brand)" }}
     >
       <div

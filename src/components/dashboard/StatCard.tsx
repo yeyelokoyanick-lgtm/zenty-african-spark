@@ -10,11 +10,11 @@ interface StatCardProps {
 
 export function StatCard({ label, value, trend, icon: Icon }: StatCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition hover:shadow-md">
+    <div className="rounded border border-border border-l-[3px] border-l-[color:var(--brand-orange)] bg-card p-4 shadow-[var(--shadow-card)] transition hover:shadow-[var(--shadow-elevated)]">
       <div className="flex items-start justify-between">
         <div
-          className="flex h-10 w-10 items-center justify-center rounded-xl"
-          style={{ background: "var(--gradient-brand-soft)", color: "var(--brand-blue)" }}
+          className="flex h-10 w-10 items-center justify-center rounded"
+          style={{ background: "var(--brand-orange-light)", color: "var(--brand-orange)" }}
         >
           <Icon className="h-5 w-5" />
         </div>

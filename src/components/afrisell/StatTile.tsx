@@ -17,7 +17,7 @@ export function StatTile({
     destructive: "bg-destructive/10 text-destructive",
   };
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+    <div className="rounded border border-border border-l-[3px] border-l-[color:var(--brand-orange)] bg-card p-5 shadow-[var(--shadow-card)]">
       <div className="flex items-start justify-between">
         <span className="text-xs font-medium text-muted-foreground">{label}</span>
         <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", toneClass[tone])}>

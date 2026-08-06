@@ -218,7 +218,7 @@ const REVENUE_TREND = [
   { day: "D", revenue: 262000, sales: 39 },
 ];
 
-const PIE_COLORS = ["#4645E7", "#7C7BE9", "#A5A4EE", "#22c55e", "#f59e0b", "#ef4444"];
+const PIE_COLORS = ["#FF6A00", "#FFB366", "#FF7D00", "#22c55e", "#f59e0b", "#ef4444"];
 
 /* ---------------- Page ---------------- */
 
@@ -575,7 +575,7 @@ function ProduitsDigitauxPage() {
                         contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
                         formatter={(v: number) => formatFCFA(v)}
                       />
-                      <Line type="monotone" dataKey="revenue" stroke="#4645E7" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                      <Line type="monotone" dataKey="revenue" stroke="#FF6A00" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -619,7 +619,7 @@ function ProduitsDigitauxPage() {
                     <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
                     <YAxis type="category" dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} width={160} />
                     <Tooltip formatter={(v: number) => formatFCFA(v)} contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
-                    <Bar dataKey="revenue" fill="#4645E7" radius={[0, 6, 6, 0]} />
+                    <Bar dataKey="revenue" fill="#FF6A00" radius={[0, 6, 6, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -1187,14 +1187,14 @@ function ProductFormDialog({ open, onOpenChange, initial, onSave }: {
                   ) : (
                     <div
                       className="flex h-12 w-12 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: "#4645E712" }}
+                      style={{ backgroundColor: "#FF6A0012" }}
                     >
-                      <ImageIcon className="h-6 w-6" style={{ color: "#4645E7" }} />
+                      <ImageIcon className="h-6 w-6" style={{ color: "#FF6A00" }} />
                     </div>
                   )}
                   <p className="text-sm text-foreground">
                     Glisser votre fichier ici ou{" "}
-                    <span className="font-medium" style={{ color: "#4645E7" }}>cliquez ici</span> pour l'importer
+                    <span className="font-medium" style={{ color: "#FF6A00" }}>cliquez ici</span> pour l'importer
                   </p>
                   <input
                     id="cover-file"

@@ -12,7 +12,7 @@ import { getShopBySlug, getShopPublicProducts, type Shop, type PublicProduct } f
 import { createOrderNotification, paymentLabel } from "@/lib/notifications";
 import { createPublicOrder } from "@/lib/orders-api";
 
-const PURPLE = "#4645E7";
+const PURPLE = "#FF6A00";
 
 export const Route = createFileRoute("/boutique/$slug")({
   loader: async ({ params }) => {
@@ -192,11 +192,11 @@ function BoutiquePage() {
                 <div className="mt-2 flex items-center justify-between">
                   <p className="text-lg font-bold" style={{ color: shopColor }}>{formatFCFA(p.price)}</p>
                   {p.stock > 0 ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1D9E75]/10 px-2 py-0.5 text-[11px] font-semibold text-[#1D9E75]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#1D9E75]" /> En stock
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#00B42A]/10 px-2 py-0.5 text-[11px] font-semibold text-[#00B42A]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#00B42A]" /> En stock
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#E24B4A]/10 px-2 py-0.5 text-[11px] font-semibold text-[#E24B4A]">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#E52F07]/10 px-2 py-0.5 text-[11px] font-semibold text-[#E52F07]">
                       Rupture
                     </span>
                   )}
@@ -478,7 +478,7 @@ function SuccessView({
     <div className="py-4 text-center">
       <div
         className="mx-auto flex h-20 w-20 animate-in zoom-in-50 items-center justify-center rounded-full duration-500"
-        style={{ backgroundColor: "#1D9E75" }}
+        style={{ backgroundColor: "#00B42A" }}
       >
         <Check className="h-10 w-10 text-white" strokeWidth={3} />
       </div>

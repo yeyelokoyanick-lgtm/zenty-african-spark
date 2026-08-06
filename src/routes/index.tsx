@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-const PURPLE = "#4645E7";
+const PURPLE = "#FF6A00";
 
 function CtaButton({
   children,
@@ -180,7 +180,7 @@ function LandingPage() {
             Vends en ligne en Afrique,{" "}
             <span
               className="bg-clip-text text-transparent"
-              style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #9b7bff)` }}
+              style={{ backgroundImage: `linear-gradient(135deg, ${PURPLE}, #E52F07)` }}
             >
               encaisse en Mobile Money
             </span>

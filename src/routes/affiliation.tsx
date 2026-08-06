@@ -270,7 +270,7 @@ function AffiliationPage() {
                 <XAxis dataKey="day" tick={{ fontSize: 11 }} />
                 <YAxis tickFormatter={(v) => `$${v}`} tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(v: number) => usd(v)} />
-                <Line type="monotone" dataKey="gains" stroke="#4645E7" strokeWidth={2.5} dot={false} />
+                <Line type="monotone" dataKey="gains" stroke="#FF6A00" strokeWidth={2.5} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>

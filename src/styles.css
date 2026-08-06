@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Alibaba PuHuiTi", "PingFang SC", "Microsoft YaHei", "Nunito", Arial, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -54,58 +54,65 @@
 }
 
 :root {
-  --radius: 0.875rem;
+  --radius: 0.25rem;
 
   /* Base surfaces */
-  --background: oklch(0.975 0.012 295);
-  --foreground: oklch(0.18 0.04 265);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.04 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.04 265);
+  --background: #ffffff;
+  --foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #333333;
+  --popover: #ffffff;
+  --popover-foreground: #333333;
 
-  /* AFRISELL brand */
-  --brand-blue: oklch(0.50 0.21 295);
-  --brand-purple: oklch(0.50 0.21 295);   /* #4645E7 */
-  --brand-orange: oklch(0.66 0.16 50);    /* #E07B2A */
-  --brand-green: oklch(0.58 0.13 162);    /* #1D9E75 */
+  /* AFRISELL brand — Alibaba palette */
+  --brand-blue: #ff6a00;
+  --brand-purple: #ff6a00;
+  --brand-orange: #ff6a00;
+  --brand-orange-hover: #e55a00;
+  --brand-orange-light: #fff3e8;
+  --brand-red: #e52f07;
+  --brand-red-light: #fef0ed;
+  --brand-green: #00b42a;
+  --surface-2: #fafafa;
+  --border-dark: #d9d9d9;
 
-  --primary: oklch(0.50 0.21 295);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.58 0.13 162);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.96 0.012 290);
-  --muted-foreground: oklch(0.52 0.03 285);
-  --accent: oklch(0.95 0.03 295);
-  --accent-foreground: oklch(0.35 0.18 295);
-  --destructive: oklch(0.62 0.20 25);
-  --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.58 0.13 162);
-  --warning: oklch(0.66 0.16 50);
-  --border: oklch(0.92 0.012 290);
-  --input: oklch(0.92 0.012 290);
-  --ring: oklch(0.50 0.21 295);
+  --primary: #ff6a00;
+  --primary-foreground: #ffffff;
+  --secondary: #fff3e8;
+  --secondary-foreground: #ff6a00;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
+  --accent: #fff3e8;
+  --accent-foreground: #e55a00;
+  --destructive: #e52f07;
+  --destructive-foreground: #ffffff;
+  --success: #00b42a;
+  --warning: #ff7d00;
+  --info: #165dff;
+  --border: #e8e8e8;
+  --input: #d9d9d9;
+  --ring: #ff6a00;
 
-  --chart-1: oklch(0.50 0.21 295);
-  --chart-2: oklch(0.58 0.13 162);
-  --chart-3: oklch(0.66 0.16 50);
-  --chart-4: oklch(0.62 0.20 25);
-  --chart-5: oklch(0.65 0.12 230);
+  --chart-1: #ff6a00;
+  --chart-2: #e52f07;
+  --chart-3: #ffb366;
+  --chart-4: #ff7d00;
+  --chart-5: #165dff;
 
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.18 0.04 265);
-  --sidebar-primary: oklch(0.50 0.21 295);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.015 295);
-  --sidebar-accent-foreground: oklch(0.30 0.16 295);
-  --sidebar-border: oklch(0.92 0.012 290);
-  --sidebar-ring: oklch(0.50 0.21 295);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #333333;
+  --sidebar-primary: #ff6a00;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fff3e8;
+  --sidebar-accent-foreground: #ff6a00;
+  --sidebar-border: #e8e8e8;
+  --sidebar-ring: #ff6a00;
 
   /* Reusable design tokens */
-  --gradient-brand: linear-gradient(135deg, oklch(0.50 0.21 295), oklch(0.60 0.18 305));
-  --gradient-brand-soft: linear-gradient(135deg, oklch(0.50 0.21 295 / 0.08), oklch(0.60 0.18 305 / 0.08));
-  --shadow-card: 0 2px 12px oklch(0.50 0.21 295 / 0.08);
-  --shadow-elevated: 0 10px 40px oklch(0.50 0.21 295 / 0.18);
+  --gradient-brand: linear-gradient(135deg, #ff6a00 0%, #e52f07 100%);
+  --gradient-brand-soft: linear-gradient(135deg, rgb(255 106 0 / 0.10), rgb(229 47 7 / 0.10));
+  --shadow-card: 0 2px 8px rgb(0 0 0 / 0.08);
+  --shadow-elevated: 0 4px 16px rgb(0 0 0 / 0.12);
 }
 
 .dark {
@@ -142,5 +149,33 @@
     color: var(--color-foreground);
     font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
+  }
+  ::placeholder {
+    color: #999999;
+  }
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-color: var(--brand-orange);
+    box-shadow: 0 0 0 2px rgb(255 106 0 / 0.15);
+  }
+  th {
+    background-color: #f5f5f5;
+    color: #333333;
+    font-weight: 600;
+  }
+  tbody tr:hover {
+    background-color: var(--brand-orange-light);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #ffb366;
+    border-radius: 4px;
   }
 }

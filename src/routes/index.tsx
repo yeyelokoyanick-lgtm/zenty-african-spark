@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import featureBoutique from "@/assets/feature-boutique.png.asset.json";
 import featureMomo from "@/assets/feature-momo.png.asset.json";
 import featureAlibaba from "@/assets/feature-alibaba.png.asset.json";
+import heroDashboard from "@/assets/hero-dashboard.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,18 +48,34 @@ function CtaButton({
   children,
   size = "md",
   to = "/auth",
+  variant = "solid",
 }: {
   children: React.ReactNode;
   size?: "md" | "lg";
   to?: string;
+  variant?: "solid" | "outline";
 }) {
+  const base = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all hover:-translate-y-0.5 active:translate-y-0 ${
+    size === "lg" ? "px-7 py-4 text-base" : "px-5 py-3 text-sm"
+  }`;
+  if (variant === "outline") {
+    return (
+      <Link
+        to={to}
+        search={to === "/auth" ? ({ mode: "signup" as const, redirect: "/creer-boutique" }) : undefined}
+        className={`${base} border-2 bg-transparent`}
+        style={{ borderColor: PURPLE, color: PURPLE }}
+      >
+        {children}
+        <ArrowRight className="h-4 w-4" />
+      </Link>
+    );
+  }
   return (
     <Link
       to={to}
       search={to === "/auth" ? ({ mode: "signup" as const, redirect: "/creer-boutique" }) : undefined}
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 ${
-        size === "lg" ? "px-7 py-4 text-base" : "px-5 py-3 text-sm"
-      }`}
+      className={`${base} text-white shadow-lg hover:shadow-xl`}
       style={{ backgroundColor: PURPLE, boxShadow: `0 10px 30px ${PURPLE}40` }}
     >
       {children}
@@ -72,50 +89,48 @@ const features = [
     icon: Rocket,
     image: featureBoutique.url,
     title: "Boutique en 5 min",
-    desc: "Lance ta boutique en ligne professionnelle sans coder, depuis ton téléphone.",
+    desc: "Lance ta boutique professionnelle sans coder, depuis ton téléphone.",
   },
   {
     icon: Smartphone,
     image: featureMomo.url,
     title: "Mobile Money intégré",
-    desc: "Encaisse via MTN MoMo, Moov et Wave. Tes clients paient comme ils ont l'habitude.",
+    desc: "MTN MoMo, Moov et Wave acceptés nativement.",
   },
   {
     icon: PackageSearch,
     image: featureAlibaba.url,
     title: "Import depuis Alibaba",
-    desc: "Importe des produits gagnants en un clic et commence à vendre immédiatement.",
+    desc: "Trouve des produits gagnants en 1 clic.",
   },
 ];
 
 const testimonials = [
   {
-    name: "Awa Diop",
-    city: "Dakar, Sénégal",
-    initials: "AD",
-    quote:
-      "Avec AFRISELL j'ai lancé ma boutique de cosmétiques en une après-midi. Je reçois mes paiements Wave directement, c'est magique.",
-  },
-  {
-    name: "Kouadio Yao",
-    city: "Abidjan, Côte d'Ivoire",
-    initials: "KY",
-    quote:
-      "Je gère plus de 80 commandes par semaine depuis AFRISELL. Le paiement à la livraison et MTN MoMo fonctionnent parfaitement.",
-  },
-  {
-    name: "Fatou Aïkpé",
+    name: "Kofi A.",
     city: "Cotonou, Bénin",
-    initials: "FA",
+    initials: "KA",
     quote:
-      "L'import Alibaba m'a fait gagner des semaines. Aujourd'hui ma boutique tourne et mes clients adorent l'expérience.",
+      "En 10 minutes ma boutique était en ligne. Mes clients paient en MTN MoMo sans problème !",
+  },
+  {
+    name: "Aminata D.",
+    city: "Abidjan, Côte d'Ivoire",
+    initials: "AD",
+    quote: "J'ai fait mes 50 premières ventes en 2 semaines grâce à AfriSell.",
+  },
+  {
+    name: "Moussa S.",
+    city: "Lomé, Togo",
+    initials: "MS",
+    quote: "Le système de closeurs m'a permis de vendre sans bouger de chez moi.",
   },
 ];
 
 const steps = [
-  { icon: Store, title: "Crée ta boutique", desc: "Choisis un nom, un logo et tu es en ligne." },
-  { icon: PlusCircle, title: "Ajoute tes produits", desc: "Importe d'Alibaba ou ajoute tes propres produits." },
-  { icon: Wallet, title: "Encaisse tes paiements", desc: "Mobile Money et cash à la livraison, sans stress." },
+  { icon: Store, title: "Crée ton compte", desc: "Inscription gratuite en 2 minutes." },
+  { icon: PlusCircle, title: "Ajoute tes produits", desc: "Photos, prix, stock — tout en FCFA." },
+  { icon: Wallet, title: "Encaisse en Mobile Money", desc: "Tes clients paient, tu reçois directement." },
 ];
 
 function LandingPage() {

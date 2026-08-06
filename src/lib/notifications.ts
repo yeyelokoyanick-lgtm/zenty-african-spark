@@ -179,11 +179,11 @@ export function buildOrderEmailHtml(input: {
 <body style="margin:0;padding:0;background:#F7F6FC;font-family:Arial,Helvetica,sans-serif;color:#111;">
   <div style="max-width:600px;margin:0 auto;padding:24px 12px;">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
-      <div style="width:36px;height:36px;border-radius:12px;background:#6B4BCC;color:#fff;font-weight:800;font-size:18px;line-height:36px;text-align:center;">A</div>
-      <div style="font-weight:800;color:#6B4BCC;letter-spacing:0.5px;">AFRISELL</div>
+      <div style="width:36px;height:36px;border-radius:12px;background:#FF6A00;color:#fff;font-weight:800;font-size:18px;line-height:36px;text-align:center;">A</div>
+      <div style="font-weight:800;color:#FF6A00;letter-spacing:0.5px;">AFRISELL</div>
     </div>
 
-    <div style="background:#6B4BCC;color:#fff;border-radius:8px;padding:24px;">
+    <div style="background:#FF6A00;color:#fff;border-radius:8px;padding:24px;">
       <div style="font-size:20px;font-weight:800;">🛒 Nouvelle commande reçue !</div>
       <div style="margin-top:6px;font-size:14px;opacity:0.9;">Vous avez reçu une nouvelle commande sur votre boutique <b>${input.shopName}</b></div>
     </div>
@@ -210,24 +210,24 @@ export function buildOrderEmailHtml(input: {
     </div>
 
     <div style="background:#FFF8E1;border:1px solid #F5E4A8;border-radius:8px;padding:20px;margin-top:16px;">
-      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:#6B4BCC;">ARTICLES COMMANDÉS</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:#FF6A00;">ARTICLES COMMANDÉS</div>
       <table role="presentation" style="width:100%;border-collapse:collapse;">
         ${itemsHtml}
         <tr>
-          <td style="padding:14px 0 0;border-top:2px solid #6B4BCC;font-size:16px;font-weight:800;">TOTAL À ENCAISSER</td>
-          <td style="padding:14px 0 0;border-top:2px solid #6B4BCC;font-size:18px;font-weight:800;text-align:right;color:#1D9E75;">${fcfa(input.total)}</td>
+          <td style="padding:14px 0 0;border-top:2px solid #FF6A00;font-size:16px;font-weight:800;">TOTAL À ENCAISSER</td>
+          <td style="padding:14px 0 0;border-top:2px solid #FF6A00;font-size:18px;font-weight:800;text-align:right;color:#00B42A;">${fcfa(input.total)}</td>
         </tr>
       </table>
     </div>
 
     <div style="text-align:center;margin:24px 0;">
-      <a href="https://afrisell.com/dashboard/commandes" style="display:inline-block;background:#6B4BCC;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;margin:4px;">✅ Confirmer la commande</a>
-      ${waNum ? `<a href="https://wa.me/${waNum}" style="display:inline-block;background:#1D9E75;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;margin:4px;">💬 Contacter le client sur WhatsApp</a>` : ""}
+      <a href="https://afrisell.com/dashboard/commandes" style="display:inline-block;background:#FF6A00;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;margin:4px;">✅ Confirmer la commande</a>
+      ${waNum ? `<a href="https://wa.me/${waNum}" style="display:inline-block;background:#00B42A;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700;margin:4px;">💬 Contacter le client sur WhatsApp</a>` : ""}
     </div>
 
     <div style="text-align:center;color:#666;font-size:13px;margin-top:24px;">
       Connectez-vous à votre tableau de bord AfriSell pour gérer cette commande<br/>
-      <a href="https://afrisell.com/dashboard/commandes" style="color:#6B4BCC;">afrisell.com/dashboard/commandes</a>
+      <a href="https://afrisell.com/dashboard/commandes" style="color:#FF6A00;">afrisell.com/dashboard/commandes</a>
     </div>
 
     <hr style="border:none;border-top:1px solid #E5E3F0;margin:20px 0;"/>

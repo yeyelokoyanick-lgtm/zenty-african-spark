@@ -35,7 +35,7 @@ function MaBoutiquePage() {
   const [name, setName] = useState("Ma Boutique AFRISELL");
   const [slug, setSlug] = useState("ma-boutique");
   const [desc, setDesc] = useState("Produits authentiques livrés partout en Afrique.");
-  const [color, setColor] = useState("#4645E7");
+  const [color, setColor] = useState("#FF6A00");
   const [pixelId, setPixelId] = useState("");
   const [pixelEnabled, setPixelEnabled] = useState(false);
   const [waNumber, setWaNumber] = useState("");
@@ -47,7 +47,7 @@ function MaBoutiquePage() {
       setName(shop.name || "Ma Boutique AFRISELL");
       setSlug(shop.slug || "ma-boutique");
       setDesc(shop.description || "Produits authentiques livrés partout en Afrique.");
-      setColor(shop.color || "#4645E7");
+      setColor(shop.color || "#FF6A00");
       setPixelId(shop.facebook_pixel_id || "");
       setPixelEnabled(shop.facebook_pixel_enabled || false);
       setWaNumber(shop.whatsapp_number || "");

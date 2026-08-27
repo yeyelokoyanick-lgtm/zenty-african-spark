@@ -35,8 +35,20 @@ const statIcons = { sales: Wallet, orders: ShoppingBag, visitors: Users, product
 function DashboardPage() {
   const [addOpen, setAddOpen] = useState(false);
 
+  const { data: metrics } = useQuery({ queryKey: ["dashboard-metrics"], queryFn: getDashboardMetrics });
+  const { data: store } = useQuery({ queryKey: ["my-store"], queryFn: getMyStore });
+
+  const stats = metrics
+    ? [
+        { label: "Revenus (30j)", value: formatFCFA(metrics.revenueMonth), trend: `${formatFCFA(metrics.revenueToday)} aujourd'hui`, icon: "sales" as const },
+        { label: "Commandes", value: String(metrics.ordersTotal), trend: `${metrics.ordersPending} en attente`, icon: "orders" as const },
+        { label: "Produits", value: String(metrics.productsTotal), trend: `${metrics.productsActive} actifs`, icon: "products" as const },
+        { label: "Visiteurs", value: metrics.visitors.toLocaleString("fr-FR"), trend: `${metrics.conversionRate}% conv.`, icon: "visitors" as const },
+      ]
+    : fallbackStats;
+
   const sharePopup = async () => {
-    const url = `${window.location.origin}/boutique/ma-boutique`;
+    const url = `${window.location.origin}/boutique/${store?.slug ?? "ma-boutique"}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Ma boutique AFRISELL", url });
@@ -60,6 +72,7 @@ function DashboardPage() {
             <StatCard key={s.label} label={s.label} value={s.value} trend={s.trend} icon={statIcons[s.icon]} />
           ))}
         </section>
+
 
         {/* Quick actions */}
         <section>

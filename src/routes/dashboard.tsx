@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Wallet, ShoppingBag, Users, Boxes,
   Plus, ClipboardList, Palette, Share2,
@@ -13,7 +14,9 @@ import { RecentOrders } from "@/components/dashboard/RecentOrders";
 import { QuickActionCard } from "@/components/dashboard/QuickActionCard";
 import { AlibabaBanner } from "@/components/dashboard/AlibabaBanner";
 import { AddProductModal } from "@/components/products/AddProductModal";
-import { stats } from "@/data/dashboard";
+import { stats as fallbackStats, formatFCFA } from "@/data/dashboard";
+import { getDashboardMetrics, getMyStore } from "@/lib/afrisell-api";
+
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({

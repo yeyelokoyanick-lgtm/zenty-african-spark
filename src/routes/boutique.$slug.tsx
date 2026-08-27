@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { getShopBySlug, getShopPublicProducts, type Shop, type PublicProduct } from "@/lib/shop.functions";
+import { trackStoreVisit } from "@/lib/afrisell-api";
+
 import { createOrderNotification, paymentLabel } from "@/lib/notifications";
 import { createPublicOrder } from "@/lib/orders-api";
 
@@ -118,6 +120,12 @@ function BoutiquePage() {
 
   const [selected, setSelected] = useState<Product | null>(null);
   const [success, setSuccess] = useState<null | { firstName: string; total: number; quantity: number }>(null);
+
+  useEffect(() => {
+    if (shop?.id) void trackStoreVisit(shop.id);
+  }, [shop?.id]);
+
+
 
   return (
     <div className="min-h-screen bg-white">

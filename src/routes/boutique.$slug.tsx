@@ -119,6 +119,12 @@ function BoutiquePage() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [success, setSuccess] = useState<null | { firstName: string; total: number; quantity: number }>(null);
 
+  useEffect(() => {
+    if (shop?.id) void trackStoreVisit(shop.id);
+  }, [shop?.id]);
+
+
+
   return (
     <div className="min-h-screen bg-white">
       {/* Facebook Pixel */}

@@ -130,7 +130,7 @@ function AgencesPage() {
             </div>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {a.types.map((t, i) => {
-                const label = agency.typeLabels?.[i] ?? t;
+                const label = a.typeLabels?.[i] ?? t;
                 const isCloseur = t === "Closeur";
                 return (
                   <span

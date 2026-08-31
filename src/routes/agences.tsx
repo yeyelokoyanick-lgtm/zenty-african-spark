@@ -129,12 +129,20 @@ function AgencesPage() {
               )}
             </div>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {a.types.includes("Closeur") && (
-                <span className="rounded-full bg-success/15 text-success px-2.5 py-0.5 text-[11px] font-semibold">Closeur</span>
-              )}
-              {a.types.includes("Livreur") && (
-                <span className="rounded-full bg-warning/20 text-warning px-2.5 py-0.5 text-[11px] font-semibold">Livreur</span>
-              )}
+              {a.types.map((t, i) => {
+                const label = agency.typeLabels?.[i] ?? t;
+                const isCloseur = t === "Closeur";
+                return (
+                  <span
+                    key={t + i}
+                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+                      isCloseur ? "bg-success/15 text-success" : "bg-warning/20 text-warning"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                );
+              })}
             </div>
             <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{a.desc}</p>
             <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
@@ -149,16 +157,26 @@ function AgencesPage() {
               <span>{a.missions} missions</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <Button asChild className="flex-1" size="sm">
-                <a href={`https://wa.me/${a.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
-                  <MessageCircle className="h-4 w-4" /> WhatsApp
-                </a>
+              <Button className="flex-1" size="sm" onClick={() => window.open(buildAgencyWaUrl(a), "_blank")}>
+                <MessageCircle className="h-4 w-4" /> WhatsApp
               </Button>
               <Button variant="outline" size="sm" className="flex-1" onClick={() => setOpen(a)}>Voir profil</Button>
             </div>
           </article>
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <div className="rounded-xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
+          <p className="text-muted-foreground">Aucune agence disponible dans ce pays pour le moment.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Tu es closeur ou livreur ?{" "}
+            <Link to="/inscrire-agence" className="font-semibold text-primary hover:underline">
+              → Inscrire mon agence
+            </Link>
+          </p>
+        </div>
+      )}
 
       <div
         className="mt-10 rounded-2xl p-6 sm:p-8 text-white"
@@ -203,10 +221,8 @@ function AgencesPage() {
                     <li>★★★★★ — « 60 ventes en 3 semaines, top. »</li>
                   </ul>
                 </div>
-                <Button asChild className="w-full mt-2">
-                  <a href={`https://wa.me/${open.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
-                    <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
-                  </a>
+                <Button className="w-full mt-2" onClick={() => window.open(buildAgencyWaUrl(open), "_blank")}>
+                  <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
                 </Button>
               </div>
             </>

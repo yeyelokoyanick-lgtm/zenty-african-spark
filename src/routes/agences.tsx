@@ -43,11 +43,13 @@ const COUNTRIES = [
   { label: "🇹🇬 Togo", value: "Togo" },
 ];
 
-function buildAgencyWaUrl(agency: Agency) {
+function openWhatsApp(agency: Agency) {
   const typeText = (agency.typeLabels ?? agency.types).join(" + ");
   const message = `Bonjour ${agency.name} 👋,\n\nJe vous contacte depuis la plateforme *AfriSell* 🛒.\n\nJe suis intéressé(e) par vos services de ${typeText} pour mon activité e-commerce.\n\nPouvez-vous me donner plus d'informations sur vos tarifs et disponibilités ?\n\nMerci !`;
-  const phone = agency.whatsapp.replace(/\D/g, "");
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const cleanPhone = agency.whatsapp.replace(/\s+/g, "").replace("+", "");
+  const encodedMessage = encodeURIComponent(message);
+  const url = `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function AgencesPage() {
@@ -157,7 +159,7 @@ function AgencesPage() {
               <span>{a.missions} missions</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <Button className="flex-1" size="sm" onClick={() => window.open(buildAgencyWaUrl(a), "_blank")}>
+              <Button className="flex-1" size="sm" onClick={() => openWhatsApp(a)}>
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </Button>
               <Button variant="outline" size="sm" className="flex-1" onClick={() => setOpen(a)}>Voir profil</Button>
@@ -221,7 +223,7 @@ function AgencesPage() {
                     <li>★★★★★ — « 60 ventes en 3 semaines, top. »</li>
                   </ul>
                 </div>
-                <Button className="w-full mt-2" onClick={() => window.open(buildAgencyWaUrl(open), "_blank")}>
+                <Button className="w-full mt-2" onClick={() => openWhatsApp(open)}>
                   <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
                 </Button>
               </div>

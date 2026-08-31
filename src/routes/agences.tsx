@@ -19,29 +19,36 @@ export const Route = createFileRoute("/agences")({
 
 type Agency = {
   id: string; name: string; country: string; flag: string; city: string;
-  types: ("Closeur" | "Livreur")[]; rating: number; reviews: number;
+  types: ("Closeur" | "Livreur")[]; typeLabels?: string[];
+  rating: number; reviews: number;
   missions: number; verified: boolean; desc: string; whatsapp: string;
 };
 
 const AGENCIES: Agency[] = [
-  { id: "1", name: "AfricClose Bénin", country: "Bénin", flag: "🇧🇯", city: "Cotonou", types: ["Closeur", "Livreur"], rating: 4.8, reviews: 56, missions: 112, verified: true, desc: "Équipe de 12 closeurs et 8 livreurs spécialisés produits e-com.", whatsapp: "+22990000001" },
-  { id: "2", name: "CotonouDéliv", country: "Bénin", flag: "🇧🇯", city: "Cotonou", types: ["Livreur"], rating: 4.1, reviews: 28, missions: 67, verified: false, desc: "Livraison rapide sur tout le Littoral & l'Atlantique.", whatsapp: "+22990000002" },
-  { id: "3", name: "VenteProBJ", country: "Bénin", flag: "🇧🇯", city: "Porto-Novo", types: ["Closeur"], rating: 4.3, reviews: 19, missions: 34, verified: false, desc: "Closing téléphonique avec scripts éprouvés.", whatsapp: "+22990000003" },
-  { id: "4", name: "LoméExpress", country: "Togo", flag: "🇹🇬", city: "Lomé", types: ["Closeur", "Livreur"], rating: 4.9, reviews: 71, missions: 89, verified: true, desc: "Service tout-en-un Lomé & alentours.", whatsapp: "+22890000004" },
-  { id: "5", name: "TogoClose", country: "Togo", flag: "🇹🇬", city: "Lomé", types: ["Closeur"], rating: 3.8, reviews: 12, missions: 21, verified: false, desc: "Closing francophone & anglophone.", whatsapp: "+22890000005" },
-  { id: "6", name: "AbidjanDéliv Pro", country: "Côte d'Ivoire", flag: "🇨🇮", city: "Abidjan", types: ["Livreur"], rating: 4.7, reviews: 142, missions: 203, verified: true, desc: "Livraison J+1 dans toute la CI, paiement à la livraison.", whatsapp: "+22500000006" },
-  { id: "7", name: "CIVCloseurs", country: "Côte d'Ivoire", flag: "🇨🇮", city: "Abidjan", types: ["Closeur"], rating: 4.2, reviews: 41, missions: 58, verified: false, desc: "Équipe de closeurs natifs Yopougon / Cocody.", whatsapp: "+22500000007" },
-  { id: "8", name: "DakarSell", country: "Sénégal", flag: "🇸🇳", city: "Dakar", types: ["Closeur", "Livreur"], rating: 4.4, reviews: 53, missions: 76, verified: true, desc: "Closing wolof/français + livraison Dakar-Thiès.", whatsapp: "+22100000008" },
+  { id: "1", name: "Nawa", country: "Côte d'Ivoire", flag: "🇨🇮", city: "Abidjan", types: ["Closeur"], typeLabels: ["Closeur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Service de closing professionnel en Côte d'Ivoire. Conversion de prospects en clients qualifiés.", whatsapp: "+2250759839205" },
+  { id: "2", name: "Joanna Home", country: "Cameroun", flag: "🇨🇲", city: "Yaoundé", types: ["Closeur"], typeLabels: ["Closeuse"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Closeuse professionnelle au Cameroun. Spécialisée en vente par WhatsApp et téléphone.", whatsapp: "+24102153102" },
+  { id: "3", name: "Joanna Home", country: "Gabon", flag: "🇬🇦", city: "Libreville", types: ["Closeur"], typeLabels: ["Closeuse"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Closeuse professionnelle au Gabon. Spécialisée en vente par WhatsApp et téléphone.", whatsapp: "+24102153102" },
+  { id: "4", name: "Le Destockeur", country: "Togo", flag: "🇹🇬", city: "Lomé", types: ["Closeur", "Livreur"], typeLabels: ["Closeur", "Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de closing et livraison au Togo. Prise en charge complète de vos ventes et livraisons sur tout le territoire.", whatsapp: "+22871677617" },
+  { id: "5", name: "Youlis", country: "Burkina Faso", flag: "🇧🇫", city: "Ouagadougou", types: ["Closeur", "Livreur"], typeLabels: ["Closeur", "Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de closing et livraison au Burkina Faso. Service fiable pour l'écoulement de vos produits.", whatsapp: "+22667024062" },
+  { id: "6", name: "Iré Livraison", country: "Bénin", flag: "🇧🇯", city: "Cotonou", types: ["Livreur"], typeLabels: ["Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de livraison au Bénin. Livraison rapide et fiable sur tout le territoire béninois.", whatsapp: "+2290155639393" },
 ];
 
 const COUNTRIES = [
   { label: "Tous les pays", value: "all" },
-  { label: "🇧🇯 Bénin", value: "Bénin" }, { label: "🇹🇬 Togo", value: "Togo" },
-  { label: "🇨🇮 Côte d'Ivoire", value: "Côte d'Ivoire" }, { label: "🇸🇳 Sénégal", value: "Sénégal" },
-  { label: "🇨🇲 Cameroun", value: "Cameroun" }, { label: "🇲🇱 Mali", value: "Mali" },
+  { label: "🇧🇯 Bénin", value: "Bénin" },
   { label: "🇧🇫 Burkina Faso", value: "Burkina Faso" },
-  { label: "🇬🇳 Guinée", value: "Guinée" },
+  { label: "🇨🇲 Cameroun", value: "Cameroun" },
+  { label: "🇨🇮 Côte d'Ivoire", value: "Côte d'Ivoire" },
+  { label: "🇬🇦 Gabon", value: "Gabon" },
+  { label: "🇹🇬 Togo", value: "Togo" },
 ];
+
+function buildAgencyWaUrl(agency: Agency) {
+  const typeText = (agency.typeLabels ?? agency.types).join(" + ");
+  const message = `Bonjour ${agency.name} 👋,\n\nJe vous contacte depuis la plateforme *AfriSell* 🛒.\n\nJe suis intéressé(e) par vos services de ${typeText} pour mon activité e-commerce.\n\nPouvez-vous me donner plus d'informations sur vos tarifs et disponibilités ?\n\nMerci !`;
+  const phone = agency.whatsapp.replace(/\D/g, "");
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
 
 function AgencesPage() {
   const [country, setCountry] = useState("all");
@@ -122,12 +129,20 @@ function AgencesPage() {
               )}
             </div>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {a.types.includes("Closeur") && (
-                <span className="rounded-full bg-success/15 text-success px-2.5 py-0.5 text-[11px] font-semibold">Closeur</span>
-              )}
-              {a.types.includes("Livreur") && (
-                <span className="rounded-full bg-warning/20 text-warning px-2.5 py-0.5 text-[11px] font-semibold">Livreur</span>
-              )}
+              {a.types.map((t, i) => {
+                const label = a.typeLabels?.[i] ?? t;
+                const isCloseur = t === "Closeur";
+                return (
+                  <span
+                    key={t + i}
+                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+                      isCloseur ? "bg-success/15 text-success" : "bg-warning/20 text-warning"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                );
+              })}
             </div>
             <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{a.desc}</p>
             <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
@@ -142,16 +157,26 @@ function AgencesPage() {
               <span>{a.missions} missions</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <Button asChild className="flex-1" size="sm">
-                <a href={`https://wa.me/${a.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
-                  <MessageCircle className="h-4 w-4" /> WhatsApp
-                </a>
+              <Button className="flex-1" size="sm" onClick={() => window.open(buildAgencyWaUrl(a), "_blank")}>
+                <MessageCircle className="h-4 w-4" /> WhatsApp
               </Button>
               <Button variant="outline" size="sm" className="flex-1" onClick={() => setOpen(a)}>Voir profil</Button>
             </div>
           </article>
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <div className="rounded-xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
+          <p className="text-muted-foreground">Aucune agence disponible dans ce pays pour le moment.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Tu es closeur ou livreur ?{" "}
+            <Link to="/creer-boutique" className="font-semibold text-primary hover:underline">
+              → Inscrire mon agence
+            </Link>
+          </p>
+        </div>
+      )}
 
       <div
         className="mt-10 rounded-2xl p-6 sm:p-8 text-white"
@@ -196,10 +221,8 @@ function AgencesPage() {
                     <li>★★★★★ — « 60 ventes en 3 semaines, top. »</li>
                   </ul>
                 </div>
-                <Button asChild className="w-full mt-2">
-                  <a href={`https://wa.me/${open.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
-                    <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
-                  </a>
+                <Button className="w-full mt-2" onClick={() => window.open(buildAgencyWaUrl(open), "_blank")}>
+                  <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
                 </Button>
               </div>
             </>

@@ -171,7 +171,7 @@ function AgencesPage() {
           <p className="text-muted-foreground">Aucune agence disponible dans ce pays pour le moment.</p>
           <p className="mt-2 text-sm text-muted-foreground">
             Tu es closeur ou livreur ?{" "}
-            <Link to="/inscrire-agence" className="font-semibold text-primary hover:underline">
+            <Link to="/creer-boutique" className="font-semibold text-primary hover:underline">
               → Inscrire mon agence
             </Link>
           </p>

@@ -104,23 +104,8 @@ function AbonnementPage() {
   const [processing, setProcessing] = useState(false);
   const [activePlan, setActivePlan] = useState<"starter" | "pro" | "business">("starter");
   const [successPlan, setSuccessPlan] = useState<{ name: string; price: string } | null>(null);
-  const [sdkReady, setSdkReady] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.FedaPay) { setSdkReady(true); return; }
-    const existing = document.querySelector<HTMLScriptElement>('script[data-fedapay]');
-    if (existing) {
-      existing.addEventListener("load", () => setSdkReady(true));
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = "https://cdn.fedapay.com/checkout.js?v=1.1.7";
-    s.async = true;
-    s.dataset.fedapay = "true";
-    s.onload = () => setSdkReady(true);
-    document.body.appendChild(s);
-  }, []);
+  const initPayment = useServerFn(initMonerooPayment);
+  const verifyPayment = useServerFn(verifyMonerooPayment);
 
   const fireConfetti = () => {
     const end = Date.now() + 1200;
@@ -131,44 +116,58 @@ function AbonnementPage() {
     })();
   };
 
-  const launchFedapay = (plan: Plan) => {
-    if (!window.FedaPay) {
-      toast.error("Le module de paiement n'est pas encore prêt. Réessayez dans un instant.");
-      return;
-    }
-    const amount = plan.id === "pro" ? 500000 : 1000000;
+  /* Retour depuis Moneroo : on vérifie le paiement côté serveur */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get("paymentId") ?? params.get("paymentID");
+    if (!paymentId) return;
+    const planId = (params.get("plan") as "pro" | "business" | null) ?? "pro";
+    setProcessing(true);
+    verifyPayment({ data: { paymentId } })
+      .then((res) => {
+        if (res.success) {
+          const label = planId === "business" ? "Business" : "Pro";
+          setActivePlan(planId);
+          setSuccessPlan({ name: label, price: planId === "business" ? "10 000 FCFA" : "5 000 FCFA" });
+          fireConfetti();
+        } else {
+          toast.error("Paiement non abouti. Aucun montant n'a été débité.");
+        }
+      })
+      .catch((e: any) => toast.error(e?.message || "Vérification du paiement impossible"))
+      .finally(() => {
+        setProcessing(false);
+        window.history.replaceState({}, "", window.location.pathname);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const launchMoneroo = async (plan: Plan) => {
+    const amount = plan.id === "pro" ? 5000 : 10000;
     const label = plan.id === "pro" ? "Pro" : "Business";
-    const priceLabel = plan.id === "pro" ? "5 000 FCFA" : "10 000 FCFA";
+    const parts = form.name.trim().split(/\s+/);
     setProcessing(true);
     try {
-      const widget = window.FedaPay.init({
-        public_key: FEDAPAY_PUBLIC_KEY,
-        transaction: {
+      const { checkoutUrl } = await initPayment({
+        data: {
           amount,
+          currency: "XOF",
           description: `Abonnement AFRISELL ${label} — 1 mois`,
-          currency: { iso: "XOF" },
-        },
-        customer: {
-          email: form.email,
-          lastname: form.name,
-          phone_number: { number: form.phone, country: "BJ" },
-        },
-        onComplete: (resp: any) => {
-          setProcessing(false);
-          if (resp.reason === window.FedaPay.DIALOG_DISMISSED) {
-            toast.error("Paiement annulé");
-          } else {
-            setActivePlan(plan.id);
-            setSuccessPlan({ name: label, price: priceLabel });
-            setModalPlan(null);
-            fireConfetti();
-          }
+          returnUrl: `${window.location.origin}/abonnement?plan=${plan.id}`,
+          customer: {
+            email: form.email.trim(),
+            first_name: parts[0] || "Client",
+            last_name: parts.slice(1).join(" ") || parts[0] || "AFRISELL",
+            phone: form.phone.trim(),
+          },
+          metadata: { kind: "subscription", plan: plan.id },
         },
       });
-      widget.open();
-    } catch (e) {
+      window.location.href = checkoutUrl;
+    } catch (e: any) {
       setProcessing(false);
-      toast.error("Une erreur est survenue lors de l'initialisation du paiement.");
+      toast.error(e?.message || "Une erreur est survenue lors de l'initialisation du paiement.");
     }
   };
 
@@ -182,8 +181,9 @@ function AbonnementPage() {
       toast.error("Email invalide.");
       return;
     }
-    launchFedapay(modalPlan);
+    void launchMoneroo(modalPlan);
   };
+
 
   const handleSelect = (plan: Plan) => {
     if (plan.id === "starter") {

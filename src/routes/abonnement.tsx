@@ -11,13 +11,8 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-const FEDAPAY_PUBLIC_KEY = "pk_live_q1abaAhxGMqRDimt4ZQGrcnd";
+import { initMonerooPayment, verifyMonerooPayment } from "@/lib/moneroo.functions";
 
-declare global {
-  interface Window {
-    FedaPay?: any;
-  }
-}
 
 export const Route = createFileRoute("/abonnement")({
   head: () => ({

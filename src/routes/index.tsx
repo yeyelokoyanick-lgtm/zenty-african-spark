@@ -434,7 +434,7 @@ function LandingPage() {
               <Link to="/agences" className="hover:text-foreground">Agences</Link>
               <Link to="/aide" className="hover:text-foreground">Aide</Link>
             </nav>
-            <p className="font-medium">🔒 Paiements sécurisés par FedaPay</p>
+            <p className="font-medium">🔒 Paiements sécurisés par Moneroo</p>
           </div>
         </div>
       </footer>

@@ -31,6 +31,7 @@ import { Route as AgencesRouteImport } from './routes/agences'
 import { Route as AffiliationRouteImport } from './routes/affiliation'
 import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DSlugRouteImport } from './routes/d.$slug'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -149,6 +150,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DSlugRoute = DSlugRouteImport.update({
+  id: '/d/$slug',
+  path: '/d/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
   id: '/checkout/$productId',
   path: '/checkout/$productId',
@@ -216,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -247,6 +254,7 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -279,6 +287,7 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -312,6 +321,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
@@ -343,6 +353,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   id:
@@ -374,6 +385,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -405,6 +417,7 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CheckoutProductIdRoute: typeof CheckoutProductIdRoute
+  DSlugRoute: typeof DSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -565,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/d/$slug': {
+      id: '/d/$slug'
+      path: '/d/$slug'
+      fullPath: '/d/$slug'
+      preLoaderRoute: typeof DSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/$productId': {
       id: '/checkout/$productId'
       path: '/checkout/$productId'
@@ -655,6 +675,7 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CheckoutProductIdRoute: CheckoutProductIdRoute,
+  DSlugRoute: DSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }

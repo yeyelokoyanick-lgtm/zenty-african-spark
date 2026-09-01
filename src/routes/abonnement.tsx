@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset, Lock, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
@@ -339,7 +340,7 @@ function AbonnementPage() {
       {/* Security badge */}
       <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
         <Lock className="h-3.5 w-3.5" />
-        Paiements 100% sécurisés par FedaPay — MTN MoMo, Moov Money et carte bancaire acceptés
+        Paiements 100% sécurisés par Moneroo — MTN MoMo, Moov Money et carte bancaire acceptés
       </p>
 
       {/* Billing history */}
@@ -519,8 +520,8 @@ function AbonnementPage() {
           </div>
           <DialogFooter className="gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setModalPlan(null)} disabled={processing}>Annuler</Button>
-            <Button onClick={handleConfirm} disabled={processing || !sdkReady} className="h-11 px-6 font-semibold">
-              {processing ? "Traitement..." : sdkReady ? "Procéder au paiement" : "Chargement..."}
+            <Button onClick={handleConfirm} disabled={processing} className="h-11 px-6 font-semibold">
+              {processing ? "Redirection..." : "Procéder au paiement"}
             </Button>
           </DialogFooter>
         </DialogContent>

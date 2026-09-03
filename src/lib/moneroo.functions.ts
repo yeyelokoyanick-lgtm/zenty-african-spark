@@ -58,7 +58,7 @@ export type VerifyPaymentResult = {
   success: boolean;
   amount: number | null;
   currency: string | null;
-  metadata: Record<string, unknown>;
+  metadata: Record<string, string>;
 };
 
 /** Vérifie l'état d'un paiement Moneroo après retour du client. */
@@ -77,7 +77,7 @@ export const verifyMonerooPayment = createServerFn({ method: "POST" })
             status?: string;
             amount?: number;
             currency?: string;
-            metadata?: Record<string, unknown>;
+            metadata?: Record<string, string>;
           };
           message?: string;
         }
@@ -92,6 +92,6 @@ export const verifyMonerooPayment = createServerFn({ method: "POST" })
       success: status === "success" || status === "successful" || status === "completed",
       amount: json.data.amount ?? null,
       currency: json.data.currency ?? null,
-      metadata: json.data.metadata ?? {},
+      metadata: (json.data.metadata ?? {}) as Record<string, string>,
     };
   });

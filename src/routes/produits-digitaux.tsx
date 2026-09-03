@@ -421,7 +421,7 @@ function ProduitsDigitauxPage() {
   };
 
   const copyLink = (slug: string) => {
-    const url = `https://afrisell.shop/d/${slug}`;
+    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/d/${slug}`;
     navigator.clipboard?.writeText(url);
     toast.success("Lien copié");
   };
@@ -1396,7 +1396,7 @@ function ShareLinkDialog({ product, onOpenChange, onCopy }: {
   product: DigitalProduct | null; onOpenChange: (o: boolean) => void; onCopy: (slug: string) => void;
 }) {
   if (!product) return null;
-  const url = `https://afrisell.shop/d/${product.slug}`;
+  const url = typeof window !== "undefined" ? `${window.location.origin}/d/${product.slug}` : `/d/${product.slug}`;
   const waText = encodeURIComponent(`Découvre ${product.name} — ${formatFCFA(product.price)}. Paiement MoMo/Wave/carte. ${url}`);
   const emailBody = encodeURIComponent(`Salut,\n\nJe pense que ${product.name} pourrait t'intéresser : ${url}\n\nÀ bientôt !`);
   return (

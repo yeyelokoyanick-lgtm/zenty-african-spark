@@ -421,7 +421,7 @@ function ProduitsDigitauxPage() {
   };
 
   const copyLink = (slug: string) => {
-    const url = `https://afrisell.shop/d/${slug}`;
+    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/d/${slug}`;
     navigator.clipboard?.writeText(url);
     toast.success("Lien copié");
   };

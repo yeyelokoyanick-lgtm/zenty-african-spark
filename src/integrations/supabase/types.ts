@@ -363,6 +363,7 @@ export type Database = {
       }
       orders: {
         Row: {
+          amount_collected: number | null
           cancelled_at: string | null
           confirmed_at: string | null
           created_at: string
@@ -379,6 +380,7 @@ export type Database = {
           id: string
           notes: string | null
           order_number: string
+          paid_at: string | null
           payment_method: string
           payment_status: string
           product_id: string | null
@@ -396,6 +398,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          amount_collected?: number | null
           cancelled_at?: string | null
           confirmed_at?: string | null
           created_at?: string
@@ -412,6 +415,7 @@ export type Database = {
           id?: string
           notes?: string | null
           order_number?: string
+          paid_at?: string | null
           payment_method?: string
           payment_status?: string
           product_id?: string | null
@@ -429,6 +433,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          amount_collected?: number | null
           cancelled_at?: string | null
           confirmed_at?: string | null
           created_at?: string
@@ -445,6 +450,7 @@ export type Database = {
           id?: string
           notes?: string | null
           order_number?: string
+          paid_at?: string | null
           payment_method?: string
           payment_status?: string
           product_id?: string | null

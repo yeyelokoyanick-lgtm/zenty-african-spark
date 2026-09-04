@@ -1,4 +1,4 @@
-import { Phone, MapPin, Package, Calendar, Wallet } from "lucide-react";
+import { Phone, MapPin, Package, Calendar, Wallet, BadgeCheck, Clock } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -16,9 +16,10 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUpdateStatus: (id: string, status: OrderStatus) => void;
+  onConfirmPayment: (id: string) => void;
 }
 
-export function OrderDetailsDrawer({ order, open, onOpenChange, onUpdateStatus }: Props) {
+export function OrderDetailsDrawer({ order, open, onOpenChange, onUpdateStatus, onConfirmPayment }: Props) {
   if (!order) return null;
 
   const date = new Date(order.createdAt).toLocaleString("fr-FR", {
@@ -28,6 +29,14 @@ export function OrderDetailsDrawer({ order, open, onOpenChange, onUpdateStatus }
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  const paid = order.paymentStatus === "paid";
+  const paymentName =
+    order.paymentMethod === "mtn"
+      ? "MTN Mobile Money"
+      : order.paymentMethod === "moov"
+        ? "Moov Money"
+        : "Paiement à la livraison (Cash)";
 
   const actions: { label: string; status: OrderStatus; variant?: "default" | "outline" | "destructive" }[] = [
     { label: "Confirmer", status: "Confirmée" },
@@ -103,13 +112,55 @@ export function OrderDetailsDrawer({ order, open, onOpenChange, onUpdateStatus }
                   <Wallet className="h-3.5 w-3.5" />
                   Mode de paiement
                 </span>
-                <span className="font-medium text-foreground">Paiement à la livraison</span>
+                <span className="font-medium text-foreground">{paymentName}</span>
               </div>
               <div className="flex items-center justify-between pt-1">
                 <span className="text-base font-semibold text-foreground">Total</span>
                 <span className="text-lg font-bold text-foreground">{formatFCFA(order.amount)}</span>
               </div>
             </div>
+          </section>
+
+          {/* Paiement */}
+          <section
+            className={`rounded-xl border p-4 ${paid ? "border-primary/30 bg-primary/5" : "border-border bg-card"}`}
+          >
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Encaissement
+            </h3>
+            <div className="flex items-center gap-2 text-sm">
+              {paid ? (
+                <>
+                  <BadgeCheck className="h-4 w-4 text-primary" />
+                  <span className="font-medium text-foreground">
+                    Paiement confirmé {order.amountCollected ? `· ${formatFCFA(Number(order.amountCollected))}` : ""}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">
+                    Paiement en attente — à encaisser à la livraison
+                  </span>
+                </>
+              )}
+            </div>
+            {paid && order.paidAt ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Encaissé le{" "}
+                {new Date(order.paidAt).toLocaleString("fr-FR", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            ) : null}
+            {!paid ? (
+              <Button className="mt-3 h-11 w-full" onClick={() => onConfirmPayment(order.id)}>
+                💵 Confirmer l'encaissement de {formatFCFA(order.amount)}
+              </Button>
+            ) : null}
           </section>
 
           {/* Actions */}
@@ -122,7 +173,8 @@ export function OrderDetailsDrawer({ order, open, onOpenChange, onUpdateStatus }
                 <Button
                   key={a.status}
                   variant={a.variant ?? "default"}
-                  disabled={order.status === a.status}
+                  disabled={order.status === a.status || (a.status === "Livrée" && !paid)}
+                  title={a.status === "Livrée" && !paid ? "Confirme d'abord l'encaissement" : undefined}
                   onClick={() => onUpdateStatus(order.id, a.status)}
                   className="h-11"
                 >

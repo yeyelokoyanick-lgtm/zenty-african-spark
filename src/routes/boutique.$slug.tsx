@@ -81,6 +81,10 @@ const orderSchema = z.object({
   address: z.string().trim().min(5, "Adresse trop courte").max(200),
   quantity: z.number().int().min(1).max(99),
   payment: z.enum(["mtn", "moov", "cod"]),
+  codConfirmed: z.boolean(),
+}).refine((v) => v.payment !== "cod" || v.codConfirmed, {
+  path: ["codConfirmed"],
+  message: "Confirme que tu paieras en espèces à la réception",
 });
 
 function FacebookPixel({ pixelId }: { pixelId: string }) {
@@ -288,7 +292,7 @@ function Badge({ icon, text, color }: { icon: React.ReactNode; text: string; col
 
 function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSuccess: (info: { firstName: string; total: number; quantity: number }) => void; shopColor: string }) {
   const { shop } = Route.useLoaderData() as { shop: Shop | null };
-  const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "", quantity: 1, payment: "cod" as "mtn" | "moov" | "cod" });
+  const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "", quantity: 1, payment: "cod" as "mtn" | "moov" | "cod", codConfirmed: false });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const total = useMemo(() => product.price * Math.max(1, form.quantity || 1), [product.price, form.quantity]);
@@ -326,6 +330,7 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
           customer_country: "Bénin",
           customer_address: form.address.trim(),
           payment_method: form.payment,
+          payment_status: "pending",
         });
       }
       const notif = createOrderNotification({
@@ -418,6 +423,36 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
             <PayOption value="mtn" label="📱 MTN Mobile Money" tag="MoMo" color={shopColor} />
             <PayOption value="moov" label="📱 Moov Money" tag="Moov" color={shopColor} />
           </RadioGroup>
+
+          {form.payment === "cod" ? (
+            <div
+              className="mt-3 rounded-xl border p-4"
+              style={{ borderColor: `${shopColor}30`, backgroundColor: `${shopColor}08` }}
+            >
+              <p className="text-sm font-semibold text-foreground">💵 Paiement à la livraison</p>
+              <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                <li>• Tu ne paies rien maintenant — <strong>0 FCFA en ligne</strong>.</li>
+                <li>• Tu paies <strong>{formatFCFA(total)}</strong> en espèces au livreur, à la réception.</li>
+                <li>• Vérifie ton colis avant de payer.</li>
+              </ul>
+              <label className="mt-3 flex cursor-pointer items-start gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.codConfirmed}
+                  onChange={(e) => setForm({ ...form, codConfirmed: e.target.checked })}
+                  className="mt-0.5 h-4 w-4 flex-none rounded border-border"
+                  style={{ accentColor: shopColor }}
+                />
+                <span>
+                  Je confirme ma commande et je m'engage à payer <strong>{formatFCFA(total)}</strong> en espèces
+                  à la livraison.
+                </span>
+              </label>
+              {errors.codConfirmed ? (
+                <p className="mt-1.5 text-xs font-medium text-destructive">{errors.codConfirmed}</p>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         <div
@@ -434,7 +469,11 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
           className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg px-5 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:opacity-60"
           style={{ backgroundColor: shopColor, boxShadow: `0 10px 24px ${shopColor}50` }}
         >
-          {submitting ? "Envoi..." : "Confirmer ma commande"}
+          {submitting
+            ? "Envoi..."
+            : form.payment === "cod"
+              ? `Commander · Payer ${formatFCFA(total)} à la livraison`
+              : "Confirmer ma commande"}
         </button>
         <p className="text-center text-xs text-muted-foreground">
           🔒 Vos informations restent confidentielles

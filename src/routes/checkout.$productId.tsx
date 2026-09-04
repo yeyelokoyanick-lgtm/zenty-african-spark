@@ -110,6 +110,7 @@ function CheckoutPage() {
       quantity,
       total,
       paymentMethod: "cash_on_delivery" as const,
+      paymentStatus: "pending" as const,
       createdAt: new Date().toISOString(),
     };
     console.log("[AFRISELL] New order:", orderPayload);

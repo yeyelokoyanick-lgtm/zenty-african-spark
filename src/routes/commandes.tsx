@@ -31,7 +31,12 @@ import { StatusBadge } from "@/components/orders/StatusBadge";
 import { OrderDetailsDrawer } from "@/components/orders/OrderDetailsDrawer";
 import { formatFCFA } from "@/data/dashboard";
 import { ORDER_STATUSES, type Order, type OrderStatus } from "@/types/order";
-import { listMyOrders, updateOrderStatus as apiUpdateStatus, type OrderRow } from "@/lib/orders-api";
+import {
+  listMyOrders,
+  updateOrderStatus as apiUpdateStatus,
+  confirmOrderPayment,
+  type OrderRow,
+} from "@/lib/orders-api";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/commandes")({
@@ -61,7 +66,10 @@ function rowToOrder(r: OrderRow): Order {
     amount: Number(r.total),
     status: (r.status as OrderStatus),
     createdAt: r.created_at,
-    paymentMethod: "cash_on_delivery",
+    paymentMethod: (r.payment_method === "mtn" || r.payment_method === "moov" ? r.payment_method : "cash_on_delivery"),
+    paymentStatus: (r.payment_status ?? "pending"),
+    amountCollected: r.amount_collected,
+    paidAt: r.paid_at,
   };
 }
 
@@ -147,9 +155,37 @@ function CommandesPage() {
     return list;
   }, [orders, search, statusFilter]);
 
+  const confirmPayment = async (id: string) => {
+    const row = rows.find((r) => r.order_number === id);
+    if (!row) return;
+    try {
+      await confirmOrderPayment(row.id, Number(row.total));
+      const paidAt = new Date().toISOString();
+      setRows((prev) =>
+        prev.map((r) =>
+          r.id === row.id
+            ? { ...r, payment_status: "paid", paid_at: paidAt, amount_collected: Number(row.total) }
+            : r,
+        ),
+      );
+      setSelected((curr) =>
+        curr && curr.id === id
+          ? { ...curr, paymentStatus: "paid", paidAt, amountCollected: Number(row.total) }
+          : curr,
+      );
+      toast.success(`💵 Paiement encaissé pour ${id}`);
+    } catch (e: any) {
+      toast.error(e?.message || "Confirmation du paiement impossible");
+    }
+  };
+
   const updateStatus = async (id: string, status: OrderStatus) => {
     const row = rows.find((r) => r.order_number === id);
     if (!row) return;
+    if (status === "Livrée" && (row.payment_status ?? "pending") !== "paid") {
+      toast.error("Confirme d'abord l'encaissement du paiement à la livraison");
+      return;
+    }
     try {
       await apiUpdateStatus(row.id, status);
       setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, status } : r)));
@@ -370,6 +406,7 @@ function CommandesPage() {
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         onUpdateStatus={updateStatus}
+        onConfirmPayment={confirmPayment}
       />
     </AppShell>
   );

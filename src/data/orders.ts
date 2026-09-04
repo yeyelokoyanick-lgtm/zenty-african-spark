@@ -15,6 +15,7 @@ export const initialOrders: Order[] = [
     status: "En attente",
     createdAt: "2025-04-25T09:12:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
   {
     id: "CMD-1041",
@@ -30,6 +31,7 @@ export const initialOrders: Order[] = [
     status: "Confirmée",
     createdAt: "2025-04-24T15:42:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
   {
     id: "CMD-1040",
@@ -45,6 +47,7 @@ export const initialOrders: Order[] = [
     status: "Expédiée",
     createdAt: "2025-04-23T11:05:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
   {
     id: "CMD-1039",
@@ -60,6 +63,7 @@ export const initialOrders: Order[] = [
     status: "Livrée",
     createdAt: "2025-04-22T08:30:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
   {
     id: "CMD-1038",
@@ -75,6 +79,7 @@ export const initialOrders: Order[] = [
     status: "Annulée",
     createdAt: "2025-04-20T17:18:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
   {
     id: "CMD-1037",
@@ -90,5 +95,6 @@ export const initialOrders: Order[] = [
     status: "En attente",
     createdAt: "2025-04-26T07:05:00Z",
     paymentMethod: "cash_on_delivery",
+    paymentStatus: "pending",
   },
 ];

@@ -406,6 +406,7 @@ function CommandesPage() {
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         onUpdateStatus={updateStatus}
+        onConfirmPayment={confirmPayment}
       />
     </AppShell>
   );

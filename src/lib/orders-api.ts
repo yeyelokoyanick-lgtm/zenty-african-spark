@@ -15,6 +15,14 @@ export const ORDER_STATUSES: OrderStatus[] = [
   "Annulée",
 ];
 
+export type PaymentStatus = "pending" | "paid" | "failed";
+
+export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
+  pending: "Paiement en attente",
+  paid: "Paiement encaissé",
+  failed: "Paiement échoué",
+};
+
 export interface OrderRow {
   id: string;
   order_number: string;
@@ -36,6 +44,9 @@ export interface OrderRow {
   customer_address: string | null;
   payment_method: string;
   status: OrderStatus;
+  payment_status: PaymentStatus;
+  paid_at: string | null;
+  amount_collected: number | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -58,6 +69,7 @@ export interface CreateOrderInput {
   customer_country?: string | null;
   customer_address?: string | null;
   payment_method: string;
+  payment_status?: PaymentStatus;
 }
 
 export async function createPublicOrder(input: CreateOrderInput): Promise<OrderRow> {
@@ -87,6 +99,30 @@ export async function updateOrderStatus(id: string, status: OrderStatus): Promis
   const { error } = await supabase
     .from("orders" as any)
     .update({ status } as any)
+    .eq("id", id);
+  if (error) throw error;
+}
+
+/**
+ * Confirme l'encaissement (cash on delivery ou mobile money) d'une commande.
+ * Tant que ce n'est pas fait, la commande ne peut pas passer en "Livrée".
+ */
+export async function confirmOrderPayment(id: string, amountCollected: number): Promise<void> {
+  const { error } = await supabase
+    .from("orders" as any)
+    .update({
+      payment_status: "paid",
+      amount_collected: amountCollected,
+      paid_at: new Date().toISOString(),
+    } as any)
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function markOrderPaymentFailed(id: string): Promise<void> {
+  const { error } = await supabase
+    .from("orders" as any)
+    .update({ payment_status: "failed", amount_collected: null, paid_at: null } as any)
     .eq("id", id);
   if (error) throw error;
 }

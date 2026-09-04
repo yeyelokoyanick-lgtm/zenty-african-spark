@@ -25,5 +25,8 @@ export interface Order {
   amount: number;
   status: OrderStatus;
   createdAt: string; // ISO
-  paymentMethod: "cash_on_delivery";
+  paymentMethod: "cash_on_delivery" | "mtn" | "moov";
+  paymentStatus: "pending" | "paid" | "failed";
+  amountCollected?: number | null;
+  paidAt?: string | null;
 }

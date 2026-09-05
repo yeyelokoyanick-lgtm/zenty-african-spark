@@ -43,11 +43,25 @@ const COUNTRIES = [
   { label: "🇹🇬 Togo", value: "Togo" },
 ];
 
-function whatsappLink(agency: Agency) {
+function whatsappMessage(agency: Agency) {
   const typeText = (agency.typeLabels ?? agency.types).join(" + ");
-  const message = `Bonjour ${agency.name} 👋,\n\nJe vous contacte depuis la plateforme *AfriSell* 🛒.\n\nJe suis intéressé(e) par vos services de ${typeText} pour mon activité e-commerce.\n\nPouvez-vous me donner plus d'informations sur vos tarifs et disponibilités ?\n\nMerci !`;
+  return `Bonjour ${agency.name} 👋,\n\nJe vous contacte depuis la plateforme *AfriSell* 🛒.\n\nJe suis intéressé(e) par vos services de ${typeText} pour mon activité e-commerce.\n\nPouvez-vous me donner plus d'informations sur vos tarifs et disponibilités ?\n\nMerci !`;
+}
+
+function whatsappLink(agency: Agency) {
   const cleanPhone = agency.whatsapp.replace(/\D/g, "");
-  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+  return `https://web.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(whatsappMessage(agency))}`;
+}
+
+function openWhatsApp(agency: Agency) {
+  const cleanPhone = agency.whatsapp.replace(/\D/g, "");
+  const message = encodeURIComponent(whatsappMessage(agency));
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const url = isMobile
+    ? `whatsapp://send?phone=${cleanPhone}&text=${message}`
+    : `https://web.whatsapp.com/send?phone=${cleanPhone}&text=${message}`;
+
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function AgencesPage() {
@@ -158,7 +172,15 @@ function AgencesPage() {
             </div>
             <div className="mt-4 flex gap-2">
               <Button asChild className="flex-1" size="sm">
-                <a href={whatsappLink(a)} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappLink(a)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    openWhatsApp(a);
+                  }}
+                >
                   <MessageCircle className="h-4 w-4" /> WhatsApp
                 </a>
               </Button>
@@ -224,7 +246,15 @@ function AgencesPage() {
                   </ul>
                 </div>
                 <Button asChild className="w-full mt-2">
-                  <a href={whatsappLink(open)} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={whatsappLink(open)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      openWhatsApp(open);
+                    }}
+                  >
                     <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
                   </a>
                 </Button>

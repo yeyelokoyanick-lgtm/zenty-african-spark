@@ -69,7 +69,7 @@ function AuthPage() {
           return;
         }
         const redirectTo = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(
-          search.redirect ?? "/onboarding",
+          search.redirect ?? "/dashboard",
         )}`;
         const { error } = await supabase.auth.signUp({
           email: parsed.data.email,

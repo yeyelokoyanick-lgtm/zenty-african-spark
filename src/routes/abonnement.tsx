@@ -342,9 +342,9 @@ function AbonnementPage() {
 
       {/* Comparison table */}
       <section className="mt-14">
-        <h2 className="text-center text-2xl font-bold text-foreground">Compare les plans</h2>
+        <h2 className="text-center text-2xl font-bold text-foreground">Essai gratuit vs Plan Unique</h2>
         <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
-          Toutes les fonctionnalités, côte à côte.
+          Les agences de livraison et les closeurs sont réservés au Plan Unique.
         </p>
 
         <Card className="mt-6 overflow-hidden rounded-2xl">
@@ -353,11 +353,11 @@ function AbonnementPage() {
               <thead className="bg-muted/50">
                 <tr>
                   <th className="px-4 py-3 text-left font-semibold text-foreground">Fonctionnalité</th>
-                  <th className="px-4 py-3 text-center font-semibold text-foreground">Starter</th>
-                  <th className="px-4 py-3 text-center font-semibold text-primary">Pro</th>
-                  <th className="px-4 py-3 text-center font-semibold text-foreground">Business</th>
+                  <th className="px-4 py-3 text-center font-semibold text-foreground">Essai gratuit</th>
+                  <th className="px-4 py-3 text-center font-semibold text-primary">Plan Unique</th>
                 </tr>
               </thead>
+
               <tbody>
                 {COMPARISON.map((row, i) => (
                   <tr key={row.label} className={cn(i % 2 === 1 && "bg-muted/20")}>

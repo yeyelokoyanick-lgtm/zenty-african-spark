@@ -317,9 +317,10 @@ function AbonnementPage() {
               </thead>
               <tbody>
                 {[
-                  { date: "01/05/2026", plan: "Pro", amount: "5 000 FCFA", method: "MTN MoMo", status: "Payé" },
-                  { date: "01/04/2026", plan: "Pro", amount: "5 000 FCFA", method: "Moov Money", status: "Payé" },
-                  { date: "01/03/2026", plan: "Starter", amount: "Gratuit", method: "—", status: "Actif" },
+                  { date: "01/05/2026", plan: "Plan Unique", amount: "5 000 FCFA", method: "MTN MoMo", status: "Payé" },
+                  { date: "01/04/2026", plan: "Plan Unique", amount: "5 000 FCFA", method: "Moov Money", status: "Payé" },
+                  { date: "01/03/2026", plan: "Essai gratuit", amount: "Gratuit", method: "—", status: "Actif" },
+
                 ].map((r, i) => (
                   <tr key={i} className={cn(i % 2 === 1 && "bg-muted/20")}>
                     <td className="px-4 py-3 text-foreground">{r.date}</td>

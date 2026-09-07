@@ -27,10 +27,8 @@ export const Route = createFileRoute("/abonnement")({
   component: AbonnementPage,
 });
 
-type Billing = "monthly" | "yearly";
-
 type Plan = {
-  id: "starter" | "pro" | "business";
+  id: "starter" | "pro";
   name: string;
   tagline: string;
   monthly: number;
@@ -42,61 +40,54 @@ type Plan = {
 const PLANS: Plan[] = [
   {
     id: "starter",
-    name: "Starter",
-    tagline: "Pour découvrir et tester ta boutique",
+    name: "Essai gratuit",
+    tagline: "Pour lancer ta première boutique sans rien payer",
     monthly: 0,
     features: [
-      "5 produits maximum",
-      "10 commandes / mois",
-      "Boutique basique",
-      "Support limité",
+      "Gratuit jusqu'à 1 an",
+      "Jusqu'à 10 ventes",
+      "Jusqu'à 85 $ de ventes cumulées",
+      "Une seule boutique",
+      "Agences de livraison & closeurs non inclus",
     ],
     cta: "Commencer gratuitement",
   },
   {
     id: "pro",
-    name: "Pro",
-    tagline: "Pour vendre sérieusement chaque jour",
+    name: "Plan Unique",
+    tagline: "Tout AFRISELL, sans limite",
     monthly: 5000,
     features: [
-      "Produits illimités",
-      "Commandes illimitées",
+      "Produits et ventes illimités",
       "Paiement à la livraison (COD)",
+      "Produits digitaux et encaissement",
+      "Accès aux agences de livraison",
+      "Accès aux closeurs",
       "Import Alibaba",
       "Support prioritaire",
     ],
-    cta: "Passer au Pro",
+    cta: "Activer le Plan Unique",
     popular: true,
-  },
-  {
-    id: "business",
-    name: "Business",
-    tagline: "Pour scaler et gérer plusieurs boutiques",
-    monthly: 10000,
-    features: [
-      "Tout du plan Pro",
-      "Multi-boutiques",
-      "Statistiques avancées",
-      "Support VIP",
-      "Accès formations e-commerce",
-    ],
-    cta: "Passer au Business",
   },
 ];
 
-const COMPARISON: Array<{ label: string; values: [string, string, string] }> = [
-  { label: "Produits", values: ["5", "Illimités", "Illimités"] },
-  { label: "Commandes / mois", values: ["10", "Illimitées", "Illimitées"] },
-  { label: "Paiement à la livraison (COD)", values: ["—", "Inclus", "Inclus"] },
-  { label: "Import Alibaba", values: ["—", "Inclus", "Inclus"] },
-  { label: "Multi-boutiques", values: ["—", "—", "Inclus"] },
-  { label: "Statistiques avancées", values: ["—", "Basiques", "Avancées"] },
-  { label: "Support", values: ["Limité", "Prioritaire", "VIP"] },
+const COMPARISON: Array<{ label: string; values: [string, string] }> = [
+  { label: "Durée", values: ["1 an max", "Sans limite"] },
+  { label: "Ventes", values: ["10 max", "Illimitées"] },
+  { label: "Chiffre d'affaires", values: ["85 $ max", "Illimité"] },
+  { label: "Boutiques", values: ["1", "Illimitées"] },
+  { label: "Paiement à la livraison (COD)", values: ["Inclus", "Inclus"] },
+  { label: "Produits digitaux", values: ["Inclus", "Inclus"] },
+  { label: "Agences de livraison", values: ["—", "Inclus"] },
+  { label: "Closeurs", values: ["—", "Inclus"] },
+  { label: "Import Alibaba", values: ["—", "Inclus"] },
+  { label: "Support", values: ["Limité", "Prioritaire"] },
 ];
 
 function formatFcfa(n: number) {
   return new Intl.NumberFormat("fr-FR").format(n);
 }
+
 
 function AbonnementPage() {
   const [billing, setBilling] = useState<Billing>("monthly");

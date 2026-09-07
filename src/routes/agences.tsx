@@ -86,6 +86,21 @@ function AgencesPage() {
         subtitle="Des closeurs et livreurs qualifiés, vérifiés par AFRISELL, disponibles dans ton pays."
       />
 
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
+        <p className="text-sm text-foreground">
+          Les agences de livraison et les closeurs sont réservés au{" "}
+          <span className="font-semibold">Plan Unique (5 000 FCFA / mois)</span>. L'essai gratuit n'y donne pas accès.
+        </p>
+        <Link
+          to="/abonnement"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+        >
+          Activer le Plan Unique
+        </Link>
+      </div>
+
+
+
       <div className="rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-card)] mb-6">
         <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
           <Select value={country} onValueChange={setCountry}>

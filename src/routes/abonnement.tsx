@@ -48,7 +48,6 @@ const PLANS: Plan[] = [
       "Jusqu'à 10 ventes",
       "Jusqu'à 85 $ de ventes cumulées",
       "Une seule boutique",
-      "Agences de livraison & closeurs non inclus",
     ],
     cta: "Commencer gratuitement",
   },

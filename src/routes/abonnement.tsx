@@ -195,62 +195,31 @@ function AbonnementPage() {
               : "bg-success/15 text-success",
           )}
         >
-          {activePlan === "starter" && "Plan Starter"}
-          {activePlan === "pro" && "Plan Pro — Actif ✓"}
-          {activePlan === "business" && "Plan Business — Actif ✓"}
+          {activePlan === "starter" && "Essai gratuit"}
+          {activePlan === "pro" && "Plan Unique — Actif ✓"}
         </span>
       </div>
 
       {/* Header */}
       <section className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Choisis ton plan
+          Un seul plan, tout inclus
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-          Lance et développe ton business en ligne avec AFRISELL
+          Commence gratuitement, puis passe au Plan Unique à 5 000 FCFA / mois.
         </p>
 
-        {/* Toggle */}
-        <div className="mx-auto mt-6 inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 shadow-sm">
-          <button
-            onClick={() => setBilling("monthly")}
-            className={cn(
-              "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-              billing === "monthly"
-                ? "bg-primary text-primary-foreground shadow"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Mensuel
-          </button>
-          <button
-            onClick={() => setBilling("yearly")}
-            className={cn(
-              "flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-              billing === "yearly"
-                ? "bg-primary text-primary-foreground shadow"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Annuel
-            <span
-              className={cn(
-                "rounded-full px-2 py-0.5 text-[10px] font-bold",
-                billing === "yearly"
-                  ? "bg-primary-foreground/20 text-primary-foreground"
-                  : "bg-success/15 text-success",
-              )}
-            >
-              -20%
-            </span>
-          </button>
+        <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+          Essai gratuit pour ta première boutique : jusqu'à 1 an, 10 ventes ou
+          85 $ de ventes cumulées. Dès qu'une de ces limites est atteinte,
+          l'abonnement de 5 000 FCFA / mois est automatiquement facturé.
         </div>
       </section>
 
       {/* Pricing cards */}
-      <section className="mt-10 grid gap-6 md:grid-cols-3">
+      <section className="mx-auto mt-10 grid max-w-3xl gap-6 md:grid-cols-2">
         {PLANS.map((plan) => {
-          const price = billing === "yearly" ? Math.round(plan.monthly * 0.8) : plan.monthly;
+          const price = plan.monthly;
           const isPopular = plan.popular;
           return (
             <Card
@@ -266,7 +235,7 @@ function AbonnementPage() {
               {isPopular && (
                 <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-primary shadow-md">
                   <Sparkles className="h-3.5 w-3.5" />
-                  Populaire
+                  Recommandé
                 </span>
               )}
 
@@ -282,18 +251,19 @@ function AbonnementPage() {
               <div className="mt-5">
                 <div className="flex items-baseline gap-1">
                   <span className={cn("text-4xl font-bold tracking-tight", isPopular ? "text-white" : "text-foreground")}>
-                    {formatFcfa(price)}
+                    {plan.monthly === 0 ? "0" : formatFcfa(price)}
                   </span>
                   <span className={cn("text-sm font-medium", isPopular ? "text-white/80" : "text-muted-foreground")}>
                     FCFA{plan.monthly > 0 ? " / mois" : ""}
                   </span>
                 </div>
-                {billing === "yearly" && plan.monthly > 0 && (
-                  <p className={cn("mt-1 text-xs", isPopular ? "text-white/75" : "text-muted-foreground")}>
-                    Facturé annuellement — économise 20%
+                {plan.monthly === 0 && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Puis 5 000 FCFA / mois après les limites de l'essai
                   </p>
                 )}
               </div>
+
 
               <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((f) => (

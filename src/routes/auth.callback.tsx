@@ -49,7 +49,7 @@ function CallbackPage() {
         }
 
         setStatus("success");
-        const redirect = url.searchParams.get("redirect") || "/onboarding";
+        const redirect = url.searchParams.get("redirect") || "/dashboard";
         setTimeout(() => navigate({ to: redirect }), 1200);
       } catch (e) {
         setStatus("error");
@@ -84,7 +84,7 @@ function CallbackPage() {
             </div>
             <h1 className="mt-6 text-2xl font-extrabold tracking-tight">Email vérifié ! 🎉</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Ton compte est actif. Direction la création de ta boutique...
+              Ton compte est actif. Direction ton tableau de bord...
             </p>
           </>
         )}

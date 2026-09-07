@@ -90,11 +90,10 @@ function formatFcfa(n: number) {
 
 
 function AbonnementPage() {
-  const [billing, setBilling] = useState<Billing>("monthly");
   const [modalPlan, setModalPlan] = useState<Plan | null>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "+229" });
   const [processing, setProcessing] = useState(false);
-  const [activePlan, setActivePlan] = useState<"starter" | "pro" | "business">("starter");
+  const [activePlan, setActivePlan] = useState<"starter" | "pro">("starter");
   const [successPlan, setSuccessPlan] = useState<{ name: string; price: string } | null>(null);
   const initPayment = useServerFn(initMonerooPayment);
   const verifyPayment = useServerFn(verifyMonerooPayment);
@@ -114,14 +113,12 @@ function AbonnementPage() {
     const params = new URLSearchParams(window.location.search);
     const paymentId = params.get("paymentId") ?? params.get("paymentID");
     if (!paymentId) return;
-    const planId = (params.get("plan") as "pro" | "business" | null) ?? "pro";
     setProcessing(true);
     verifyPayment({ data: { paymentId } })
       .then((res) => {
         if (res.success) {
-          const label = planId === "business" ? "Business" : "Pro";
-          setActivePlan(planId);
-          setSuccessPlan({ name: label, price: planId === "business" ? "10 000 FCFA" : "5 000 FCFA" });
+          setActivePlan("pro");
+          setSuccessPlan({ name: "Plan Unique", price: "5 000 FCFA" });
           fireConfetti();
         } else {
           toast.error("Paiement non abouti. Aucun montant n'a été débité.");
@@ -136,16 +133,14 @@ function AbonnementPage() {
   }, []);
 
   const launchMoneroo = async (plan: Plan) => {
-    const amount = plan.id === "pro" ? 5000 : 10000;
-    const label = plan.id === "pro" ? "Pro" : "Business";
     const parts = form.name.trim().split(/\s+/);
     setProcessing(true);
     try {
       const { checkoutUrl } = await initPayment({
         data: {
-          amount,
+          amount: 5000,
           currency: "XOF",
-          description: `Abonnement AFRISELL ${label} — 1 mois`,
+          description: "Abonnement AFRISELL Plan Unique — 1 mois",
           returnUrl: `${window.location.origin}/abonnement?plan=${plan.id}`,
           customer: {
             email: form.email.trim(),
@@ -180,11 +175,12 @@ function AbonnementPage() {
   const handleSelect = (plan: Plan) => {
     if (plan.id === "starter") {
       setActivePlan("starter");
-      toast.success("Plan Starter activé. Bienvenue sur AFRISELL !");
+      toast.success("Essai gratuit activé. Bienvenue sur AFRISELL !");
       return;
     }
     setModalPlan(plan);
   };
+
 
   return (
     <AppShell>

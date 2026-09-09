@@ -1,14 +1,13 @@
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, ShoppingBag, Package, CreditCard, Store, Users,
   Megaphone, Handshake, Gem, HelpCircle, Settings, Search, Bell, Banknote,
-  Menu, X, LogOut, User as UserIcon, Download,
+  LogOut, User as UserIcon, Download,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,

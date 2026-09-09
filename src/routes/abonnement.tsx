@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset, Lock, CheckCircle2 } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, Lock, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -70,18 +70,6 @@ const PLANS: Plan[] = [
   },
 ];
 
-const COMPARISON: Array<{ label: string; values: [string, string] }> = [
-  { label: "Durée", values: ["1 an max", "Sans limite"] },
-  { label: "Ventes", values: ["10 max", "Illimitées"] },
-  { label: "Chiffre d'affaires", values: ["85 $ max", "Illimité"] },
-  { label: "Boutiques", values: ["1", "Illimitées"] },
-  { label: "Paiement à la livraison (COD)", values: ["Inclus", "Inclus"] },
-  { label: "Produits digitaux", values: ["Inclus", "Inclus"] },
-  { label: "Agences de livraison", values: ["—", "Inclus"] },
-  { label: "Closeurs", values: ["—", "Inclus"] },
-  { label: "Import Alibaba", values: ["—", "Inclus"] },
-  { label: "Support", values: ["Limité", "Prioritaire"] },
-];
 
 function formatFcfa(n: number) {
   return new Intl.NumberFormat("fr-FR").format(n);
@@ -299,94 +287,10 @@ function AbonnementPage() {
         Paiements 100% sécurisés par Moneroo — MTN MoMo, Moov Money et carte bancaire acceptés
       </p>
 
-      {/* Billing history */}
-      <section className="mt-12">
-        <h2 className="text-xl font-bold text-foreground">Historique des paiements</h2>
-        <Card className="mt-4 overflow-hidden rounded-2xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Date</th>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Plan</th>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Montant</th>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Méthode</th>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Statut</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { date: "01/05/2026", plan: "Plan Unique", amount: "5 000 FCFA", method: "MTN MoMo", status: "Payé" },
-                  { date: "01/04/2026", plan: "Plan Unique", amount: "5 000 FCFA", method: "Moov Money", status: "Payé" },
-                  { date: "01/03/2026", plan: "Essai gratuit", amount: "Gratuit", method: "—", status: "Actif" },
 
-                ].map((r, i) => (
-                  <tr key={i} className={cn(i % 2 === 1 && "bg-muted/20")}>
-                    <td className="px-4 py-3 text-foreground">{r.date}</td>
-                    <td className="px-4 py-3 text-foreground">{r.plan}</td>
-                    <td className="px-4 py-3 text-foreground">{r.amount}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{r.method}</td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-semibold text-success">
-                        ✓ {r.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </section>
-
-      {/* Comparison table */}
-      <section className="mt-14">
-        <h2 className="text-center text-2xl font-bold text-foreground">Essai gratuit vs Plan Unique</h2>
-        <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
-          Les agences de livraison et les closeurs sont réservés au Plan Unique.
-        </p>
-
-        <Card className="mt-6 overflow-hidden rounded-2xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-foreground">Fonctionnalité</th>
-                  <th className="px-4 py-3 text-center font-semibold text-foreground">Essai gratuit</th>
-                  <th className="px-4 py-3 text-center font-semibold text-primary">Plan Unique</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {COMPARISON.map((row, i) => (
-                  <tr key={row.label} className={cn(i % 2 === 1 && "bg-muted/20")}>
-                    <td className="px-4 py-3 font-medium text-foreground">{row.label}</td>
-                    {row.values.map((v, idx) => (
-                      <td
-                        key={idx}
-                        className={cn(
-                          "px-4 py-3 text-center",
-                          v === "—" ? "text-muted-foreground" : "text-foreground",
-                          idx === 1 && "bg-primary/5",
-                        )}
-                      >
-                        {v === "Inclus" ? (
-                          <Check className="mx-auto h-4 w-4 text-success" />
-                        ) : (
-                          v
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </section>
 
       {/* Payment methods */}
-      <section className="mt-14 grid gap-6 md:grid-cols-2">
+      <section className="mt-14">
         <Card className="rounded-2xl p-6">
           <h3 className="text-lg font-bold text-foreground">Modes de paiement</h3>
           <p className="mt-1 text-sm text-muted-foreground">Paiement simple et sécurisé</p>
@@ -410,25 +314,6 @@ function AbonnementPage() {
               </div>
             </div>
           </div>
-        </Card>
-
-        <Card className="rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-foreground">Tu peux nous faire confiance</h3>
-          <p className="mt-1 text-sm text-muted-foreground">Choisis AFRISELL en toute sérénité.</p>
-          <ul className="mt-4 space-y-3">
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <ShieldCheck className="h-5 w-5 text-success" />
-              Sans engagement
-            </li>
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <RefreshCw className="h-5 w-5 text-primary" />
-              Annule à tout moment
-            </li>
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <Headset className="h-5 w-5 text-accent" />
-              Support disponible
-            </li>
-          </ul>
         </Card>
       </section>
 

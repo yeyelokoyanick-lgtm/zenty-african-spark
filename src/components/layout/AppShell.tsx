@@ -211,7 +211,6 @@ function BottomNav() {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
       {/* Desktop sidebar */}
@@ -219,32 +218,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         <SidebarContent />
       </aside>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          <button
-            aria-label="Fermer"
-            onClick={() => setMobileOpen(false)}
-            className="absolute inset-0 bg-foreground/40"
-          />
-          <aside className="absolute inset-y-0 left-0 w-72 bg-card border-r border-border shadow-xl">
-            <SidebarContent onNavigate={() => setMobileOpen(false)} />
-          </aside>
-        </div>
-      )}
-
       <div className="lg:pl-60">
-        {/* Mobile top bar with menu button */}
-        <div className="lg:hidden sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/90 px-3 backdrop-blur-md">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Menu"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-          <Logo />
+        {/* Mobile top bar */}
+        <div className="lg:hidden sticky top-0 z-30 flex h-14 items-center justify-center border-b border-border bg-background/90 px-3 backdrop-blur-md">
+          <Link to="/dashboard" aria-label="AFRISELL">
+            <Logo />
+          </Link>
         </div>
         <div className="hidden lg:block">
           <Topbar />

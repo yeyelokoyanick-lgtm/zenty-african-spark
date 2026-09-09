@@ -302,7 +302,7 @@ function AbonnementPage() {
 
 
       {/* Payment methods */}
-      <section className="mt-14 grid gap-6 md:grid-cols-2">
+      <section className="mt-14">
         <Card className="rounded-2xl p-6">
           <h3 className="text-lg font-bold text-foreground">Modes de paiement</h3>
           <p className="mt-1 text-sm text-muted-foreground">Paiement simple et sécurisé</p>
@@ -326,25 +326,6 @@ function AbonnementPage() {
               </div>
             </div>
           </div>
-        </Card>
-
-        <Card className="rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-foreground">Tu peux nous faire confiance</h3>
-          <p className="mt-1 text-sm text-muted-foreground">Choisis AFRISELL en toute sérénité.</p>
-          <ul className="mt-4 space-y-3">
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <ShieldCheck className="h-5 w-5 text-success" />
-              Sans engagement
-            </li>
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <RefreshCw className="h-5 w-5 text-primary" />
-              Annule à tout moment
-            </li>
-            <li className="flex items-center gap-3 text-sm text-foreground">
-              <Headset className="h-5 w-5 text-accent" />
-              Support disponible
-            </li>
-          </ul>
         </Card>
       </section>
 

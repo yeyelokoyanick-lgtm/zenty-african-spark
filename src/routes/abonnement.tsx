@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Sparkles, Smartphone, CreditCard, ShieldCheck, RefreshCw, Headset, Lock, CheckCircle2 } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, Lock, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -70,18 +70,6 @@ const PLANS: Plan[] = [
   },
 ];
 
-const COMPARISON: Array<{ label: string; values: [string, string] }> = [
-  { label: "Durée", values: ["1 an max", "Sans limite"] },
-  { label: "Ventes", values: ["10 max", "Illimitées"] },
-  { label: "Chiffre d'affaires", values: ["85 $ max", "Illimité"] },
-  { label: "Boutiques", values: ["1", "Illimitées"] },
-  { label: "Paiement à la livraison (COD)", values: ["Inclus", "Inclus"] },
-  { label: "Produits digitaux", values: ["Inclus", "Inclus"] },
-  { label: "Agences de livraison", values: ["—", "Inclus"] },
-  { label: "Closeurs", values: ["—", "Inclus"] },
-  { label: "Import Alibaba", values: ["—", "Inclus"] },
-  { label: "Support", values: ["Limité", "Prioritaire"] },
-];
 
 function formatFcfa(n: number) {
   return new Intl.NumberFormat("fr-FR").format(n);

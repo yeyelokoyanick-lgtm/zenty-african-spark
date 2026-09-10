@@ -259,11 +259,6 @@ function AbonnementPage() {
         })}
       </section>
 
-      {/* Security badge */}
-      <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
-        <Lock className="h-3.5 w-3.5" />
-        Paiements 100% sécurisés par Moneroo — MTN MoMo, Moov Money et carte bancaire acceptés
-      </p>
 
 
 

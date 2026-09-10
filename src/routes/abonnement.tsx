@@ -193,7 +193,7 @@ function AbonnementPage() {
           Un seul plan, tout inclus
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-          Toute la puissance d’AFRISELL, sans compromis
+          Toute la puissance d'AFRISELL, sans compromis
         </p>
       </section>
 

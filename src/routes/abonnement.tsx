@@ -193,14 +193,8 @@ function AbonnementPage() {
           Un seul plan, tout inclus
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-          Commence gratuitement, puis passe au Plan Unique à 5 000 FCFA / mois.
+          Toute la puissance d’AFRISELL, sans compromis
         </p>
-
-        <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
-          Essai gratuit pour ta première boutique : jusqu'à 1 an, 10 ventes ou
-          85 $ de ventes cumulées. Dès qu'une de ces limites est atteinte,
-          l'abonnement de 5 000 FCFA / mois est automatiquement facturé.
-        </div>
       </section>
 
       {/* Pricing cards */}

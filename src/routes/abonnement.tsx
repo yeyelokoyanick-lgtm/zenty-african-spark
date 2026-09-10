@@ -171,22 +171,6 @@ function AbonnementPage() {
 
   return (
     <AppShell>
-      {/* Active plan banner */}
-      <div className="mb-6 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 py-3 text-sm shadow-sm">
-        <span className="text-muted-foreground">Plan actuel :</span>
-        <span
-          className={cn(
-            "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold",
-            activePlan === "starter"
-              ? "bg-muted text-foreground"
-              : "bg-success/15 text-success",
-          )}
-        >
-          {activePlan === "starter" && "Essai gratuit"}
-          {activePlan === "pro" && "Plan Unique — Actif ✓"}
-        </span>
-      </div>
-
       {/* Header */}
       <section className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

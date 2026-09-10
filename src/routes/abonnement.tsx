@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Sparkles, Smartphone, CreditCard, Lock, CheckCircle2 } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
@@ -259,11 +259,6 @@ function AbonnementPage() {
         })}
       </section>
 
-      {/* Security badge */}
-      <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
-        <Lock className="h-3.5 w-3.5" />
-        Paiements 100% sécurisés par Moneroo — MTN MoMo, Moov Money et carte bancaire acceptés
-      </p>
 
 
 

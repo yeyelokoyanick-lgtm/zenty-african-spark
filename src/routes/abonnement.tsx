@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Sparkles, Smartphone, CreditCard, Lock, CheckCircle2 } from "lucide-react";
+import { Check, Sparkles, Smartphone, CreditCard, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";

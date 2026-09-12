@@ -14,6 +14,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
+import { PartnerLogoMarquee } from "@/components/landing/PartnerLogoMarquee";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -299,6 +300,8 @@ function LandingPage() {
           })}
         </div>
       </section>
+
+      <PartnerLogoMarquee />
 
       {/* Testimonials */}
       <section id="testimonials" className="bg-muted/40 py-16 lg:py-24">

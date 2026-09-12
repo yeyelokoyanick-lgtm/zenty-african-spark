@@ -179,3 +179,125 @@
     border-radius: 4px;
   }
 }
+
+@keyframes partner-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes partner-marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@layer components {
+  .partner-marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .partner-marquee::before,
+  .partner-marquee::after {
+    position: absolute;
+    inset-block: 0;
+    z-index: 10;
+    width: clamp(2.5rem, 10vw, 9rem);
+    content: "";
+    pointer-events: none;
+  }
+
+  .partner-marquee::before {
+    left: 0;
+    background: linear-gradient(to right, var(--background), transparent);
+  }
+
+  .partner-marquee::after {
+    right: 0;
+    background: linear-gradient(to left, var(--background), transparent);
+  }
+
+  .partner-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: partner-marquee-left var(--marquee-duration) linear infinite;
+    will-change: transform;
+  }
+
+  .partner-marquee-track-reverse {
+    animation-name: partner-marquee-right;
+  }
+
+  .partner-marquee:hover .partner-marquee-track {
+    animation-duration: calc(var(--marquee-duration) * 1.7);
+  }
+
+  .partner-marquee-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: clamp(2.75rem, 6vw, 5.5rem);
+    padding-right: clamp(2.75rem, 6vw, 5.5rem);
+  }
+
+  .partner-logo {
+    display: flex;
+    width: clamp(7.5rem, 13vw, 10rem);
+    height: 4.5rem;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--foreground);
+    transition: filter 200ms ease, transform 200ms ease;
+  }
+
+  .partner-logo img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 2.6rem;
+    object-fit: contain;
+  }
+
+  .partner-logo span {
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .partner-logo:hover {
+    filter: brightness(1.04) drop-shadow(0 5px 8px rgb(0 0 0 / 0.14));
+    transform: scale(1.07);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partner-marquee {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .partner-marquee::-webkit-scrollbar {
+      display: none;
+    }
+
+    .partner-marquee-track,
+    .partner-marquee:hover .partner-marquee-track {
+      animation: none;
+      transform: none;
+    }
+
+    .partner-marquee-group[aria-hidden="true"] {
+      display: none;
+    }
+
+    .partner-logo {
+      transition: none;
+    }
+  }
+}

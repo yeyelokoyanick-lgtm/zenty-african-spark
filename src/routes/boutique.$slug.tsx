@@ -13,6 +13,7 @@ import { trackStoreVisit } from "@/lib/afrisell-api";
 
 import { createOrderNotification, paymentLabel } from "@/lib/notifications";
 import { createPublicOrder } from "@/lib/orders-api";
+import { sendOrderEmailToMerchant } from "@/lib/email-notifications.functions";
 
 const PURPLE = "#FF6A00";
 
@@ -313,7 +314,7 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
       const paymentName = paymentLabel(form.payment);
       if (shop?.id) {
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(product.id);
-        await createPublicOrder({
+        const created = await createPublicOrder({
           shop_id: shop.id,
           product_id: isUuid ? product.id : null,
           product_name: product.name,
@@ -332,6 +333,9 @@ function OrderForm({ product, onSuccess, shopColor }: { product: Product; onSucc
           payment_method: form.payment,
           payment_status: "pending",
         });
+        if (created?.id) {
+          sendOrderEmailToMerchant({ data: { orderId: created.id } }).catch(() => {});
+        }
       }
       const notif = createOrderNotification({
         shopName: shop?.name ?? "Ma Boutique",

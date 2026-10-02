@@ -97,8 +97,7 @@ export function PartnerLogoMarquee() {
   return (
     <section aria-labelledby="ecosystem-title" className="overflow-hidden border-y border-border bg-background py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <p className="text-sm font-semibold text-primary">Intégrations et solutions compatibles</p>
-        <h2 id="ecosystem-title" className="mt-3 text-3xl font-bold sm:text-4xl">
+        <h2 id="ecosystem-title" className="text-3xl font-bold sm:text-4xl">
           Un écosystème pensé pour l’Afrique
         </h2>
         <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">

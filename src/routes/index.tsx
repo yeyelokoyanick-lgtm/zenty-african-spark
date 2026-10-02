@@ -187,13 +187,7 @@ function LandingPage() {
         />
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:pt-24">
           <div className="text-center lg:text-left">
-            <span
-              className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold"
-              style={{ borderColor: `${PURPLE}40`, color: PURPLE, backgroundColor: `${PURPLE}10` }}
-            >
-              <Star className="h-3.5 w-3.5" /> Fait en Afrique, pour l'Afrique
-            </span>
-            <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               Vends en ligne en Afrique,{" "}
               <span
                 className="bg-clip-text text-transparent"

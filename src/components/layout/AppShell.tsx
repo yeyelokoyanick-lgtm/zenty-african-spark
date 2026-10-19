@@ -36,7 +36,7 @@ const groups: { title: string; items: NavItem[] }[] = [
     items: [
       { to: "/marketing", label: "Marketing", icon: Megaphone },
       { to: "/affiliation", label: "Affiliation", icon: Banknote },
-      { to: "/agences", label: "Agences", icon: Handshake },
+      { to: "/agences", label: "Réseau de services", icon: Handshake },
     ],
   },
   {

@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 
-import { initMonerooPayment, verifyMonerooPayment } from "@/lib/moneroo.functions";
+import { initServiceSubscription, confirmServiceSubscription } from "@/lib/subscription.functions";
 
 
 export const Route = createFileRoute("/abonnement")({
@@ -34,6 +34,8 @@ export const Route = createFileRoute("/abonnement")({
       { name: "description", content: "Un seul plan AFRISELL à 5 000 FCFA/mois, tout inclus. Essai gratuit pour ta première boutique." },
       { property: "og:title", content: "Tarifs — AFRISELL" },
       { property: "og:description", content: "Un plan simple et complet pour vendre en ligne avec AFRISELL." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AbonnementPage,
@@ -97,8 +99,8 @@ function AbonnementPage() {
   const [processing, setProcessing] = useState(false);
   const [activePlan, setActivePlan] = useState<"starter" | "pro">("starter");
   const [successPlan, setSuccessPlan] = useState<{ name: string; price: string } | null>(null);
-  const initPayment = useServerFn(initMonerooPayment);
-  const verifyPayment = useServerFn(verifyMonerooPayment);
+  const initPayment = useServerFn(initServiceSubscription);
+  const verifyPayment = useServerFn(confirmServiceSubscription);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -145,9 +147,6 @@ function AbonnementPage() {
     try {
       const { checkoutUrl } = await initPayment({
         data: {
-          amount: 5000,
-          currency: "XOF",
-          description: "Abonnement AFRISELL Plan Unique — 1 mois",
           returnUrl: `${window.location.origin}/abonnement?plan=${plan.id}`,
           customer: {
             email: form.email.trim(),
@@ -155,7 +154,6 @@ function AbonnementPage() {
             last_name: parts.slice(1).join(" ") || parts[0] || "AFRISELL",
             phone: form.phone.trim(),
           },
-          metadata: { kind: "subscription", plan: plan.id },
         },
       });
       window.location.href = checkoutUrl;
@@ -183,6 +181,11 @@ function AbonnementPage() {
     if (plan.id === "starter") {
       setActivePlan("starter");
       toast.success("Essai gratuit activé. Bienvenue sur AFRISELL !");
+      return;
+    }
+    if (!user) {
+      toast.info("Connectez-vous pour associer l’abonnement à votre compte.");
+      window.location.href = "/auth?mode=signup&redirect=%2Fabonnement";
       return;
     }
     setModalPlan(plan);

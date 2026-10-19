@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { PartnerLogoMarquee } from "@/components/landing/PartnerLogoMarquee";
+import { PremiumServiceNetwork } from "@/components/landing/PremiumServiceNetwork";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -33,6 +34,8 @@ export const Route = createFileRoute("/")({
           "Crée ta boutique en ligne en 5 minutes et encaisse en MTN MoMo, Moov et Wave. AFRISELL est la plateforme e-commerce des marchands africains.",
       },
       { property: "og:title", content: "AFRISELL — Vends en ligne en Afrique" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       {
         property: "og:description",
         content:
@@ -296,6 +299,7 @@ function LandingPage() {
       </section>
 
       <PartnerLogoMarquee />
+      <PremiumServiceNetwork />
 
       {/* Testimonials */}
       <section id="testimonials" className="bg-muted/40 py-16 lg:py-24">

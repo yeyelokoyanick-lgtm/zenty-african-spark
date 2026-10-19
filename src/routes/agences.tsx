@@ -1,283 +1,100 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageHeader } from "@/components/afrisell/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Star, ShieldCheck, MessageCircle, Search } from "lucide-react";
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Link } from "@tanstack/react-router";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Headset, Truck, ShieldCheck, LockKeyhole, MapPin, Phone, Mail, Globe, MessageCircle, ArrowRight, LoaderCircle } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { listServiceProviders, getServiceNetworkAccess, getServiceProviderContacts, type ServiceProvider } from "@/lib/service-network.functions";
 
 export const Route = createFileRoute("/agences")({
-  head: () => ({ meta: [{ title: "Agences — AFRISELL" }] }),
+  head: () => ({ meta: [
+    { title: "Réseau de services — AFRISELL" },
+    { name: "description", content: "Découvrez les prestataires vérifiés de closing et de livraison. Coordonnées réservées aux abonnés AFRISELL actifs." },
+    { property: "og:title", content: "Réseau de services — AFRISELL" },
+    { property: "og:description", content: "Le réseau professionnel de closing et livraison des marchands AFRISELL." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+  ] }),
   component: AgencesPage,
 });
 
-type Agency = {
-  id: string; name: string; country: string; flag: string; city: string;
-  types: ("Closeur" | "Livreur")[]; typeLabels?: string[];
-  rating: number; reviews: number;
-  missions: number; verified: boolean; desc: string; whatsapp: string;
-};
-
-const AGENCIES: Agency[] = [
-  { id: "1", name: "Nawa", country: "Côte d'Ivoire", flag: "🇨🇮", city: "Abidjan", types: ["Closeur"], typeLabels: ["Closeur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Service de closing professionnel en Côte d'Ivoire. Conversion de prospects en clients qualifiés.", whatsapp: "+2250759839205" },
-  { id: "2", name: "Joanna Home", country: "Cameroun", flag: "🇨🇲", city: "Yaoundé", types: ["Closeur"], typeLabels: ["Closeuse"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Closeuse professionnelle au Cameroun. Spécialisée en vente par WhatsApp et téléphone.", whatsapp: "+24102153102" },
-  { id: "3", name: "Joanna Home", country: "Gabon", flag: "🇬🇦", city: "Libreville", types: ["Closeur"], typeLabels: ["Closeuse"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Closeuse professionnelle au Gabon. Spécialisée en vente par WhatsApp et téléphone.", whatsapp: "+24102153102" },
-  { id: "4", name: "Le Destockeur", country: "Togo", flag: "🇹🇬", city: "Lomé", types: ["Closeur", "Livreur"], typeLabels: ["Closeur", "Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de closing et livraison au Togo. Prise en charge complète de vos ventes et livraisons sur tout le territoire.", whatsapp: "+22871677617" },
-  { id: "5", name: "Youlis", country: "Burkina Faso", flag: "🇧🇫", city: "Ouagadougou", types: ["Closeur", "Livreur"], typeLabels: ["Closeur", "Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de closing et livraison au Burkina Faso. Service fiable pour l'écoulement de vos produits.", whatsapp: "+22667024062" },
-  { id: "6", name: "Iré Livraison", country: "Bénin", flag: "🇧🇯", city: "Cotonou", types: ["Livreur"], typeLabels: ["Livreur"], rating: 5, reviews: 0, missions: 0, verified: false, desc: "Agence de livraison au Bénin. Livraison rapide et fiable sur tout le territoire béninois.", whatsapp: "+2290155639393" },
-];
-
-const COUNTRIES = [
-  { label: "Tous les pays", value: "all" },
-  { label: "🇧🇯 Bénin", value: "Bénin" },
-  { label: "🇧🇫 Burkina Faso", value: "Burkina Faso" },
-  { label: "🇨🇲 Cameroun", value: "Cameroun" },
-  { label: "🇨🇮 Côte d'Ivoire", value: "Côte d'Ivoire" },
-  { label: "🇬🇦 Gabon", value: "Gabon" },
-  { label: "🇹🇬 Togo", value: "Togo" },
-];
-
-function whatsappMessage(agency: Agency) {
-  const typeText = (agency.typeLabels ?? agency.types).join(" + ");
-  return `Bonjour ${agency.name} 👋,\n\nJe vous contacte depuis la plateforme *AfriSell* 🛒.\n\nJe suis intéressé(e) par vos services de ${typeText} pour mon activité e-commerce.\n\nPouvez-vous me donner plus d'informations sur vos tarifs et disponibilités ?\n\nMerci !`;
+function safeWebsite(value: string | null) {
+  if (!value) return null;
+  try { const url = new URL(value); return url.protocol === "https:" || url.protocol === "http:" ? url.href : null; } catch { return null; }
 }
 
-function whatsappLink(agency: Agency) {
-  const cleanPhone = agency.whatsapp.replace(/\D/g, "");
-  return `https://web.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(whatsappMessage(agency))}`;
-}
-
-function openWhatsApp(agency: Agency) {
-  const cleanPhone = agency.whatsapp.replace(/\D/g, "");
-  const message = encodeURIComponent(whatsappMessage(agency));
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const url = isMobile
-    ? `whatsapp://send?phone=${cleanPhone}&text=${message}`
-    : `https://web.whatsapp.com/send?phone=${cleanPhone}&text=${message}`;
-
-  window.open(url, "_blank", "noopener,noreferrer");
+function ProviderDetails({ provider, onDenied }: { provider: ServiceProvider; onDenied: () => void }) {
+  const getContacts = useServerFn(getServiceProviderContacts);
+  // Always revalidate when a sheet opens; never keep private coordinates in a shared query cache.
+  const { data: contacts, isPending, isError } = useQuery({
+    queryKey: ["private-provider-contact", provider.id],
+    queryFn: () => getContacts({ data: { providerId: provider.id } }), staleTime: 0, gcTime: 0, retry: false,
+  });
+  const phone = contacts?.phone?.replace(/[^+\d]/g, "");
+  const whatsapp = contacts?.whatsapp?.replace(/\D/g, "");
+  const mobile = typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const message = encodeURIComponent(`Bonjour ${provider.name} 👋, je vous contacte depuis AFRISELL. Je suis intéressé(e) par vos services de ${provider.service_types.join(" + ")}. Quels sont vos tarifs et disponibilités ?`);
+  const website = safeWebsite(contacts?.website ?? null);
+  return <>
+    <DialogHeader><DialogTitle>{provider.name}</DialogTitle><DialogDescription>{[provider.city, provider.country].filter(Boolean).join(", ")}</DialogDescription></DialogHeader>
+    <p className="text-sm leading-relaxed">{provider.description}</p>
+    <p className="inline-flex items-center gap-2 text-sm text-success"><ShieldCheck className="h-4 w-4" /> Prestataire vérifié</p>
+    {isPending && <p className="flex gap-2 text-sm text-muted-foreground"><LoaderCircle className="h-4 w-4 animate-spin" /> Vérification de votre accès…</p>}
+    {isError && <div><p className="mb-3 text-sm text-muted-foreground">Les coordonnées sont indisponibles ou votre abonnement n’est plus actif.</p><Button onClick={onDenied}>Débloquer avec un abonnement</Button></div>}
+    {contacts && <div className="grid gap-3 sm:grid-cols-2">
+      {whatsapp && <Button asChild><a href={mobile ? `whatsapp://send?phone=${whatsapp}&text=${message}` : `https://wa.me/${whatsapp}?text=${message}`} target="_blank" rel="noopener noreferrer"><MessageCircle /> WhatsApp</a></Button>}
+      {phone && <Button asChild variant="outline"><a href={`tel:${phone}`}><Phone /> {contacts.phone}</a></Button>}
+      {contacts.email && <Button asChild variant="outline" className="h-auto whitespace-normal break-all py-3"><a href={`mailto:${contacts.email}`}><Mail /> {contacts.email}</a></Button>}
+      {website && <Button asChild variant="outline"><a href={website} target="_blank" rel="noopener noreferrer"><Globe /> Site internet</a></Button>}
+      {!whatsapp && !phone && !contacts.email && !website && <p className="text-sm text-muted-foreground">Aucune coordonnée professionnelle enregistrée.</p>}
+    </div>}
+  </>;
 }
 
 function AgencesPage() {
+  const { user } = useAuth();
+  const access = useServerFn(getServiceNetworkAccess);
+  const { data: allowed = false } = useQuery({ queryKey: ["service-network-access", user?.id], queryFn: () => access(), enabled: !!user, staleTime: 0, retry: false });
+  const { data: providers = [], isPending, isError, refetch } = useQuery({ queryKey: ["service-providers"], queryFn: () => listServiceProviders() });
   const [country, setCountry] = useState("all");
-  const [type, setType] = useState<"all" | "Closeur" | "Livreur" | "both">("all");
   const [city, setCity] = useState("");
-  const [open, setOpen] = useState<Agency | null>(null);
-
-  const filtered = AGENCIES.filter((a) => {
-    if (country !== "all" && a.country !== country) return false;
-    if (type === "Closeur" && !a.types.includes("Closeur")) return false;
-    if (type === "Livreur" && !a.types.includes("Livreur")) return false;
-    if (type === "both" && a.types.length < 2) return false;
-    if (city && !a.city.toLowerCase().includes(city.toLowerCase())) return false;
-    return true;
-  });
-
-  return (
-    <AppShell>
-      <PageHeader
-        title="Trouver une Agence de Vente & Livraison"
-        subtitle="Des closeurs et livreurs qualifiés, vérifiés par AFRISELL, disponibles dans ton pays."
-      />
-
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
-        <p className="text-sm text-foreground">
-          Les agences de livraison et les closeurs sont réservés au{" "}
-          <span className="font-semibold">Plan Unique (5 000 FCFA / mois)</span>. L'essai gratuit n'y donne pas accès.
-        </p>
-        <Link
-          to="/abonnement"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-        >
-          Activer le Plan Unique
-        </Link>
-      </div>
-
-
-
-      <div className="rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-card)] mb-6">
-        <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-center">
-          <Select value={country} onValueChange={setCountry}>
-            <SelectTrigger><SelectValue placeholder="Pays" /></SelectTrigger>
-            <SelectContent>
-              {COUNTRIES.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
-            </SelectContent>
-          </Select>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ville" className="pl-9" />
-          </div>
-          <Button>Rechercher</Button>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {([
-            ["all", "Tous"],
-            ["Closeur", "Closeurs"],
-            ["Livreur", "Livreurs"],
-            ["both", "Les deux"],
-          ] as const).map(([val, label]) => (
-            <button
-              key={val}
-              type="button"
-              onClick={() => setType(val)}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                type === val
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border bg-card text-foreground hover:bg-muted"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((a) => (
-          <article key={a.id} className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-card)] flex flex-col">
-            <div className="flex items-start gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarFallback className="text-white font-semibold" style={{ background: "var(--gradient-brand)" }}>
-                  {a.name.split(" ").map((s) => s[0]).slice(0, 2).join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold leading-tight truncate">{a.name}</h3>
-                <p className="text-xs text-muted-foreground">{a.flag} {a.city}, {a.country}</p>
-              </div>
-              {a.verified && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                  <ShieldCheck className="h-3 w-3" /> Vérifié
-                </span>
-              )}
-            </div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {a.types.map((t, i) => {
-                const label = a.typeLabels?.[i] ?? t;
-                const isCloseur = t === "Closeur";
-                return (
-                  <span
-                    key={t + i}
-                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
-                      isCloseur ? "bg-success/15 text-success" : "bg-warning/20 text-warning"
-                    }`}
-                  >
-                    {label}
-                  </span>
-                );
-              })}
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{a.desc}</p>
-            <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                {[0,1,2,3,4].map((i) => (
-                  <Star key={i} className={`h-3.5 w-3.5 ${i < Math.floor(a.rating) ? "fill-warning text-warning" : "text-muted"}`} />
-                ))}
-                <span className="ml-1 font-semibold text-foreground">{a.rating}</span>
-                <span>({a.reviews})</span>
-              </span>
-              <span>•</span>
-              <span>{a.missions} missions</span>
-            </div>
-            <div className="mt-4 flex gap-2">
-              <Button asChild className="flex-1" size="sm">
-                <a
-                  href={whatsappLink(a)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    openWhatsApp(a);
-                  }}
-                >
-                  <MessageCircle className="h-4 w-4" /> WhatsApp
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" className="flex-1" onClick={() => setOpen(a)}>Voir profil</Button>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="rounded-xl border border-border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-          <p className="text-muted-foreground">Aucune agence disponible dans ce pays pour le moment.</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Tu es closeur ou livreur ?{" "}
-            <Link to="/creer-boutique" className="font-semibold text-primary hover:underline">
-              → Inscrire mon agence
-            </Link>
-          </p>
-        </div>
-      )}
-
-      <div
-        className="mt-10 rounded-2xl p-6 sm:p-8 text-white"
-        style={{ background: "var(--gradient-brand)" }}
-      >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-extrabold">Tu es closeur ou livreur ?</h2>
-            <p className="mt-1 text-white/85">Inscris ton agence sur AFRISELL et reçois des missions chaque semaine.</p>
-          </div>
-          <Button asChild variant="secondary" className="text-foreground">
-            <a href="/inscrire-agence">Inscrire mon agence</a>
-          </Button>
-        </div>
-      </div>
-
-      <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
-        <DialogContent className="max-w-lg">
-          {open && (
-            <>
-              <DialogHeader><DialogTitle>{open.name}</DialogTitle></DialogHeader>
-              <div className="space-y-3 text-sm">
-                <p className="text-muted-foreground">{open.flag} {open.city}, {open.country}</p>
-                <p>{open.desc}</p>
-                <div>
-                  <p className="font-semibold mb-1">Services</p>
-                  <p className="text-muted-foreground">{open.types.join(" + ")}</p>
-                </div>
-                <div>
-                  <p className="font-semibold mb-1">Zones de couverture</p>
-                  <p className="text-muted-foreground">{open.city} et environs · livraison dans tout le {open.country}</p>
-                </div>
-                <div>
-                  <p className="font-semibold mb-1">Commission</p>
-                  <p className="text-muted-foreground">10% par vente confirmée + 1 500 FCFA / livraison</p>
-                </div>
-                <div>
-                  <p className="font-semibold mb-1">Avis récents</p>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>★★★★★ — « Très réactifs, paiements ponctuels. »</li>
-                    <li>★★★★☆ — « Bonne équipe, recommande. »</li>
-                    <li>★★★★★ — « 60 ventes en 3 semaines, top. »</li>
-                  </ul>
-                </div>
-                <Button asChild className="w-full mt-2">
-                  <a
-                    href={whatsappLink(open)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      openWhatsApp(open);
-                    }}
-                  >
-                    <MessageCircle className="h-4 w-4" /> Contacter sur WhatsApp
-                  </a>
-                </Button>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-    </AppShell>
-  );
+  const [type, setType] = useState("all");
+  const [open, setOpen] = useState<ServiceProvider | null>(null);
+  const [upgrade, setUpgrade] = useState(false);
+  const countries = [...new Set(providers.map((p) => p.country))].sort();
+  const filtered = providers.filter((p) => (country === "all" || p.country === country) && (type === "all" || p.service_types.includes(type)) && (!city || p.city?.toLocaleLowerCase("fr").includes(city.toLocaleLowerCase("fr"))));
+  const openProvider = async (provider: ServiceProvider) => {
+    if (!user) { setUpgrade(true); return; }
+    try { if (await access()) setOpen(provider); else setUpgrade(true); } catch { setUpgrade(true); }
+  };
+  return <AppShell>
+    <PageHeader title="Réseau de services" subtitle="Closing et livraison : découvrez les prestataires vérifiés, selon les marchés couverts." />
+    <div className="mb-6 flex flex-col justify-between gap-4 border-y border-border bg-secondary/40 px-4 py-5 sm:flex-row sm:items-center">
+      <div><p className="flex items-center gap-2 font-semibold"><LockKeyhole className="h-4 w-4 text-primary" />{allowed ? "Accès premium actif" : "Débloquez votre réseau de partenaires professionnels"}</p><p className="mt-2 text-sm text-muted-foreground">Les coordonnées professionnelles sont réservées aux abonnés payants actifs.</p></div>
+      <Button asChild className="h-auto whitespace-normal py-3" variant={allowed ? "outline" : "default"}><Link to="/abonnement">{allowed ? "Mon abonnement" : "Découvrir les offres premium"}<ArrowRight /></Link></Button>
+    </div>
+    <div className="mb-6 grid gap-3 sm:grid-cols-3">
+      <Select value={country} onValueChange={setCountry}><SelectTrigger aria-label="Pays"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Tous les pays</SelectItem>{countries.map((c) => <SelectItem value={c} key={c}>{c}</SelectItem>)}</SelectContent></Select>
+      <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Rechercher une ville" aria-label="Ville" />
+      <Select value={type} onValueChange={setType}><SelectTrigger aria-label="Type de service"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Tous les services</SelectItem><SelectItem value="closing">Closing</SelectItem><SelectItem value="livraison">Livraison</SelectItem></SelectContent></Select>
+    </div>
+    {isPending ? <p className="py-12 text-center text-muted-foreground">Chargement du réseau…</p> : isError ? <div className="py-12 text-center"><p className="mb-4 text-muted-foreground">L’annuaire est momentanément indisponible.</p><Button variant="outline" onClick={() => void refetch()}>Réessayer</Button></div> : <>
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{filtered.map((provider) => <article key={provider.id} className="flex flex-col rounded-lg border border-border bg-card p-6">
+        <div className="flex items-start justify-between gap-3"><h2 className="text-lg font-bold">{provider.name}</h2><ShieldCheck className="h-5 w-5 shrink-0 text-success" aria-label="Vérifié" /></div>
+        <p className="mt-2 flex gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 shrink-0" />{[provider.city, provider.country].filter(Boolean).join(", ")}</p>
+        <div className="mt-4 flex flex-wrap gap-2">{provider.service_types.map((service) => <span key={service} className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-xs text-secondary-foreground">{service === "closing" ? <Headset className="h-3 w-3" /> : <Truck className="h-3 w-3" />}{service === "closing" ? "Closing" : "Livraison"}</span>)}</div>
+        <p className="mb-5 mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">{provider.description}</p>
+        {!allowed && <p className="mb-3 flex gap-2 text-xs text-muted-foreground"><LockKeyhole className="h-3.5 w-3.5" />Réservé aux abonnés · coordonnées protégées</p>}
+        <Button variant={allowed ? "default" : "outline"} onClick={() => void openProvider(provider)}>{allowed ? "Consulter et contacter" : "Voir la fiche complète"}{!allowed && <LockKeyhole />}</Button>
+      </article>)}</div>
+      {!filtered.length && <div className="py-14 text-center"><ShieldCheck className="mx-auto h-9 w-9 text-muted-foreground" /><h2 className="mt-4 text-lg font-semibold">{providers.length ? "Aucun prestataire pour ces critères" : "Le réseau est en cours de vérification"}</h2><p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{providers.length ? "Essayez un autre pays, une autre ville ou un autre service." : "Aucun prestataire vérifié n’est disponible pour le moment. Les fiches seront publiées uniquement après validation."}</p></div>}
+    </>}
+    <Dialog open={!!open} onOpenChange={(value) => { if (!value) setOpen(null); }}><DialogContent>{open && <ProviderDetails key={open.id} provider={open} onDenied={() => { setOpen(null); setUpgrade(true); }} />}</DialogContent></Dialog>
+    <Dialog open={upgrade} onOpenChange={setUpgrade}><DialogContent><DialogHeader><DialogTitle>Débloquez votre réseau de partenaires professionnels</DialogTitle><DialogDescription>Accédez aux coordonnées des prestataires vérifiés avec un abonnement payant actif. L’essai gratuit et les paiements en attente ne donnent pas accès au réseau complet.</DialogDescription></DialogHeader><Button asChild className="h-auto whitespace-normal py-3"><Link to="/abonnement">Débloquer avec un abonnement<ArrowRight /></Link></Button></DialogContent></Dialog>
+  </AppShell>;
 }

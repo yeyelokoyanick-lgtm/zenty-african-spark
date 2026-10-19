@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -853,6 +853,71 @@ export type Database = {
         }
         Relationships: []
       }
+      service_provider_contacts: {
+        Row: {
+          email: string | null
+          phone: string | null
+          provider_id: string
+          website: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          email?: string | null
+          phone?: string | null
+          provider_id: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          email?: string | null
+          phone?: string | null
+          provider_id?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_provider_contacts_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: true
+            referencedRelation: "service_providers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_providers: {
+        Row: {
+          city: string | null
+          country: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          service_types: string[]
+          verified: boolean
+        }
+        Insert: {
+          city?: string | null
+          country: string
+          created_at?: string
+          description?: string
+          id?: string
+          name: string
+          service_types: string[]
+          verified?: boolean
+        }
+        Update: {
+          city?: string | null
+          country?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          service_types?: string[]
+          verified?: boolean
+        }
+        Relationships: []
+      }
       shops: {
         Row: {
           address: string | null
@@ -1040,6 +1105,7 @@ export type Database = {
           paid_at: string | null
           payment_method: string | null
           provider: string | null
+          server_confirmed: boolean
           status: string
           subscription_id: string | null
           transaction_reference: string | null
@@ -1053,6 +1119,7 @@ export type Database = {
           paid_at?: string | null
           payment_method?: string | null
           provider?: string | null
+          server_confirmed?: boolean
           status?: string
           subscription_id?: string | null
           transaction_reference?: string | null
@@ -1066,6 +1133,7 @@ export type Database = {
           paid_at?: string | null
           payment_method?: string | null
           provider?: string | null
+          server_confirmed?: boolean
           status?: string
           subscription_id?: string | null
           transaction_reference?: string | null
@@ -1259,6 +1327,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      confirm_service_subscription_payment: {
+        Args: { _payment_id: string }
+        Returns: string
+      }
       generate_order_number: { Args: never; Returns: string }
       has_role: {
         Args: {
@@ -1267,6 +1339,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_service_network_access: { Args: never; Returns: boolean }
       owns_shop: { Args: { _shop_id: string }; Returns: boolean }
       shop_exists: { Args: { _shop_id: string }; Returns: boolean }
     }

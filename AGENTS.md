@@ -1,0 +1,4 @@
+# Architecture rules
+- The service network reuses `subscriptions`, `subscription_plans`, and `subscription_payments`; access is evaluated by one database function on every private read, so there is no parallel entitlement store.
+- Provider previews and private contacts live in separate tables; only verified previews are public and contact reads use the authenticated client plus RLS, preventing frontend bundles from revealing contacts.
+- Subscription payment initialization binds a server-created ledger row to the authenticated user; confirmation verifies Moneroo amount, currency and metadata before a service-role-only transactional activation, preventing fabricated payments and replay renewals.

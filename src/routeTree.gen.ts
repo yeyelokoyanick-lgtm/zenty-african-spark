@@ -37,6 +37,7 @@ import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as ApiPublicMonerooSubscriptionRouteImport } from './routes/api/public/moneroo-subscription'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -182,6 +183,12 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicMonerooSubscriptionRoute =
+  ApiPublicMonerooSubscriptionRouteImport.update({
+    id: '/api/public/moneroo-subscription',
+    path: '/api/public/moneroo-subscription',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -290,6 +299,7 @@ export interface FileRoutesById {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   id:
     | '__root__'
     | '/'
@@ -388,6 +400,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -420,6 +433,7 @@ export interface RootRouteChildren {
   DSlugRoute: typeof DSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiPublicMonerooSubscriptionRoute: typeof ApiPublicMonerooSubscriptionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -620,6 +634,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/moneroo-subscription': {
+      id: '/api/public/moneroo-subscription'
+      path: '/api/public/moneroo-subscription'
+      fullPath: '/api/public/moneroo-subscription'
+      preLoaderRoute: typeof ApiPublicMonerooSubscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -678,6 +699,7 @@ const rootRouteChildren: RootRouteChildren = {
   DSlugRoute: DSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiPublicMonerooSubscriptionRoute: ApiPublicMonerooSubscriptionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

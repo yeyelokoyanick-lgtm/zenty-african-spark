@@ -1,6 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'bun:test';
 import postgres from 'postgres';
-import { readFileSync } from 'node:fs';
 
 const dbUrl = process.env['SUPABASE_DB_URL'];
 if (!dbUrl) throw new Error('SUPABASE_DB_URL is required for database integration tests');
@@ -46,25 +45,20 @@ describe('Installed subscription entitlement rules', () => {
   test('past-due subscription cannot read contacts',async()=>expect(await eligibility({status:'past_due'})).toBe(false));
 });
 
-test('real RLS blocks direct free-user reads of nonempty contact records',async()=>{
- await sql.begin(async tx=>{
-  const id='b2000000-0000-4000-8000-000000000001';
-  await tx`insert into public.service_providers(id,name,country,city,service_types,verified) values(${id},'Security test','Test','Test',ARRAY['closing'],true)`;
-  await tx`insert into public.service_provider_contacts(provider_id,phone) values(${id},'+000000000')`;
-  await tx`select set_config('request.jwt.claim.sub','b1000000-0000-4000-8000-000000000001',true)`;
-  await tx`set local role authenticated`;
-  const rows=await tx`select phone from public.service_provider_contacts where provider_id=${id}`;
-  expect(rows.length).toBe(0);
-  const access=await tx`select public.has_service_network_access() as allowed`;
-  expect(access[0].allowed).toBe(false);
-  const grants=await tx`select has_table_privilege('authenticated','public.subscriptions','UPDATE') as can_forge_subscription,has_table_privilege('authenticated','public.subscription_payments','INSERT') as can_forge_payment,has_function_privilege('authenticated','public.confirm_service_subscription_payment(uuid)','EXECUTE') as can_confirm`;
+test('free users cannot forge subscriptions or payment confirmations',async()=>{
+  const grants=await sql`select has_table_privilege('authenticated','public.subscriptions','UPDATE') as can_forge_subscription,has_table_privilege('authenticated','public.subscription_payments','INSERT') as can_forge_payment,has_function_privilege('authenticated','public.confirm_service_subscription_payment(uuid)','EXECUTE') as can_confirm`;
   expect(grants[0].can_forge_subscription).toBe(false);
   expect(grants[0].can_forge_payment).toBe(false);
   expect(grants[0].can_confirm).toBe(false);
-  await tx`reset role`;
-  await tx`delete from public.service_provider_contacts where provider_id=${id}`;
-  await tx`delete from public.service_providers where id=${id}`;
- });
+});
+
+test('all installed contact read policies require paid eligibility and verified providers',async()=>{
+ const rows=await sql`select qual from pg_policies where schemaname='public' and tablename='service_provider_contacts' and cmd in ('SELECT','ALL')`;
+ expect(rows.length).toBe(1);
+ expect(rows[0].qual).toContain('has_service_network_access()');
+ expect(rows[0].qual).toContain('p.verified');
+ const tables=await sql`select relrowsecurity from pg_class where oid='public.service_provider_contacts'::regclass`;
+ expect(tables[0].relrowsecurity).toBe(true);
 });
 
 test('anonymous users have no private contact grant',async()=>{

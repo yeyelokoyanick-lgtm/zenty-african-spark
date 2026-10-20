@@ -8,6 +8,13 @@
       "when": 1792370805736,
       "tag": "0000_secure_premium_service_network",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792484605443,
+      "tag": "0001_tighten_service_network_privileges",
+      "breakpoints": true
     }
   ]
 }

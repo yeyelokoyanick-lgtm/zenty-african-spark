@@ -9,135 +9,41 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as ProduitsDigitauxRouteImport } from './routes/produits-digitaux'
-import { Route as ProduitsRouteImport } from './routes/produits'
-import { Route as ParametresRouteImport } from './routes/parametres'
-import { Route as PaiementsRouteImport } from './routes/paiements'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as MarketingRouteImport } from './routes/marketing'
-import { Route as MaBoutiqueRouteImport } from './routes/ma-boutique'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ImportAlibabaRouteImport } from './routes/import-alibaba'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
-import { Route as CommandesRouteImport } from './routes/commandes'
-import { Route as ClientsRouteImport } from './routes/clients'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AideRouteImport } from './routes/aide'
-import { Route as AgencesRouteImport } from './routes/agences'
-import { Route as AffiliationRouteImport } from './routes/affiliation'
-import { Route as AbonnementRouteImport } from './routes/abonnement'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DSlugRouteImport } from './routes/d.$slug'
-import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
-import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
-import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AbonnementRouteImport } from './routes/abonnement'
+import { Route as AffiliationRouteImport } from './routes/affiliation'
+import { Route as AgencesRouteImport } from './routes/agences'
+import { Route as AideRouteImport } from './routes/aide'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as CommandesRouteImport } from './routes/commandes'
+import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as ImportAlibabaRouteImport } from './routes/import-alibaba'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MaBoutiqueRouteImport } from './routes/ma-boutique'
+import { Route as MarketingRouteImport } from './routes/marketing'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PaiementsRouteImport } from './routes/paiements'
+import { Route as ParametresRouteImport } from './routes/parametres'
+import { Route as ProduitsRouteImport } from './routes/produits'
+import { Route as ProduitsDigitauxRouteImport } from './routes/produits-digitaux'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
+import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
+import { Route as DSlugRouteImport } from './routes/d.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiPublicMonerooSubscriptionRouteImport } from './routes/api/public/moneroo-subscription'
 
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProduitsDigitauxRoute = ProduitsDigitauxRouteImport.update({
-  id: '/produits-digitaux',
-  path: '/produits-digitaux',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProduitsRoute = ProduitsRouteImport.update({
-  id: '/produits',
-  path: '/produits',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ParametresRoute = ParametresRouteImport.update({
-  id: '/parametres',
-  path: '/parametres',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PaiementsRoute = PaiementsRouteImport.update({
-  id: '/paiements',
-  path: '/paiements',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketingRoute = MarketingRouteImport.update({
-  id: '/marketing',
-  path: '/marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MaBoutiqueRoute = MaBoutiqueRouteImport.update({
-  id: '/ma-boutique',
-  path: '/ma-boutique',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImportAlibabaRoute = ImportAlibabaRouteImport.update({
-  id: '/import-alibaba',
-  path: '/import-alibaba',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreerBoutiqueRoute = CreerBoutiqueRouteImport.update({
-  id: '/creer-boutique',
-  path: '/creer-boutique',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CommandesRoute = CommandesRouteImport.update({
-  id: '/commandes',
-  path: '/commandes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClientsRoute = ClientsRouteImport.update({
-  id: '/clients',
-  path: '/clients',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AideRoute = AideRouteImport.update({
-  id: '/aide',
-  path: '/aide',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgencesRoute = AgencesRouteImport.update({
-  id: '/agences',
-  path: '/agences',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AffiliationRoute = AffiliationRouteImport.update({
-  id: '/affiliation',
-  path: '/affiliation',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AbonnementRoute = AbonnementRouteImport.update({
@@ -145,14 +51,126 @@ const AbonnementRoute = AbonnementRouteImport.update({
   path: '/abonnement',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AffiliationRoute = AffiliationRouteImport.update({
+  id: '/affiliation',
+  path: '/affiliation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DSlugRoute = DSlugRouteImport.update({
-  id: '/d/$slug',
-  path: '/d/$slug',
+const AgencesRoute = AgencesRouteImport.update({
+  id: '/agences',
+  path: '/agences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AideRoute = AideRouteImport.update({
+  id: '/aide',
+  path: '/aide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientsRoute = ClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandesRoute = CommandesRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreerBoutiqueRoute = CreerBoutiqueRouteImport.update({
+  id: '/creer-boutique',
+  path: '/creer-boutique',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportAlibabaRoute = ImportAlibabaRouteImport.update({
+  id: '/import-alibaba',
+  path: '/import-alibaba',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaBoutiqueRoute = MaBoutiqueRouteImport.update({
+  id: '/ma-boutique',
+  path: '/ma-boutique',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaiementsRoute = PaiementsRouteImport.update({
+  id: '/paiements',
+  path: '/paiements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParametresRoute = ParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsRoute = ProduitsRouteImport.update({
+  id: '/produits',
+  path: '/produits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProduitsDigitauxRoute = ProduitsDigitauxRouteImport.update({
+  id: '/produits-digitaux',
+  path: '/produits-digitaux',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
+const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
+  id: '/boutique/$slug',
+  path: '/boutique/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
@@ -160,39 +178,28 @@ const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
   path: '/checkout/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
-  id: '/boutique/$slug',
-  path: '/boutique/$slug',
+const DSlugRoute = DSlugRouteImport.update({
+  id: '/d/$slug',
+  path: '/d/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => AuthRoute,
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ApiPublicMonerooSubscriptionRoute =
+  ApiPublicMonerooSubscriptionRouteImport.update({
+    id: '/api/public/moneroo-subscription',
+    path: '/api/public/moneroo-subscription',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -290,6 +299,7 @@ export interface FileRoutesById {
   '/d/$slug': typeof DSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   id:
     | '__root__'
     | '/'
@@ -388,6 +400,7 @@ export interface FileRouteTypes {
     | '/d/$slug'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/moneroo-subscription'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -420,148 +433,16 @@ export interface RootRouteChildren {
   DSlugRoute: typeof DSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiPublicMonerooSubscriptionRoute: typeof ApiPublicMonerooSubscriptionRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/produits-digitaux': {
-      id: '/produits-digitaux'
-      path: '/produits-digitaux'
-      fullPath: '/produits-digitaux'
-      preLoaderRoute: typeof ProduitsDigitauxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/produits': {
-      id: '/produits'
-      path: '/produits'
-      fullPath: '/produits'
-      preLoaderRoute: typeof ProduitsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/parametres': {
-      id: '/parametres'
-      path: '/parametres'
-      fullPath: '/parametres'
-      preLoaderRoute: typeof ParametresRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/paiements': {
-      id: '/paiements'
-      path: '/paiements'
-      fullPath: '/paiements'
-      preLoaderRoute: typeof PaiementsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marketing': {
-      id: '/marketing'
-      path: '/marketing'
-      fullPath: '/marketing'
-      preLoaderRoute: typeof MarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ma-boutique': {
-      id: '/ma-boutique'
-      path: '/ma-boutique'
-      fullPath: '/ma-boutique'
-      preLoaderRoute: typeof MaBoutiqueRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/import-alibaba': {
-      id: '/import-alibaba'
-      path: '/import-alibaba'
-      fullPath: '/import-alibaba'
-      preLoaderRoute: typeof ImportAlibabaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/creer-boutique': {
-      id: '/creer-boutique'
-      path: '/creer-boutique'
-      fullPath: '/creer-boutique'
-      preLoaderRoute: typeof CreerBoutiqueRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/commandes': {
-      id: '/commandes'
-      path: '/commandes'
-      fullPath: '/commandes'
-      preLoaderRoute: typeof CommandesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clients': {
-      id: '/clients'
-      path: '/clients'
-      fullPath: '/clients'
-      preLoaderRoute: typeof ClientsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aide': {
-      id: '/aide'
-      path: '/aide'
-      fullPath: '/aide'
-      preLoaderRoute: typeof AideRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agences': {
-      id: '/agences'
-      path: '/agences'
-      fullPath: '/agences'
-      preLoaderRoute: typeof AgencesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/affiliation': {
-      id: '/affiliation'
-      path: '/affiliation'
-      fullPath: '/affiliation'
-      preLoaderRoute: typeof AffiliationRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/abonnement': {
@@ -571,46 +452,144 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AbonnementRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/affiliation': {
+      id: '/affiliation'
+      path: '/affiliation'
+      fullPath: '/affiliation'
+      preLoaderRoute: typeof AffiliationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/d/$slug': {
-      id: '/d/$slug'
-      path: '/d/$slug'
-      fullPath: '/d/$slug'
-      preLoaderRoute: typeof DSlugRouteImport
+    '/agences': {
+      id: '/agences'
+      path: '/agences'
+      fullPath: '/agences'
+      preLoaderRoute: typeof AgencesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout/$productId': {
-      id: '/checkout/$productId'
-      path: '/checkout/$productId'
-      fullPath: '/checkout/$productId'
-      preLoaderRoute: typeof CheckoutProductIdRouteImport
+    '/aide': {
+      id: '/aide'
+      path: '/aide'
+      fullPath: '/aide'
+      preLoaderRoute: typeof AideRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/boutique/$slug': {
-      id: '/boutique/$slug'
-      path: '/boutique/$slug'
-      fullPath: '/boutique/$slug'
-      preLoaderRoute: typeof BoutiqueSlugRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/callback'
-      fullPath: '/auth/callback'
-      preLoaderRoute: typeof AuthCallbackRouteImport
-      parentRoute: typeof AuthRoute
+    '/clients': {
+      id: '/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+    '/commandes': {
+      id: '/commandes'
+      path: '/commandes'
+      fullPath: '/commandes'
+      preLoaderRoute: typeof CommandesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creer-boutique': {
+      id: '/creer-boutique'
+      path: '/creer-boutique'
+      fullPath: '/creer-boutique'
+      preLoaderRoute: typeof CreerBoutiqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import-alibaba': {
+      id: '/import-alibaba'
+      path: '/import-alibaba'
+      fullPath: '/import-alibaba'
+      preLoaderRoute: typeof ImportAlibabaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ma-boutique': {
+      id: '/ma-boutique'
+      path: '/ma-boutique'
+      fullPath: '/ma-boutique'
+      preLoaderRoute: typeof MaBoutiqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketing': {
+      id: '/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof MarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paiements': {
+      id: '/paiements'
+      path: '/paiements'
+      fullPath: '/paiements'
+      preLoaderRoute: typeof PaiementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parametres': {
+      id: '/parametres'
+      path: '/parametres'
+      fullPath: '/parametres'
+      preLoaderRoute: typeof ParametresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits': {
+      id: '/produits'
+      path: '/produits'
+      fullPath: '/produits'
+      preLoaderRoute: typeof ProduitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produits-digitaux': {
+      id: '/produits-digitaux'
+      path: '/produits-digitaux'
+      fullPath: '/produits-digitaux'
+      preLoaderRoute: typeof ProduitsDigitauxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/list-tools': {
@@ -620,11 +599,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/boutique/$slug': {
+      id: '/boutique/$slug'
+      path: '/boutique/$slug'
+      fullPath: '/boutique/$slug'
+      preLoaderRoute: typeof BoutiqueSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$productId': {
+      id: '/checkout/$productId'
+      path: '/checkout/$productId'
+      fullPath: '/checkout/$productId'
+      preLoaderRoute: typeof CheckoutProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/d/$slug': {
+      id: '/d/$slug'
+      path: '/d/$slug'
+      fullPath: '/d/$slug'
+      preLoaderRoute: typeof DSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.lovable/oauth/consent': {
@@ -632,6 +639,20 @@ declare module '@tanstack/react-router' {
       path: '/.lovable/oauth/consent'
       fullPath: '/.lovable/oauth/consent'
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/moneroo-subscription': {
+      id: '/api/public/moneroo-subscription'
+      path: '/api/public/moneroo-subscription'
+      fullPath: '/api/public/moneroo-subscription'
+      preLoaderRoute: typeof ApiPublicMonerooSubscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -678,6 +699,7 @@ const rootRouteChildren: RootRouteChildren = {
   DSlugRoute: DSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiPublicMonerooSubscriptionRoute: ApiPublicMonerooSubscriptionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

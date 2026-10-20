@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { initMonerooPayment, verifyMonerooPayment } from "@/lib/moneroo.functions";
+import { initMonerooPayment } from "@/lib/moneroo.functions";
 
 export const initServiceSubscription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -31,16 +31,6 @@ export const confirmServiceSubscription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => z.object({ paymentId: z.string().min(3).max(150) }).parse(input))
   .handler(async ({ data, context }) => {
-    const { data: payment, error } = await context.supabase.from("subscription_payments")
-      .select("id,amount,currency,server_confirmed,status").eq("user_id", context.userId).eq("transaction_reference", data.paymentId).eq("provider", "moneroo").single();
-    if (error || !payment) throw new Error("Ce paiement ne correspond pas à votre compte");
-    const verified = await verifyMonerooPayment({ data });
-    if (!verified.success) return { success: false };
-    if (verified.amount !== payment.amount || verified.currency !== payment.currency || verified.metadata.subscription_payment_id !== payment.id || verified.metadata.kind !== "subscription") {
-      throw new Error("Le paiement ne correspond pas à cet abonnement");
-    }
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error: confirmError } = await supabaseAdmin.rpc("confirm_service_subscription_payment", { _payment_id: payment.id });
-    if (confirmError) throw new Error("Confirmation de l'abonnement indisponible");
-    return { success: true };
+    const { reconcileSubscriptionPayment } = await import("@/lib/subscription-confirmation.server");
+    return reconcileSubscriptionPayment(data.paymentId, context.userId);
   });

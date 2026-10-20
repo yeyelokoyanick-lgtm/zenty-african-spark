@@ -28,11 +28,11 @@ function safeWebsite(value: string | null) {
   try { const url = new URL(value); return url.protocol === "https:" || url.protocol === "http:" ? url.href : null; } catch { return null; }
 }
 
-function ProviderDetails({ provider, onDenied }: { provider: ServiceProvider; onDenied: () => void }) {
+function ProviderDetails({ provider, userId, onDenied }: { provider: ServiceProvider; userId: string; onDenied: () => void }) {
   const getContacts = useServerFn(getServiceProviderContacts);
   // Always revalidate when a sheet opens; never keep private coordinates in a shared query cache.
   const { data: contacts, isPending, isError } = useQuery({
-    queryKey: ["private-provider-contact", provider.id],
+    queryKey: ["private-provider-contact", userId, provider.id],
     queryFn: () => getContacts({ data: { providerId: provider.id } }), staleTime: 0, gcTime: 0, retry: false,
   });
   const phone = contacts?.phone?.replace(/[^+\d]/g, "");
@@ -46,7 +46,7 @@ function ProviderDetails({ provider, onDenied }: { provider: ServiceProvider; on
     <p className="inline-flex items-center gap-2 text-sm text-success"><ShieldCheck className="h-4 w-4" /> Prestataire vérifié</p>
     {isPending && <p className="flex gap-2 text-sm text-muted-foreground"><LoaderCircle className="h-4 w-4 animate-spin" /> Vérification de votre accès…</p>}
     {isError && <div><p className="mb-3 text-sm text-muted-foreground">Les coordonnées sont indisponibles ou votre abonnement n’est plus actif.</p><Button onClick={onDenied}>Débloquer avec un abonnement</Button></div>}
-    {contacts && <div className="grid gap-3 sm:grid-cols-2">
+    {contacts && !isError && <div className="grid gap-3 sm:grid-cols-2">
       {whatsapp && <Button asChild><a href={mobile ? `whatsapp://send?phone=${whatsapp}&text=${message}` : `https://wa.me/${whatsapp}?text=${message}`} target="_blank" rel="noopener noreferrer"><MessageCircle /> WhatsApp</a></Button>}
       {phone && <Button asChild variant="outline"><a href={`tel:${phone}`}><Phone /> {contacts.phone}</a></Button>}
       {contacts.email && <Button asChild variant="outline" className="h-auto whitespace-normal break-all py-3"><a href={`mailto:${contacts.email}`}><Mail /> {contacts.email}</a></Button>}
@@ -94,7 +94,7 @@ function AgencesPage() {
       </article>)}</div>
       {!filtered.length && <div className="py-14 text-center"><ShieldCheck className="mx-auto h-9 w-9 text-muted-foreground" /><h2 className="mt-4 text-lg font-semibold">{providers.length ? "Aucun prestataire pour ces critères" : "Le réseau est en cours de vérification"}</h2><p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{providers.length ? "Essayez un autre pays, une autre ville ou un autre service." : "Aucun prestataire vérifié n’est disponible pour le moment. Les fiches seront publiées uniquement après validation."}</p></div>}
     </>}
-    <Dialog open={!!open} onOpenChange={(value) => { if (!value) setOpen(null); }}><DialogContent>{open && <ProviderDetails key={open.id} provider={open} onDenied={() => { setOpen(null); setUpgrade(true); }} />}</DialogContent></Dialog>
+    <Dialog open={!!open && !!user} onOpenChange={(value) => { if (!value) setOpen(null); }}><DialogContent>{open && user && <ProviderDetails key={`${user.id}:${open.id}`} userId={user.id} provider={open} onDenied={() => { setOpen(null); setUpgrade(true); }} />}</DialogContent></Dialog>
     <Dialog open={upgrade} onOpenChange={setUpgrade}><DialogContent><DialogHeader><DialogTitle>Débloquez votre réseau de partenaires professionnels</DialogTitle><DialogDescription>Accédez aux coordonnées des prestataires vérifiés avec un abonnement payant actif. L’essai gratuit et les paiements en attente ne donnent pas accès au réseau complet.</DialogDescription></DialogHeader><Button asChild className="h-auto whitespace-normal py-3"><Link to="/abonnement">Débloquer avec un abonnement<ArrowRight /></Link></Button></DialogContent></Dialog>
   </AppShell>;
 }

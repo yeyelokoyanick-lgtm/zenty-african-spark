@@ -4,7 +4,7 @@ import postgres from 'postgres';
 const dbUrl = process.env['SUPABASE_DB_URL'];
 if (!dbUrl) throw new Error('SUPABASE_DB_URL is required for database integration tests');
 const sql = postgres(dbUrl, { max: 1, prepare: false });
-let definition: string;
+let definition;
 
 beforeAll(async () => {
   const rows = await sql`select pg_get_functiondef('public.has_service_network_access()'::regprocedure) as definition`;
@@ -14,7 +14,7 @@ afterAll(async () => { await sql.end(); });
 
 // Evaluate the installed entitlement function against isolated transaction-local records,
 // without creating auth users or changing real subscriptions/payments.
-async function eligibility(patch: Record<string, unknown> = {}) {
+async function eligibility(patch = {}) {
   return sql.begin(async tx => {
     await tx`create temporary table fixture_subscriptions (id uuid,user_id uuid,plan_id uuid,status text,cancelled_at timestamptz,price numeric,current_period_start timestamptz,current_period_end timestamptz) on commit drop`;
     await tx`create temporary table fixture_plans (id uuid,monthly_price numeric) on commit drop`;
@@ -23,9 +23,9 @@ async function eligibility(patch: Record<string, unknown> = {}) {
     const sub='b1000000-0000-4000-8000-000000000002';
     const plan='b1000000-0000-4000-8000-000000000003';
     const fixture = { status:'active', price:5000, planPrice:5000, end:new Date(Date.now()+86400000), cancelled:null, confirmed:true, paymentStatus:'successful', paidAt:new Date(), ...patch };
-    await tx`insert into fixture_plans values(${plan},${fixture.planPrice as number})`;
-    await tx`insert into fixture_subscriptions values(${sub},${user},${plan},${fixture.status as string},${fixture.cancelled as Date | null},${fixture.price as number},now()-interval '1 day',${fixture.end as Date})`;
-    await tx`insert into fixture_payments values(${sub},${user},${fixture.confirmed as boolean},${fixture.paymentStatus as string},${fixture.paidAt as Date | null},now())`;
+    await tx`insert into fixture_plans values(${plan},${fixture.planPrice})`;
+    await tx`insert into fixture_subscriptions values(${sub},${user},${plan},${fixture.status},${fixture.cancelled},${fixture.price},now()-interval '1 day',${fixture.end})`;
+    await tx`insert into fixture_payments values(${sub},${user},${fixture.confirmed},${fixture.paymentStatus},${fixture.paidAt},now())`;
     const query = definition.slice(definition.indexOf(' SELECT EXISTS'),definition.lastIndexOf('$function$')).trim().replace(/;\s*$/, '')
       .replaceAll('public.subscriptions','fixture_subscriptions').replaceAll('public.subscription_plans','fixture_plans').replaceAll('public.subscription_payments','fixture_payments').replaceAll('auth.uid()',`'${user}'::uuid`);
     const result = await tx.unsafe(query);

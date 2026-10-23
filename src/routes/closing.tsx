@@ -1,0 +1,17 @@
+import { createFileRoute,Link,Outlet } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Plus,Users,ClipboardList,CheckCircle,Clock,XCircle,Bell,Loader2 } from 'lucide-react';
+import { AppShell } from '@/components/layout/AppShell';
+import { PageHeader } from '@/components/afrisell/PageHeader';
+import { StatTile } from '@/components/afrisell/StatTile';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useClosing } from '@/components/closing/use-closing';
+import { ClosingBoard,ClosingInsights } from '@/components/closing/ClosingBoard';
+import { ProspectForm,ReminderForm } from '@/components/closing/ClosingForms';
+import { closingStats,type Prospect } from '@/lib/closing-model';
+export const Route=createFileRoute('/closing')({component:()=> <Outlet/>});
+export function ClosingPage({ownerId}:{ownerId?:string}){
+ const state=useClosing(ownerId);const [editing,setEditing]=useState<Prospect|null|undefined>();const [reminder,setReminder]=useState<Prospect|null|undefined>();const stats=closingStats(state.rows);
+ return <AppShell><PageHeader title="Espace Closing 🎯" subtitle="Gérez vos prospects, closeurs et relances depuis un seul endroit." actions={<><Button disabled={!state.canEdit||state.busy} onClick={()=>setEditing(null)}><Plus/>Ajouter un prospect</Button><Button variant="outline" className="border-primary text-primary" asChild><Link to="/closing/equipe"><Users/>Gérer mon équipe</Link></Button></>}/><div className="flex items-center gap-3 mb-5 flex-wrap"><Button variant="ghost" size="sm" asChild><Link to="/closing">Prospects</Link></Button><Button variant="ghost" size="sm" asChild><Link to="/closing/equipe">Équipe</Link></Button><div className="ml-auto flex items-center gap-2">{state.demo&&<Badge variant="secondary">Démonstration</Badge>}<Button size="sm" variant="outline" onClick={()=>state.setDemo(!state.demo)}>{state.demo?'Mes données':'Voir un exemple'}</Button></div></div>{!state.user&&!state.demo&&!state.authLoading&&<div className="border-l-4 border-primary bg-secondary p-4 mb-6 flex items-center justify-between gap-3 flex-wrap"><p className="text-sm">Connectez-vous pour retrouver vos prospects et votre équipe.</p><Button asChild><Link to="/auth">Se connecter</Link></Button></div>}{state.error&&!state.demo&&<p role="alert" className="text-destructive mb-4">{state.error.message}</p>}<div className="grid gap-3 grid-cols-2 xl:grid-cols-5 mb-8"><StatTile icon={ClipboardList} label="Total prospects" value={String(stats.total)}/><StatTile icon={CheckCircle} label="Convertis" value={String(stats.converted)} hint={`${stats.rate} % de conversion`} tone="success"/><StatTile icon={Clock} label="En cours" value={String(stats.ongoing)} tone="warning"/><StatTile icon={XCircle} label="Perdus" value={String(stats.lost)} tone="destructive"/><StatTile icon={Bell} label="Relances aujourd’hui" value={String(stats.due)} tone="warning"/></div>{state.loading?<div className="flex items-center justify-center p-16"><Loader2 className="animate-spin h-5 w-5 mr-2"/>Chargement…</div>:<><ClosingBoard state={state} onEdit={setEditing} onReminder={setReminder}/><ClosingInsights state={state} onReminder={setReminder}/></>}{editing!==undefined&&<ProspectForm state={state} prospect={editing} onClose={()=>setEditing(undefined)}/>} {reminder!==undefined&&<ReminderForm state={state} prospect={reminder} onClose={()=>setReminder(undefined)}/>}</AppShell>;
+}

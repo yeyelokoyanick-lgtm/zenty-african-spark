@@ -1,0 +1,10 @@
+import { createFileRoute,Link,useNavigate } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
+import { useState } from 'react';
+import { z } from 'zod';
+import { Users } from 'lucide-react';
+import { acceptClosingInvitation } from '@/lib/closing.functions';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+export const Route=createFileRoute('/closing/invitation')({validateSearch:z.object({token:z.string().optional()}),head:()=>({meta:[{title:'Invitation Closing — AFRISELL'},{name:'description',content:'Rejoignez une équipe de closing AFRISELL sur invitation.'},{property:'og:title',content:'Invitation Closing — AFRISELL'},{property:'og:description',content:'Rejoindre votre équipe de closing.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'},{name:'robots',content:'noindex'}]}),component:Invitation});
+function Invitation(){const {token}=Route.useSearch();const {user,loading}=useAuth();const accept=useServerFn(acceptClosingInvitation);const navigate=useNavigate();const [error,setError]=useState('');const [busy,setBusy]=useState(false);return <main className="min-h-screen bg-background flex justify-center items-center p-6"><section className="max-w-md text-center"><Users className="h-12 w-12 mx-auto text-primary mb-6"/><h1 className="text-2xl font-bold">Rejoindre l’équipe Closing</h1><p className="text-muted-foreground text-sm my-5">Une invitation personnelle vous donne accès aux prospects de cette équipe.</p>{error&&<p role="alert" className="text-destructive text-sm mb-5">{error}</p>}{!token?<p>Invitation manquante</p>:user?<Button disabled={busy} onClick={async()=>{setBusy(true);try{const result=await accept({data:{token}});await navigate({to:'/closing',search:{owner:result.ownerId}});}catch(e){setError(e instanceof Error?e.message:'Invitation indisponible');}finally{setBusy(false);}}}>Accepter l’invitation</Button>:<Button asChild disabled={loading}><Link to="/auth">Se connecter</Link></Button>}</section></main>;}

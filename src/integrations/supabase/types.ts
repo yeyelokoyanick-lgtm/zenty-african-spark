@@ -52,6 +52,176 @@ export type Database = {
           },
         ]
       }
+      closing_activity: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          id: string
+          message: string
+          owner_id: string
+          prospect_id: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          owner_id: string
+          prospect_id?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          owner_id?: string
+          prospect_id?: string | null
+        }
+        Relationships: []
+      }
+      closing_invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          member_id: string
+          owner_id: string
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          member_id: string
+          owner_id: string
+          token?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          member_id?: string
+          owner_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "closing_invitations_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "closing_team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      closing_prospects: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          id: string
+          last_contact_at: string | null
+          loss_reason: string | null
+          name: string
+          notes: string
+          owner_id: string
+          phone: string
+          product_id: string | null
+          product_name: string
+          reminder_at: string | null
+          reminder_note: string
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          id?: string
+          last_contact_at?: string | null
+          loss_reason?: string | null
+          name: string
+          notes?: string
+          owner_id: string
+          phone: string
+          product_id?: string | null
+          product_name?: string
+          reminder_at?: string | null
+          reminder_note?: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          id?: string
+          last_contact_at?: string | null
+          loss_reason?: string | null
+          name?: string
+          notes?: string
+          owner_id?: string
+          phone?: string
+          product_id?: string | null
+          product_name?: string
+          reminder_at?: string | null
+          reminder_note?: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "closing_prospects_assigned_to_owner_id_fkey"
+            columns: ["assigned_to", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "closing_team_members"
+            referencedColumns: ["id", "owner_id"]
+          },
+          {
+            foreignKeyName: "closing_prospects_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      closing_team_members: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+          permission: string
+          phone: string
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          owner_id: string
+          permission?: string
+          phone: string
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          permission?: string
+          phone?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       coupons: {
         Row: {
           active: boolean
@@ -1327,6 +1497,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_closing_invitation: { Args: { _token: string }; Returns: string }
+      can_access_closing: {
+        Args: { _action?: string; _owner: string }
+        Returns: boolean
+      }
       confirm_service_subscription_payment: {
         Args: { _payment_id: string }
         Returns: string

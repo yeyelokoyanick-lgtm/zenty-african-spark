@@ -16,6 +16,7 @@ import { Route as AgencesRouteImport } from './routes/agences'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as ClosingRouteImport } from './routes/closing'
 import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as CreerBoutiqueRouteImport } from './routes/creer-boutique'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -36,6 +37,9 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as CheckoutProductIdRouteImport } from './routes/checkout.$productId'
+import { Route as ClosingIndexRouteImport } from './routes/closing.index'
+import { Route as ClosingEquipeRouteImport } from './routes/closing.equipe'
+import { Route as ClosingInvitationRouteImport } from './routes/closing.invitation'
 import { Route as DSlugRouteImport } from './routes/d.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
@@ -74,6 +78,11 @@ const AuthRoute = AuthRouteImport.update({
 const ClientsRoute = ClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClosingRoute = ClosingRouteImport.update({
+  id: '/closing',
+  path: '/closing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandesRoute = CommandesRouteImport.update({
@@ -178,6 +187,21 @@ const CheckoutProductIdRoute = CheckoutProductIdRouteImport.update({
   path: '/checkout/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClosingIndexRoute = ClosingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClosingRoute,
+} as any)
+const ClosingEquipeRoute = ClosingEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => ClosingRoute,
+} as any)
+const ClosingInvitationRoute = ClosingInvitationRouteImport.update({
+  id: '/invitation',
+  path: '/invitation',
+  getParentRoute: () => ClosingRoute,
+} as any)
 const DSlugRoute = DSlugRouteImport.update({
   id: '/d/$slug',
   path: '/d/$slug',
@@ -209,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
   '/clients': typeof ClientsRoute
+  '/closing': typeof ClosingRouteWithChildren
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
@@ -229,7 +254,10 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/closing/equipe': typeof ClosingEquipeRoute
+  '/closing/invitation': typeof ClosingInvitationRoute
   '/d/$slug': typeof DSlugRoute
+  '/closing/': typeof ClosingIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
@@ -262,7 +290,10 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/closing/equipe': typeof ClosingEquipeRoute
+  '/closing/invitation': typeof ClosingInvitationRoute
   '/d/$slug': typeof DSlugRoute
+  '/closing': typeof ClosingIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
@@ -276,6 +307,7 @@ export interface FileRoutesById {
   '/aide': typeof AideRoute
   '/auth': typeof AuthRouteWithChildren
   '/clients': typeof ClientsRoute
+  '/closing': typeof ClosingRouteWithChildren
   '/commandes': typeof CommandesRoute
   '/creer-boutique': typeof CreerBoutiqueRoute
   '/dashboard': typeof DashboardRoute
@@ -296,7 +328,10 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/checkout/$productId': typeof CheckoutProductIdRoute
+  '/closing/equipe': typeof ClosingEquipeRoute
+  '/closing/invitation': typeof ClosingInvitationRoute
   '/d/$slug': typeof DSlugRoute
+  '/closing/': typeof ClosingIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/public/moneroo-subscription': typeof ApiPublicMonerooSubscriptionRoute
@@ -311,6 +346,7 @@ export interface FileRouteTypes {
     | '/aide'
     | '/auth'
     | '/clients'
+    | '/closing'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
@@ -331,7 +367,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/closing/equipe'
+    | '/closing/invitation'
     | '/d/$slug'
+    | '/closing/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/public/moneroo-subscription'
@@ -364,7 +403,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/closing/equipe'
+    | '/closing/invitation'
     | '/d/$slug'
+    | '/closing'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/public/moneroo-subscription'
@@ -377,6 +419,7 @@ export interface FileRouteTypes {
     | '/aide'
     | '/auth'
     | '/clients'
+    | '/closing'
     | '/commandes'
     | '/creer-boutique'
     | '/dashboard'
@@ -397,7 +440,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/boutique/$slug'
     | '/checkout/$productId'
+    | '/closing/equipe'
+    | '/closing/invitation'
     | '/d/$slug'
+    | '/closing/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/public/moneroo-subscription'
@@ -411,6 +457,7 @@ export interface RootRouteChildren {
   AideRoute: typeof AideRoute
   AuthRoute: typeof AuthRouteWithChildren
   ClientsRoute: typeof ClientsRoute
+  ClosingRoute: typeof ClosingRouteWithChildren
   CommandesRoute: typeof CommandesRoute
   CreerBoutiqueRoute: typeof CreerBoutiqueRoute
   DashboardRoute: typeof DashboardRoute
@@ -485,6 +532,13 @@ declare module '@tanstack/react-router' {
       path: '/clients'
       fullPath: '/clients'
       preLoaderRoute: typeof ClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/closing': {
+      id: '/closing'
+      path: '/closing'
+      fullPath: '/closing'
+      preLoaderRoute: typeof ClosingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commandes': {
@@ -627,6 +681,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/closing/': {
+      id: '/closing/'
+      path: '/'
+      fullPath: '/closing/'
+      preLoaderRoute: typeof ClosingIndexRouteImport
+      parentRoute: typeof ClosingRoute
+    }
+    '/closing/equipe': {
+      id: '/closing/equipe'
+      path: '/equipe'
+      fullPath: '/closing/equipe'
+      preLoaderRoute: typeof ClosingEquipeRouteImport
+      parentRoute: typeof ClosingRoute
+    }
+    '/closing/invitation': {
+      id: '/closing/invitation'
+      path: '/invitation'
+      fullPath: '/closing/invitation'
+      preLoaderRoute: typeof ClosingInvitationRouteImport
+      parentRoute: typeof ClosingRoute
+    }
     '/d/$slug': {
       id: '/d/$slug'
       path: '/d/$slug'
@@ -668,6 +743,21 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface ClosingRouteChildren {
+  ClosingEquipeRoute: typeof ClosingEquipeRoute
+  ClosingInvitationRoute: typeof ClosingInvitationRoute
+  ClosingIndexRoute: typeof ClosingIndexRoute
+}
+
+const ClosingRouteChildren: ClosingRouteChildren = {
+  ClosingEquipeRoute: ClosingEquipeRoute,
+  ClosingInvitationRoute: ClosingInvitationRoute,
+  ClosingIndexRoute: ClosingIndexRoute,
+}
+
+const ClosingRouteWithChildren =
+  ClosingRoute._addFileChildren(ClosingRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AbonnementRoute: AbonnementRoute,
@@ -676,6 +766,7 @@ const rootRouteChildren: RootRouteChildren = {
   AideRoute: AideRoute,
   AuthRoute: AuthRouteWithChildren,
   ClientsRoute: ClientsRoute,
+  ClosingRoute: ClosingRouteWithChildren,
   CommandesRoute: CommandesRoute,
   CreerBoutiqueRoute: CreerBoutiqueRoute,
   DashboardRoute: DashboardRoute,

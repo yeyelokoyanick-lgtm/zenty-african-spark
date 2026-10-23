@@ -15,6 +15,13 @@
       "when": 1792484605443,
       "tag": "0001_tighten_service_network_privileges",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792716537710,
+      "tag": "0002_merchant_closing_crm",
+      "breakpoints": true
     }
   ]
 }

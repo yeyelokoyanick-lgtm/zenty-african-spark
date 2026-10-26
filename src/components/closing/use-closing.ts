@@ -4,7 +4,8 @@ import { useServerFn } from '@tanstack/react-start';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
 import { demoData, type Prospect, type Member } from '@/lib/closing-model';
-import { getClosingWorkspace, saveClosingProspect, deleteClosingProspect, saveClosingMember, removeClosingMember } from '@/lib/closing.functions';
+import { getClosingWorkspace, saveClosingProspect, deleteClosingProspect, saveClosingMember, removeClosingMember, generateClosingAdvice } from '@/lib/closing.functions';
+import type { CallOutcome, ClosingAdvice } from '@/lib/closing-ai';
 export function useClosing(ownerId?: string) {
  const {user,loading:authLoading}=useAuth();
  const [demo,setDemo]=useState(false);

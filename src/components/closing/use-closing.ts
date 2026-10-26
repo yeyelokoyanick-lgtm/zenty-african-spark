@@ -13,7 +13,7 @@ export function useClosing(ownerId?: string) {
  const [busy,setBusy]=useState(false);
  const queryClient=useQueryClient();
  const fetchWorkspace=useServerFn(getClosingWorkspace);
- const saveProspectFn=useServerFn(saveClosingProspect);const deleteFn=useServerFn(deleteClosingProspect);const memberFn=useServerFn(saveClosingMember);const removeFn=useServerFn(removeClosingMember);
+ const saveProspectFn=useServerFn(saveClosingProspect);const deleteFn=useServerFn(deleteClosingProspect);const memberFn=useServerFn(saveClosingMember);const removeFn=useServerFn(removeClosingMember);const adviceFn=useServerFn(generateClosingAdvice);
  const query=useQuery({queryKey:['closing',user?.id,ownerId],queryFn:()=>fetchWorkspace({data:{ownerId}}),enabled:!!user&&!demo});
  const data=demo?{...sample,ownerId:'demo',permission:'manage',memberships:[]}:query.data;
  const rows=(data?.prospects??[]) as Prospect[];const members=(data?.members??[]) as Member[];
@@ -34,7 +34,7 @@ export function useClosing(ownerId?: string) {
  setBusy(true);try{
  if(demo){const advice:ClosingAdvice={nextAction:'Exemple : relancer demain matin avec une photo du produit',suggestedStatus:'contacted',reminderDelayDays:1,message:`Bonjour ${p.name.split(' ')[0]} 👋, merci pour notre échange ! Le ${p.product_name||'produit'} est toujours disponible. Souhaitez-vous que je vous le réserve ? 😊`};addLog(`Note d’appel — ${p.name} : ${fields.note.slice(0,120)}`);setSample(s=>({...s,prospects:s.prospects.map(r=>r.id===p.id?{...r,call_notes:[r.call_notes,`[${new Date().toLocaleString('fr-FR')}] ${fields.closerName||'Closer'} — ${fields.note}`].filter(Boolean).join('\n'),last_contact_at:new Date().toISOString()}:r)}));toast.success('Exemple de conseil généré');return advice;}
  if(!data)throw new Error('Connectez-vous pour analyser');
- const adviceFn=useServerFnRef.current;const result=await adviceFn({data:{ownerId:data.ownerId,prospectId:p.id,...fields}});await refresh();toast.success('Note enregistrée, conseil IA généré');return result.advice as ClosingAdvice;
+ const result=await adviceFn({data:{ownerId:data.ownerId,prospectId:p.id,...fields}});await refresh();toast.success('Note enregistrée, conseil IA généré');return result.advice as ClosingAdvice;
  }catch(e){toast.error(e instanceof Error?e.message:'Analyse impossible');return null;}finally{setBusy(false);}
  };
  return {user,authLoading,demo,setDemo,busy,data,rows,members,save,remove,invite,removeMember,callNote,loading:authLoading||(!demo&&!!user&&query.isPending),error:query.error,canEdit:data?.permission!=='view'&&!!data,canManage:data?.permission==='manage',refresh};

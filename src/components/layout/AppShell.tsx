@@ -3,7 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, ShoppingBag, Package, CreditCard, Store, Users,
   Megaphone, Handshake, Gem, HelpCircle, Settings, Search, Bell, Banknote,
-  LogOut, User as UserIcon, Download,
+  LogOut, User as UserIcon, Download, Target,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -35,6 +35,7 @@ const groups: { title: string; items: NavItem[] }[] = [
     title: "Croissance",
     items: [
       { to: "/marketing", label: "Marketing", icon: Megaphone },
+      { to: "/closing", label: "Espace Closing", icon: Target },
       { to: "/affiliation", label: "Affiliation", icon: Banknote },
       { to: "/agences", label: "Réseau de services", icon: Handshake },
     ],

@@ -1,11 +1,12 @@
-# Réseau premium
-\n+# Espace Closing
-- [ ] Ajouter prospects persistants, statuts, relances et journal avec isolation des marchands.
-- [ ] Créer /closing et /closing/equipe, formulaires, filtres, analyse et contacts WhatsApp.
-- [ ] Protéger les invitations et les accès de l’équipe selon les droits choisis.
+# Espace Closing
+- [x] Ajouter prospects persistants, statuts, relances et journal avec isolation des marchands.
+- [x] Créer /closing et /closing/equipe, formulaires, filtres, analyse et contacts WhatsApp.
+- [x] Protéger les invitations et les accès de l’équipe selon les droits choisis.
+- [x] Relier /closing et /closing/equipe à la navigation du tableau de bord.
 - [ ] Tester les règles, les actions et l’affichage aux différents formats.
 - [ ] Activer l’envoi automatique des invitations WhatsApp : connexion officielle et modèle approuvé nécessaires.
 
+# Réseau premium
 - [x] Examiner les abonnements, rôles, annuaire et design existants.
 - [x] Protéger les coordonnées et les droits premium dans la base et côté serveur.
 - [x] Ajouter la section commerciale et réutiliser /agences comme Réseau de services.

@@ -22,6 +22,13 @@
       "when": 1792716537710,
       "tag": "0002_merchant_closing_crm",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792979232560,
+      "tag": "0003_closing_call_notes",
+      "breakpoints": true
     }
   ]
 }

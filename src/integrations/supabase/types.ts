@@ -120,6 +120,7 @@ export type Database = {
       closing_prospects: {
         Row: {
           assigned_to: string | null
+          call_notes: string
           created_at: string
           id: string
           last_contact_at: string | null
@@ -138,6 +139,7 @@ export type Database = {
         }
         Insert: {
           assigned_to?: string | null
+          call_notes?: string
           created_at?: string
           id?: string
           last_contact_at?: string | null
@@ -156,6 +158,7 @@ export type Database = {
         }
         Update: {
           assigned_to?: string | null
+          call_notes?: string
           created_at?: string
           id?: string
           last_contact_at?: string | null
@@ -1515,6 +1518,10 @@ export type Database = {
         Returns: boolean
       }
       has_service_network_access: { Args: never; Returns: boolean }
+      log_closing_activity: {
+        Args: { _message: string; _owner: string }
+        Returns: undefined
+      }
       owns_shop: { Args: { _shop_id: string }; Returns: boolean }
       shop_exists: { Args: { _shop_id: string }; Returns: boolean }
     }

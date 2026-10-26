@@ -3,7 +3,8 @@
 - [x] Créer /closing et /closing/equipe, formulaires, filtres, analyse et contacts WhatsApp.
 - [x] Protéger les invitations et les accès de l’équipe selon les droits choisis.
 - [x] Relier /closing et /closing/equipe à la navigation du tableau de bord.
-- [ ] Tester les règles, les actions et l’affichage aux différents formats.
+- [x] Vérifier les parcours visiteur et démonstration (ordinateur et mobile, aucune erreur).
+- [ ] Vérifier les parcours connectés (prospects réels, invitations) : aucun compte auth disponible, inscription d’un utilisateur nécessaire.
 - [ ] Activer l’envoi automatique des invitations WhatsApp : connexion officielle et modèle approuvé nécessaires.
 
 # Réseau premium

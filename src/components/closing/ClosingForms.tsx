@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { CalendarClock, Send } from 'lucide-react';
+import { CalendarClock, Send, Sparkles, Loader2, Copy, MessageCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 import { sources,reasons,stages,type Prospect } from '@/lib/closing-model';
+import { callOutcomes, type CallOutcome, type ClosingAdvice } from '@/lib/closing-ai';
+import { toast } from 'sonner';
 import type { ClosingState } from './use-closing';
 export function Choice({label,value,onChange,items}:{label:string;value:string;onChange:(v:string)=>void;items:{id:string;name:string}[]}){return <div className="space-y-2"><Label>{label}</Label><Select value={value} onValueChange={onChange}><SelectTrigger aria-label={label}><SelectValue/></SelectTrigger><SelectContent>{items.map(i=><SelectItem key={i.id} value={i.id}>{i.name}</SelectItem>)}</SelectContent></Select></div>;}
 export function localDateTime(iso:string|null){if(!iso)return '';const d=new Date(iso);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}T${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;}

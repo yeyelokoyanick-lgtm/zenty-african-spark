@@ -3,7 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, ShoppingBag, Package, CreditCard, Store, Users,
   Megaphone, Handshake, Gem, HelpCircle, Settings, Search, Bell, Banknote,
-  LogOut, User as UserIcon, Download,
+  LogOut, User as UserIcon, Download, Target,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";

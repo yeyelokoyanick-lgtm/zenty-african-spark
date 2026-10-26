@@ -1,6 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
+import { GatewayError, generateResponse } from '@lovable.dev/ai-gateway';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
+import { buildCallPrompt, extractResponseText, parseAdvice } from '@/lib/closing-ai';
 const ownerSchema=z.object({ownerId:z.string().uuid().optional()});
 const phone=z.string().regex(/^\+[1-9]\d{7,14}$/, 'Numéro international requis, ex. +229…');
 const prospectSchema=z.object({id:z.string().uuid().optional(),ownerId:z.string().uuid(),name:z.string().trim().min(1).max(160),phone,product_id:z.string().uuid().nullable(),product_name:z.string().max(200),source:z.enum(['Facebook / Instagram','WhatsApp','Bouche à oreille','TikTok','Publicité','Autre']),status:z.enum(['new','contacted','interested','converted','lost']),notes:z.string().max(4000),loss_reason:z.enum(['Trop cher','A acheté ailleurs','Pas convaincu','Pas de réponse','Autre']).nullable(),assigned_to:z.string().uuid().nullable(),reminder_at:z.string().datetime().nullable(),reminder_note:z.string().max(1000)});

@@ -12,6 +12,8 @@ import {
   Twitter,
   ArrowRight,
   LogOut,
+  ShoppingBag,
+  TrendingUp,
 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { PartnerLogoMarquee } from "@/components/landing/PartnerLogoMarquee";
@@ -218,9 +220,9 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="relative">
+          <div className="hero-media relative">
             <div
-              className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+              className="hero-media-glow pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
               style={{ background: `${PURPLE}18` }}
               aria-hidden="true"
             />
@@ -229,8 +231,26 @@ function LandingPage() {
               alt="Tableau de bord AFRISELL sur ordinateur portable et téléphone"
               width={1280}
               height={960}
-              className="mx-auto w-full max-w-xl rounded border border-border bg-card shadow-xl"
+              className="hero-media-img mx-auto w-full max-w-xl rounded border border-border bg-card shadow-xl"
             />
+            <div
+              className="hero-badge hero-badge-1 absolute -left-3 top-6 flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-lg sm:-left-6"
+              aria-hidden="true"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <ShoppingBag className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-xs font-semibold">Commande COD reçue</span>
+            </div>
+            <div
+              className="hero-badge hero-badge-2 absolute -right-3 bottom-8 flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-lg sm:-right-6"
+              aria-hidden="true"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <TrendingUp className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-xs font-semibold">+2 400 marchands</span>
+            </div>
           </div>
         </div>
 
